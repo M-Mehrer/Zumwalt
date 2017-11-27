@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('https://fonts.googleapis.com/css?family=Nosifer');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+
+body {
+	font-family: 'Permanent Marker';
+	font-size: 20pt;
+	background-color: rgb(41, 41, 41); color: white; /*dark theme*/
+}
+
+.area {
+	padding: 0;
+	margin: 1%;
+}
+
+.infoArea {
+	margin: 2%;
+}
+
+.board {
+	margin: 0;
+	padding: 1%;
+}
+
+.boardField {
+	position: relative;
+	border: 1px solid lightgray;
+	background-color: #0cadf8;
+	width: 10%;
+	padding: 0;
+	padding-top: 10%;
+	float: left;
+}
+
+.activeField:hover {
+	background-color: rgb(0, 102, 255);
+}
+
+#playerInputModal {
+	color: black;
+}
+
+.playerLabel .playerName {
+	font-size: 16pt;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+	<!-- JavaScript -->
+	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src = "js/main.js"></script>	
+
+    <title>Schiffe versenken</title>
+
+</head>
+
+<body>
+
+<div class="container"> <!-- Main content area -->
+
+    <div class="row area info-area">
+        <!-- Highscore -->
+        <h1 class="highscoreArea col-xs-12 col-md-8">
+             Highscore: <span id="highscore">{{Highscore}}</span>
+        </h1>        
+
+        <!-- Player name input -->
+        <div class="playerInputArea col-xs-12 col-md-4">
+            <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
+            <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
+            
+            <button class="btn btn-primary" data-toggle="modal" data-target="#playerInputModal">Spieler hinzufügen</button>
+
+            <!-- Player name input modal -->
+            <div id="playerInputModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Spieler Namen wählen</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Input name player 1 -->
+                            <div class="form-group">
+                                <label for="player1">Spieler 1:</label>
+                                <input type="text" class="form-control" id="player1" oninput="validatePlayerName('#player1', '#player2');">
+                            </div>
+                            <!-- Input name player 2 -->
+                            <div class="form-group">
+                                <label for="player2">Spieler 2:</label>
+                                <input type="text" class="form-control" id="player2" oninput="validatePlayerName('#player2', '#player1');">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" onclick="savePlayer();">Spieler speichern</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Boards -->
+    <div class="row area">
+        <div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
+        <div id="otherShips" class="col-xs-12 col-md-6 board">Schiffe des Gegners:</div>
+    </div>
+
+</div> <!-- End main content area -->
+
+</body>
+</html>
