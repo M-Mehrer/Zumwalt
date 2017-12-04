@@ -1,5 +1,7 @@
 const fieldSize = 10;
 
+var myField;
+
 // Initializations
 $(document).ready(function() {
 	initializeShips('#myShips', 'activeField');
