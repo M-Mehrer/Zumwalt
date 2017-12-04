@@ -1,7 +1,9 @@
 # Zumwalt
-Hs-Mannheim WS17/18 Web-Projekt Schiffeversenken 
+HS-Mannheim WS2017/18 WEB-Projekt: Schiffeversenken 
 
-#*********************************************************************************************#
-#Meilenstein1: Abgabe noch unbekannt
-#https://moodle.hs-mannheim.de/pluginfile.php/140385/mod_resource/content/1/Meilenstein%201.pdf
+---
+
+* [Meilenstein 1](https://moodle.hs-mannheim.de/pluginfile.php/140385/mod_resource/content/1/Meilenstein%201.pdf "Meilenstein 1 im Moodle"): Bis *27.11.2017* abgeschlossen
+
+* [Meilenstein 2](https://moodle.hs-mannheim.de/pluginfile.php/142871/mod_resource/content/0/Meilenstein%202.pdf "Meilenstein 2 im Moodle"): Abgabe noch unbekannt
 
