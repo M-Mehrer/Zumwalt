@@ -2,7 +2,7 @@
   "name": "zumwalt",
   "version": "1.0.0",
   "description": "Battleship game",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,11 @@
   "bugs": {
     "url": "https://github.com/mmnn11/Zumwalt/issues"
   },
-  "homepage": "https://github.com/mmnn11/Zumwalt#readme"
+  "homepage": "https://github.com/mmnn11/Zumwalt#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "serve-static": "^1.13.1",
+    "socket.io": "^2.0.4"
+  }
 }
