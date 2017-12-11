@@ -21,6 +21,9 @@ function initializeShips(areaId, fieldClass = "") {
 			rowNode.append($("<div class='boardField " + fieldClass + "' id='" + id + "'></div>"));
 		}
 	}
+
+	$(".boardField").css("width", (100 / fieldSize) + "%")
+	$(".boardField").css("padding-top", (100 / fieldSize) + "%")
 }
 
 function savePlayer() {
