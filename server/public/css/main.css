@@ -31,6 +31,42 @@ body {
 	float: left;
 }
 
+.shipFieldLeft {
+	position: relative;
+	padding: 0;
+	float: left;
+	width: 30%;
+	padding-top: 10%;
+}
+
+.shipFieldMiddle {
+	position: relative;
+	padding: 0;
+	float: left;
+	width: 50%;
+	padding-top: 10%;
+}
+
+.shipFieldRight {
+	position: relative;
+	padding: 0;
+	float: left;
+	width: 20%;
+	padding-top: 10%;
+}
+
+.shipFieldFooter {
+	position: relative;
+	padding: 0;
+	float: left;
+	width: 100%;
+	padding-top: 26.25%;
+}
+
+.shipField {
+	
+}
+
 .activeField:hover {
 	background-color: rgb(0, 102, 255);
 }
@@ -41,4 +77,9 @@ body {
 
 .playerLabel .playerName {
 	font-size: 16pt;
+}
+
+/*Debug Borders*/
+.frame {
+	border: 0.5px dashed green;
 }

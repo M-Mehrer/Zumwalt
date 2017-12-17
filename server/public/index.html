@@ -2,6 +2,7 @@
 <html lang="de">
 
 <head>
+	<title>Schiffe versenken</title>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,15 +14,12 @@
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="js/ships.js"></script>
     <script src = "js/main.js"></script>
-    <script src="/socket.io/socket.io.js"></script>    
+    <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
     </script>
-    
-
-    <title>Schiffe versenken</title>
-
 </head>
 
 <body>
@@ -32,13 +30,13 @@
         <!-- Highscore -->
         <h1 class="highscoreArea col-xs-12 col-md-8">
              Highscore: <span id="highscore">{{Highscore}}</span>
-        </h1>        
+        </h1>
 
         <!-- Player name input -->
         <div class="playerInputArea col-xs-12 col-md-4">
             <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
             <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
-            
+
             <button class="btn btn-primary" data-toggle="modal" data-target="#playerInputModal">Spieler hinzufügen</button>
 
             <!-- Player name input modal -->
@@ -72,8 +70,12 @@
 
     <!-- Game Boards -->
     <div class="row area">
-        <div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
+			<!-- Change
+      	<div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
         <div id="otherShips" class="col-xs-12 col-md-6 board">Schiffe des Gegners:</div>
+		-->
+			<div id="myShips" class="col-xs-12 col-md-6 board frame">Eigene Schiffe</div>
+			<div id="showShips" class="col-xs-12 col-md-6 frame">Setz deine Schiffe</div>
     </div>
 
 </div> <!-- End main content area -->
