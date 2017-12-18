@@ -23,18 +23,16 @@ function initializeShips(areaId){
 	for(let row = 0; row < shipProperties.length; row++){
 		let rowNode = $("<div class='boardRow'></div>");
 		$(node).append(rowNode);
+		rowNode.append($("<div class='shipFieldRight frame'>" + ship[shipProperties[row]].amount + "</div>"));
+		rowNode.append($("<div class='shipFieldMiddle frame'>" + ship[shipProperties[row]].name + "</div>"));
 
 		let shipGameFields = "<div class='shipFieldLeft frame'>";
-
 		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
 			shipGameFields += "<div class='boardField shipField'></div>";
-			$(".shipField").css("width", (100 / ship[shipProperties[row]].amount) + "%");
+			//$(".shipField").css("width", (100 / ship[shipProperties[row]].amount) + "%");
 		}
-
 		shipGameFields += "</div>";
 		rowNode.append($(shipGameFields));
-		rowNode.append($("<div class='shipFieldMiddle frame'>" + ship[shipProperties[row]].name + "</div>"));
-		rowNode.append($("<div class='shipFieldRight frame'>" + ship[shipProperties[row]].amount + "</div>"));
 	}
 
 	node.append($("<div class='shipFieldFooter frame'>Footer</div>"));

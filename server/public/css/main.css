@@ -64,7 +64,8 @@ body {
 }
 
 .shipField {
-	
+	padding-top: 23%;
+	width: 20%; /*TODO: 100 / (Größte)ship.gameFields Zahl*/
 }
 
 .activeField:hover {
