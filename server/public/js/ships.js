@@ -19,10 +19,17 @@ const ship = {
     gameFields: 2,
     amount: 4
   },
+/*
+  carryer: {
+    name: 'Träger',
+    gameFields: 12,
+    amount: 1
+  },
+*/
 
   shipProperties: function(){
-    //Don't calculate this function itself
-    var number = -1;
+    //Don't count functions
+    var number = -2;
     var shipProperties = [];
     var properties = [];
 
@@ -38,5 +45,21 @@ const ship = {
     }
 
     return shipProperties;
+  },
+
+  biggestShip: function(){
+    let shipProperties = this.shipProperties();
+    let biggestShipProperty;
+
+    for(let i = 0; i < shipProperties.length; i++){
+      if(typeof biggestShipProperty == "undefined"){
+        biggestShipProperty = this[shipProperties[i]];
+      }
+      if(this[shipProperties[i]].gameFields > biggestShipProperty.gameFields){
+        biggestShipProperty = this[shipProperties[i]];
+      }
+    }
+    return biggestShipProperty;
   }
+
 };

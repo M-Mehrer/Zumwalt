@@ -6,7 +6,7 @@ var myField;
 // Initializations
 $(document).ready(function() {
 	initializeGameField('#myShips', 'activeField');
-	initializeShips('#showShips');
+	initializeShips('#otherShips');
 	//Erst Shiffe setzen dann das Gegnerboard initialisieren
 	//initializeGameField('#otherShips');
 
@@ -19,25 +19,31 @@ function initializeShips(areaId){
 	var shipProperties = [];
 	shipProperties = ship.shipProperties();
 
-	let node = $("<div></div>");
-	for(let row = 0; row < shipProperties.length; row++){
-		let rowNode = $("<div class='boardRow'></div>");
-		$(node).append(rowNode);
-		rowNode.append($("<div class='shipFieldRight frame'>" + ship[shipProperties[row]].amount + "</div>"));
-		rowNode.append($("<div class='shipFieldMiddle frame'>" + ship[shipProperties[row]].name + "</div>"));
+	let node = $("<div class='setUpShips'></div>");
 
-		let shipGameFields = "<div class='shipFieldLeft frame'>";
+	//todo: Hinzufügen weiterer Schiffe darf nicht das Layout sprengen 
+	//let setUpShipsRowAreaHeight = 
+	for(let row = 0; row < shipProperties.length; row++){
+		//let rowNode = $("<div class='setUpShips'></div>");
+		//$(node).append(rowNode);
+		let shipsRowNode = $("<div class='row area setUpShipsRowArea'></div>");
+		$(node).append(shipsRowNode);
+
+		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsRowAreaRow frame'>" + ship[shipProperties[row]].amount + "</div>"));
+		shipsRowNode.append($("<div class='col-xs-8 col-md-8 setUpShipsRowAreaRow frame'>" + ship[shipProperties[row]].name + "</div>"));
+
+		let shipGameFields = "<div class='col-xs-3 col-md-3 setUpShipsRowAreaRow frame'>";
 		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
-			shipGameFields += "<div class='boardField shipField'></div>";
-			//$(".shipField").css("width", (100 / ship[shipProperties[row]].amount) + "%");
+			shipGameFields += "<div class='setUpShipsRowAreaRowUsedGameFields'></div>";
 		}
 		shipGameFields += "</div>";
-		rowNode.append($(shipGameFields));
+		shipsRowNode.append($(shipGameFields));
 	}
 
-	node.append($("<div class='shipFieldFooter frame'>Footer</div>"));
+	node.append($("<div class='setUpShipsFooter frame'>Footer</div>"));
 	$(areaId).append(node);
 
+	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
 
 //Cell ids: place-x-y where x = (row + 1) and y = (col + 1); fieldSize + 1 > x,y >= 1
@@ -52,8 +58,9 @@ function initializeGameField(areaId, fieldClass = "") {
 		}
 	}
 
+	$(".boardRow").css("height", (100 / fieldSize) + "%");
 	$(".boardField").css("width", (100 / fieldSize) + "%");
-	$(".boardField").css("padding-top", (100 / fieldSize) + "%");
+	//$(".boardField").css("padding-top", (100 / fieldSize) + "%");
 	//$(".boardField").css("background-color", fieldBackgroundColor);
 }
 
