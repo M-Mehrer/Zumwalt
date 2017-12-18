@@ -64,7 +64,7 @@ body {
 }
 
 .shipField {
-	padding-top: 23%;
+	height: 38px; /*TODO: Höhe in px okey?*/
 	width: 20%; /*TODO: 100 / (Größte)ship.gameFields Zahl*/
 }
 
