@@ -79,18 +79,23 @@ function setUpShipsRandomly(shipProperties){
 			//alert(setDirection);
 			//Set Ship
 			for(let shipFields = 0; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
+				//Mark ship core
+				var usedColor = '#aa681d';
+				if(shipFields > 0){
+					usedColor = shipColor;
+				}
 				switch(setDirection){
 					case 1: 
-						$("#place-" + (setRow - shipFields) + "-" + setCol).css("background-color", shipColor);
+						$("#place-" + (setRow - shipFields) + "-" + setCol).css("background-color", usedColor);
 						break;
 					case 2: 
-						$("#place-" + setRow + "-" + (setCol + shipFields)).css("background-color", shipColor);
+						$("#place-" + setRow + "-" + (setCol + shipFields)).css("background-color", usedColor);
 						break;
 					case 3: 
-						$("#place-" + (setRow + shipFields) + "-" + setCol).css("background-color", shipColor);
+						$("#place-" + (setRow + shipFields) + "-" + setCol).css("background-color", usedColor);
 						break;
 					case 4:
-						$("#place-" + setRow + "-" + (setCol - shipFields)).css("background-color", shipColor);
+						$("#place-" + setRow + "-" + (setCol - shipFields)).css("background-color", usedColor);
 						break;
 					default: alert("Fehler beim Setzen des Schiffes: " + ship[shipProperties[i]].name);
 				}
