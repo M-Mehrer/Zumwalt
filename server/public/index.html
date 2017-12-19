@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -9,7 +9,8 @@
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/debug.css">
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
@@ -26,14 +27,14 @@
 
 <div class="container"> <!-- Main content area -->
 
-    <div class="row area info-area">
+    <div class="row area info-area gFrame">
         <!-- Highscore -->
-        <h1 class="highscoreArea col-xs-12 col-md-8">
+        <h1 class="highscoreArea col-xs-12 col-md-8 gFrame">
              Highscore: <span id="highscore">{{Highscore}}</span>
         </h1>
 
         <!-- Player name input -->
-        <div class="playerInputArea col-xs-12 col-md-4">
+        <div class="playerInputArea col-xs-12 col-md-4 gFrame">
             <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
             <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
 
@@ -71,13 +72,13 @@
     <!-- Game Boards -->
     
     <div class="row area height">
-        <div class="col-xs-12 col-md-6 battleArea frame">
-            <div class='boardHeader frame'>Eigene Schiffe</div>
-            <div id='myShips' class='frame'></div>
+        <div class="col-xs-12 col-md-6 battleArea gFrame">
+            <div class='boardHeader gFrame'>Eigene Schiffe</div>
+            <div id='myShips' class='gFrame'></div>
         </div>
-        <div class="col-xs-12 col-md-6 battleArea frame">
-            <div class='boardHeader frame'>Setz deine Schiffe</div>
-            <div id='otherShips' class='frame'></div>
+        <div class="col-xs-12 col-md-6 battleArea gFrame">
+            <div class='boardHeader gFrame'>Setz deine Schiffe</div>
+            <div id='otherShips' class='gFrame'></div>
         </div>
     </div>
 <!--

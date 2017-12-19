@@ -13,7 +13,7 @@ const ship = {
     name: 'Zerstörer',
     gameFields: 3,
     amount: 3
-  },
+  },  
   submarine: {
     name: 'U-Boot',
     gameFields: 2,
@@ -43,21 +43,35 @@ const ship = {
 
 
 
+  //Returns ship properties ordered by gameFields desc
   shipProperties: function(){
     //Don't count functions
     var number = -2;
     var shipProperties = [];
-    var properties = [];
+    var allProperties = [];
 
     for(let property in this){
       if(Object.prototype.hasOwnProperty.call(this, property)){
         number++;
-        properties.push(property);
+        allProperties.push(property);
       }
     }
 
     for(let i = 0; i < number; i++){
-      shipProperties.push(properties[i]);
+      shipProperties.push(allProperties[i]);
+    }
+
+    //Insertionsort
+    for(let i = 1; i < shipProperties.length; i++){
+      let k = i - 1;
+      while(k >= 0){
+        if(this[shipProperties[k + 1]].gameFields > this[shipProperties[k]].gameFields){
+          let tmp = shipProperties[k];
+          shipProperties[k] = shipProperties[k + 1];
+          shipProperties[k + 1] = tmp;
+        }
+        k--;
+      }
     }
 
     return shipProperties;
