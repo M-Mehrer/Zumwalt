@@ -1,5 +1,4 @@
 const fieldSize = 10;
-//const fieldBackgroundColor = '#0cadf8';
 
 var myField;
 
@@ -19,20 +18,18 @@ function initializeShips(areaId){
 	var shipProperties = [];
 	shipProperties = ship.shipProperties();
 
-	let node = $("<div class='setUpShips'></div>");
+	let node = $("<div class='setUpShips rFrame'></div>");
 
 	//todo: Hinzufügen weiterer Schiffe darf nicht das Layout sprengen 
 	//let setUpShipsRowAreaHeight = 
 	for(let row = 0; row < shipProperties.length; row++){
-		//let rowNode = $("<div class='setUpShips'></div>");
-		//$(node).append(rowNode);
-		let shipsRowNode = $("<div class='row area setUpShipsRowArea'></div>");
+		let shipsRowNode = $("<div class='row area setUpShipsRowArea bFrame'></div>");
 		$(node).append(shipsRowNode);
 
 		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsRowAreaRow frame'>" + ship[shipProperties[row]].amount + "</div>"));
-		shipsRowNode.append($("<div class='col-xs-8 col-md-8 setUpShipsRowAreaRow frame'>" + ship[shipProperties[row]].name + "</div>"));
+		shipsRowNode.append($("<div class='col-xs-7 col-md-7 setUpShipsRowAreaRow frame'>" + ship[shipProperties[row]].name + "</div>"));
 
-		let shipGameFields = "<div class='col-xs-3 col-md-3 setUpShipsRowAreaRow frame'>";
+		let shipGameFields = "<div class='col-xs-4 col-md-4 setUpShipsRowAreaRow frame'>";
 		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
 			shipGameFields += "<div class='setUpShipsRowAreaRowUsedGameFields'></div>";
 		}
@@ -40,9 +37,10 @@ function initializeShips(areaId){
 		shipsRowNode.append($(shipGameFields));
 	}
 
-	node.append($("<div class='setUpShipsFooter frame'>Footer</div>"));
+	node.append($("<div class='setUpShipsFooter pFrame'>Footer</div>"));
 	$(areaId).append(node);
 
+	$(".setUpShipsRowArea").css("height", (76 / (shipProperties.length + (shipProperties.length * 0.1) - 0.4)) + "%");
 	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
 
@@ -61,7 +59,6 @@ function initializeGameField(areaId, fieldClass = "") {
 	$(".boardRow").css("height", (100 / fieldSize) + "%");
 	$(".boardField").css("width", (100 / fieldSize) + "%");
 	//$(".boardField").css("padding-top", (100 / fieldSize) + "%");
-	//$(".boardField").css("background-color", fieldBackgroundColor);
 }
 
 function savePlayer() {

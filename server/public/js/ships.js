@@ -20,12 +20,28 @@ const ship = {
     amount: 4
   },
 /*
-  carryer: {
-    name: 'Träger',
-    gameFields: 12,
+  aCarryer: {
+    name: 'ATräger',
+    gameFields: 7,
     amount: 1
   },
-*/
+  bCarryer: {
+    name: 'BTräger',
+    gameFields: 7,
+    amount: 1
+  },
+  cCarryer: {
+   name: 'CTräger',
+  gameFields: 7,
+   amount: 1
+  },
+  dCarryer: {
+    name: 'DTräger',
+   gameFields: 7,
+    amount: 1
+  },*/
+
+
 
   shipProperties: function(){
     //Don't count functions
