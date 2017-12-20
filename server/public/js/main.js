@@ -73,10 +73,9 @@ function setUpShipsRandomly(shipProperties){
 					failure = false;
 					setRow = row;
 					setCol = col;
-					setDirection = possibileDirection[getRandomInt(1, possibileDirection.length - 1)];
+					setDirection = possibileDirection[getRandomInt(0, possibileDirection.length - 1)];
 				}
 			}
-			//alert(setDirection);
 			//Set Ship
 			for(let shipFields = 0; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
 				//Mark ship core
