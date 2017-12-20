@@ -19,7 +19,7 @@ const ship = {
     gameFields: 2,
     amount: 4
   },
-
+/*
   aCarryer: {
     name: 'ATräger',
     gameFields: 7,

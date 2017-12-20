@@ -35,6 +35,8 @@ function clearField(){
 	for(let i = 1; i <= fieldSize; i++){
 		for(let j = 1; j <= fieldSize; j++){
 			$("#place-" + i + "-" + j).css("background-color", "#0cadf8");
+			//Debug function
+			$("#place-" + i + "-" + j).html("");
 		}
 	}
 }
@@ -79,10 +81,13 @@ function setUpShipsRandomly(shipProperties){
 			//Set Ship
 			for(let shipFields = 0; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
 				//Mark ship core
-				var usedColor = '#aa681d';
-				if(shipFields > 0){
-					usedColor = shipColor;
-				}
+				var usedColor = shipColor;
+				//Debug set directions in ship core
+				if(shipFields == 0){
+					var directionsSet = $("#place-" + setRow + "-" + setCol).html() + " " + setDirection;
+					$("#place-" + setRow + "-" + setCol).html(directionsSet);
+				}			
+	
 				switch(setDirection){
 					case 1: 
 						$("#place-" + (setRow - shipFields) + "-" + setCol).css("background-color", usedColor);
