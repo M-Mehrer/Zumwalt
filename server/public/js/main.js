@@ -41,8 +41,30 @@ function clearField(){
 	}
 }
 
+function positionPossible(row, col, occupiedFields){
+	for(let i = 0; i < occupiedFields.length; i++){
+		var occRow = "";
+		var occCol = "";
+
+		for(let rowCharacters = 0; rowCharacters < occupiedFields[i].indexOf("-"); rowCharacters++){
+			occRow += occupiedFields[i][rowCharacters];
+		}
+		for(let colCharacter = occupiedFields[i].indexOf("-") + 1; colCharacter < occupiedFields[i].length; colCharacter++){
+			occCol += occupiedFields[i][colCharacter];
+		}
+
+		if(occRow == row && occCol == col){
+			return false;
+		}
+	}
+	return true;
+}
+
 function setUpShipsRandomly(shipProperties){
 	clearField();
+
+	var maxFields = fieldSize * fieldSize;
+	var occupiedFields = [];
 
 	for(let i = 0; i < shipProperties.length; i++){
 		for(let j = 0; j < ship[shipProperties[i]].amount; j++){
@@ -56,158 +78,215 @@ function setUpShipsRandomly(shipProperties){
 				var row = getRandomInt(1, fieldSize);
 				var col = getRandomInt(1, fieldSize);
 
-				//1 = north, clockwise
-				//direction north possible
-				if(row - ship[shipProperties[i]].gameFields >= 0){
-					possibileDirection.push(1);
-				}
-				if(col + ship[shipProperties[i]].gameFields <= fieldSize){
-					possibileDirection.push(2);
-				}
-				if(row + ship[shipProperties[i]].gameFields <= fieldSize){
-					possibileDirection.push(3);
-				}
-				if(col - ship[shipProperties[i]].gameFields >= 0){
-					possibileDirection.push(4);
-				}
+				if(positionPossible(row, col, occupiedFields)){
+					//1 = north, clockwise
+					//direction north possible
+					if(row - ship[shipProperties[i]].gameFields >= 0){
+						possibileDirection.push(1);
+					}
+					if(col + ship[shipProperties[i]].gameFields <= fieldSize){
+						possibileDirection.push(2);
+					}
+					if(row + ship[shipProperties[i]].gameFields <= fieldSize){
+						possibileDirection.push(3);
+					}
+					if(col - ship[shipProperties[i]].gameFields >= 0){
+						possibileDirection.push(4);
+					}
 
-				if(possibileDirection.length > 0){
-					failure = false;
-					setRow = row;
-					setCol = col;
-					setDirection = possibileDirection[getRandomInt(0, possibileDirection.length - 1)];
+					if(possibileDirection.length > 0){
+						failure = false;
+						setRow = row;
+						setCol = col;
+						setDirection = possibileDirection[getRandomInt(0, possibileDirection.length - 1)];
+					}
 				}
 			}
 			//Set Ship
 			for(let shipFields = 0; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-				//Mark ship core
 				var usedColor = shipColor;
-				//Debug set directions in ship core
+				//Debug feature: Set direction in ship core
+				
 				if(shipFields == 0){
 					var directionsSet = $("#place-" + setRow + "-" + setCol).html() + " " + setDirection;
 					$("#place-" + setRow + "-" + setCol).html(directionsSet);
-				}			
-	
+				}
+				
+				//Push into occupiedFields and set background-color
 				switch(setDirection){
 					case 1: 
 						$("#place-" + (setRow - shipFields) + "-" + setCol).css("background-color", usedColor);
+						//Debug feature: Set Row and Col in ship field
+						//$("#place-" + (setRow - shipFields) + "-" + setCol).html(setRow - shipFields + "-" + setCol);
+
+						occupiedFields.push(setRow - shipFields + "-" + setCol);
+						//Checking field lower to the ship core
+						if(shipFields == 0 && setRow + 1 < fieldSize){
+							occupiedFields.push(setRow + 1 + "-" + setCol);
+							//Checking left border
+							if(setCol - 1 > 0){
+								occupiedFields.push(setRow + 1 + "-" + (setCol - 1));
+							}
+							//Checking right border
+							if(setCol + 1 <= fieldSize){
+								occupiedFields.push(setRow + 1 + "-" + (setCol + 1));
+							}
+						}
+						//Checking field above the last ship field
+						if(shipFields + 1 >= ship[shipProperties[i]].gameFields && setRow - shipFields - 1 > 0){
+							occupiedFields.push(setRow - shipFields - 1 + "-" + setCol);
+							//Checking left border
+							if(setCol - 1 > 0){
+								occupiedFields.push(setRow - shipFields - 1 + "-" + (setCol - 1));
+							}
+							//Checking right border
+							if(setCol + 1 <= fieldSize){
+								occupiedFields.push(setRow - shipFields - 1 + "-" + (setCol + 1));
+							}
+						}
+						//Checking for left border
+						if(setCol - 1 > 0){
+							occupiedFields.push(setRow - shipFields + "-" + (setCol - 1));
+						}
+						//Checking for right border
+						if(setCol + 1 <= fieldSize){
+							occupiedFields.push(setRow - shipFields + "-" + (setCol + 1));
+						}
 						break;
 					case 2: 
 						$("#place-" + setRow + "-" + (setCol + shipFields)).css("background-color", usedColor);
+						//Debug feature: Set Row and Col in ship field
+						//$("#place-" + setRow + "-" + (setCol + shipFields)).html(setRow + "-" + (setCol + shipFields));
+
+						occupiedFields.push(setRow + "-" + (setCol + shipFields));
+						//Checking field left to the ship core
+						if(shipFields == 0 && setCol - 1 > 0){
+							occupiedFields.push(setRow + "-" + (setCol - 1));
+							//Checking upper border
+							if(setRow - 1 > 0){
+								occupiedFields.push(setRow - 1 + "-" + (setCol - 1));
+							}
+							//Checking lower border
+							if(setRow + 1 <= fieldSize){
+								occupiedFields.push(setRow + 1 + "-" + (setCol - 1));
+							}
+						}
+						//Checking field right to the last ship field
+						if(shipFields + 1 >= ship[shipProperties[i]].gameFields && setCol + shipFields + 1 <= fieldSize){
+							occupiedFields.push(setRow + "-" + (setCol + shipFields + 1));
+							//Checking upper border
+							if(setRow - 1 > 0){
+								occupiedFields.push(setRow - 1 + "-" + (setCol + shipFields + 1));
+							}
+							//Checking lower border
+							if(setRow + 1 <= fieldSize){
+								occupiedFields.push(setRow + 1 + "-" + (setCol + shipFields + 1));
+							}
+						}
+						//Checking for upper border
+						if(setRow - 1 > 0){
+							occupiedFields.push(setRow - 1 + "-" + (setCol + shipFields));
+						}
+						//Checking for lower border
+						if(setRow + 1 <= fieldSize){
+							occupiedFields.push(setRow + 1 + "-" + (setCol + shipFields));
+						}
 						break;
 					case 3: 
 						$("#place-" + (setRow + shipFields) + "-" + setCol).css("background-color", usedColor);
+						//Debug feature: Set Row and Col in ship field
+						//$("#place-" + (setRow + shipFields) + "-" + setCol).html(setRow + shipFields + "-" + setCol);
+						
+						occupiedFields.push(setRow + shipFields + "-" + setCol);
+						//Checking field above the ship core
+						if(shipFields == 0 && setRow - 1 > 0){
+							occupiedFields.push(setRow - 1 + "-" + setCol);
+							//Checking left border
+							if(setCol - 1 > 0){
+								occupiedFields.push(setRow - 1 + "-" + (setCol - 1));
+							}
+							//Checking right border
+							if(setCol + 1 <= fieldSize){
+								occupiedFields.push(setRow - 1 + "-" + (setCol + 1));
+							}
+						}
+						//Checking field lower the last ship field
+						if(shipFields + 1 >= ship[shipProperties[i]].gameFields && setRow + shipFields + 1 <= fieldSize){
+							occupiedFields.push(setRow + shipFields + 1 + "-" + setCol);
+							//Checking left border
+							if(setCol - 1 > 0){
+								occupiedFields.push(setRow + shipFields + 1 + "-" + (setCol - 1));
+							}
+							//Checking right border
+							if(setCol + 1 <= fieldSize){
+								occupiedFields.push(setRow + shipFields + 1 + "-" + (setCol + 1));
+							}
+						}
+						//Checking for left border
+						if(setCol - 1 > 0){
+							occupiedFields.push(setRow + shipFields + "-" + (setCol - 1));
+						}
+						//Checking for right border
+						if(setCol + 1 <= fieldSize){
+							occupiedFields.push(setRow + shipFields + "-" + (setCol + 1));
+						}
 						break;
 					case 4:
 						$("#place-" + setRow + "-" + (setCol - shipFields)).css("background-color", usedColor);
+						//Debug feature: Set Row and Col in ship field
+						//$("#place-" + setRow + "-" + (setCol - shipFields)).html(setRow + "-" + (setCol - shipFields));
+						
+						occupiedFields.push(setRow + "-" + (setCol - shipFields));
+						//Checking field right to the ship core
+						if(shipFields == 0 && setCol + 1 <= fieldSize){
+							occupiedFields.push(setRow + "-" + (setCol + 1));
+							//Checking upper border
+							if(setRow - 1 > 0){
+								occupiedFields.push(setRow - 1 + "-" + (setCol + 1));
+							}
+							//Checking lower border
+							if(setRow + 1 <= fieldSize){
+								occupiedFields.push(setRow + 1 + "-" + (setCol + 1));
+							}
+						}
+						//Checking field left to the last ship field
+						if(shipFields + 1 >= ship[shipProperties[i]].gameFields && setCol - shipFields - 1 > 0){
+							occupiedFields.push(setRow + "-" + (setCol - shipFields - 1));
+							//Checking upper border
+							if(setRow - 1 > 0){
+								occupiedFields.push(setRow - 1 + "-" + (setCol - shipFields - 1));
+							}
+							//Checking lower border
+							if(setRow + 1 <= fieldSize){
+								occupiedFields.push(setRow + 1 + "-" + (setCol - shipFields - 1));
+							}
+						}
+						//Checking for upper border
+						if(setRow - 1 > 0){
+							occupiedFields.push(setRow - 1 + "-" + (setCol - shipFields));
+						}
+						//Checking for lower border
+						if(setRow + 1 <= fieldSize){
+							occupiedFields.push(setRow + 1 + "-" + (setCol - shipFields));
+						}
 						break;
 					default: alert("Fehler beim Setzen des Schiffes: " + ship[shipProperties[i]].name);
 				}
 			}
 		}
 	}
-}
-//Fehler, soll sein: for(let j = 0; j < ship[shipProperties[i]].amount; j++){
-/*function setUpShipsRandomly(shipProperties){
-	var failurePosition = [];
-
-	for(let i = 0; i < shipProperties.length; i++){
-		for(let j = 0; j < ship[shipProperties[i]].gameFields; j++){
-			var failure = true;
-			var possibileDirection = [];
-			var setRow;
-			var setCol;
-			//Or free fields
-			while(failure){
-				var row = getRandomInt(1, fieldSize);
-				var col = getRandomInt(1, fieldSize);
-				
-				//There is already a ship
-				if($("#place-" + row + "-" + col).css("background-color") == shipColor){
-					//failurePosition.push([...]); Mögl.?
-					failurePosition[failurePosition.length][0] = row;
-					failurePosition[failurePosition.length][1] = col;
-				}
-				else{
-					//1 = north, clockwise
-					//Ship can set up to north
-					if(row - ship[shipProperties[i]].gameFields - 1 >= 0){
-						var northDirection = true;
-						for(let shipFields = 1; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-							if($("#place-" + (row - shipFields) + "-" + col).css("background-color") == shipColor){
-								northDirection = false;
-								//skip 
-								shipFields += ship[shipProperties[i]].gameFields;
-							}							}
-						if(northDirection){
-							possibileDirection.push(1);
-						}
-					}
-					//Ship can set up to east
-					if(col + ship[shipProperties[i]].gameFields <= fieldSize){
-						var eastDirection = true;
-						for(let shipFields = 1; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-							if($("#place-" + row + "-" + (col + shipFields)).css("background-color") == shipColor){
-								eastDirection = false;
-								//skip
-								shipFields += ship[shipProperties[i]].gameFields;
-							}
-						}
-						if(eastDirection){
-							possibileDirection.push(2);
-						}
-					}
-					//Ship can set up to south		
-					if(row + ship[shipProperties[i]].gameFields - 1 <= fieldSize){
-						var southDirection = true;
-						for(let shipFields = 1; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-							if($("#place-" + (row + shipFields) + "-" + col).css("background-color") == shipColor){
-								southDirection = false;
-								//skip
-								shipFields += ship[shipProperties[i]].gameFields;
-							}
-						}
-						if(southDirection){
-							possibileDirection.push(3);
-						}
-					}
-					//Ship can set up to west
-					if(col - ship[shipProperties[i]].gameFields >= 0){
-						var westDirection = true;
-						for(let shipFields = 1; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-							if($("#place-" + row + "-" + (col - shipFields)).css("background-color") == shipColor){
-								westDirection = false;
-								//skip
-								shipFields += ship[shipProperties[i]].gameFields;
-							}
-						}
-						if(westDirection){
-							possibileDirection.push(4);
-						}
-					}		
-				}
-
-				if(possibileDirection.length > 0){
-					failure = false;
-					setRow = row;
-					setCol = col;
-				}
-				else{
-					failurePosition[failurePosition.length][0] = row;
-					failurePosition[failurePosition.length][1] = col;
-				}
-			}
-			//Get direction
-			//var direction
-			//Set ship in game field
-			for(let shipFields = 1; shipFields < shipProperties[i].gameFields; shipFields++){
-
-			}
-
-
+	//Debug feature: Show occupied fields
+	/*
+	var occupiedFieldsString = "";
+	for(let z = 0; z < occupiedFields.length; z++){
+		if(z > 0){
+			occupiedFieldsString += " | ";
 		}
+		occupiedFieldsString += occupiedFields[z];
 	}
-}*/
+	alert(occupiedFieldsString);
+	*/
+}
 
 //Uses ships.js which is embedded in index.html
 function initializeShips(areaId){
