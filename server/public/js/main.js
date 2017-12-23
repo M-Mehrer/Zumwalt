@@ -67,6 +67,18 @@ function setUpShipsRandomly(shipProperties){
 	var occupiedFields = [];
 
 	for(let i = 0; i < shipProperties.length; i++){
+		var usedColor = shipColor;
+		//Debug feature: Mark ships with different colors
+		/*
+		var shipColors = ['#e01818','#0bec0b','#e40bec','#fb92ec'];
+		switch(i){
+			case 0: usedColor = shipColors[0]; break;
+			case 1: usedColor = shipColors[1]; break;
+			case 2: usedColor = shipColors[2]; break;
+			case 3: usedColor = shipColors[3]; break;
+		}
+		*/
+
 		for(let j = 0; j < ship[shipProperties[i]].amount; j++){
 			var possibileDirection = [];
 			var setRow;
@@ -104,7 +116,6 @@ function setUpShipsRandomly(shipProperties){
 			}
 			//Set Ship
 			for(let shipFields = 0; shipFields < ship[shipProperties[i]].gameFields; shipFields++){
-				var usedColor = shipColor;
 				//Debug feature: Set direction in ship core
 				
 				if(shipFields == 0){
@@ -121,7 +132,7 @@ function setUpShipsRandomly(shipProperties){
 
 						occupiedFields.push(setRow - shipFields + "-" + setCol);
 						//Checking field lower to the ship core
-						if(shipFields == 0 && setRow + 1 < fieldSize){
+						if(shipFields == 0 && setRow + 1 <= fieldSize){
 							occupiedFields.push(setRow + 1 + "-" + setCol);
 							//Checking left border
 							if(setCol - 1 > 0){
