@@ -163,88 +163,107 @@ function getRowAndColFromString(string){
 	return parsedCoordinates;
 } 
 
-function setUpShipsRandomly(){
-	clearField();
-	var shipProperties = ship.shipProperties();
-	var freeFields = getFreeFields();
+function getAllShips(shipProperties){
+	var ships = [];
 
 	for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
-		for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){	
-			var tmpFreeFields = freeFields.slice();		
-			var actualShipNotSetInGameField = true;
+		for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){
+			ships.push(ship[shipProperties[actualShipProperty]].name);
+		}
+	}
 
-			while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
-				var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]);
-				var row = position[0];
-				var col = position[1];
-				var shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
-				var randDirection;
-				
-				var possibleDirection = false;
-				while(!possibleDirection && shipGamefieldDirections.length > 0){
-					randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)];
+	return ships;
+}
 
-					//First field is always free
-					for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
-						var usedRow = row;
-						var usedCol = col;
+function setUpShipsRandomly(){	
+	var shipProperties = ship.shipProperties();
+	var shipsToSetUp = getAllShips(shipProperties);
+	
+	while(shipsToSetUp.length > 0){
+		clearField();
+		var freeFields = getFreeFields();
+		shipsToSetUp = getAllShips(shipProperties);
 
-						switch(randDirection){
-							case 1: usedRow -= shipFields; break;
-							case 2: usedCol += shipFields; break;
-							case 3: usedRow += shipFields; break;
-							case 4: usedCol -= shipFields; break;
-							default: alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
-						}
+		for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
+			for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){	
+				var tmpFreeFields = freeFields.slice();		
+				var actualShipNotSetInGameField = true;
 
-						var isFree = false;
-						for(let freeFieldIndex = 0; freeFieldIndex < tmpFreeFields.length; freeFieldIndex++){
-							if((usedRow + "-" + usedCol) === tmpFreeFields[freeFieldIndex]){
-								isFree = true;
+				while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
+					var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]);
+					var row = position[0];
+					var col = position[1];
+					var shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
+					var randDirection;
+					
+					var possibleDirection = false;
+					while(!possibleDirection && shipGamefieldDirections.length > 0){
+						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)];
+
+						//First field is always free
+						for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
+							var usedRow = row;
+							var usedCol = col;
+
+							switch(randDirection){
+								case 1: usedRow -= shipFields; break;
+								case 2: usedCol += shipFields; break;
+								case 3: usedRow += shipFields; break;
+								case 4: usedCol -= shipFields; break;
+								default: alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
+							}
+
+							var isFree = false;
+							for(let freeFieldIndex = 0; freeFieldIndex < tmpFreeFields.length; freeFieldIndex++){
+								if((usedRow + "-" + usedCol) === tmpFreeFields[freeFieldIndex]){
+									isFree = true;
+								}
+							}
+
+							if(!isFree){
+								fieldPossible = false;
+								possibleDirection = false;
+								var indexPositionToShift = findIndexOfValueInArray(randDirection, shipGamefieldDirections);
+								shipGamefieldDirections.splice(indexPositionToShift, 1);
+							}
+							else{
+								possibleDirection = true;
 							}
 						}
+					}
+					
+					//Set ship in gamefield
+					if(possibleDirection){
+						$("#place-" + row + "-" + col).css('backgroundColor', shipColor);
 
-						if(!isFree){
-							fieldPossible = false;
-							possibleDirection = false;
-							var indexPositionToShift = findIndexOfValueInArray(randDirection, shipGamefieldDirections);
-							shipGamefieldDirections.splice(indexPositionToShift, 1);
+						//Debug feature: Show Ship directions in ship core
+						//$("#place-" + row + "-" + col).html(randDirection);
+
+						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
+							let usedRow = row;
+							let usedCol = col;
+
+							switch(randDirection){
+								case 1: usedRow -= shipFields; break;
+								case 2: usedCol += shipFields; break;
+								case 3: usedRow += shipFields; break;
+								case 4: usedCol -= shipFields; break;
+								default: alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
+							}
+							$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
 						}
-						else{
-							possibleDirection = true;
-						}
+						freeFields = getFreeFields();
+						actualShipNotSetInGameField = false;
+						var indexPositionToShift = findIndexOfValueInArray(ship[shipProperties[actualShipProperty]].name, shipsToSetUp);
+						shipsToSetUp.shift(indexPositionToShift);		
+					}
+					else{
+						var indexPositionToShift = findIndexOfValueInArray(row + "-" + col, tmpFreeFields);
+						tmpFreeFields.splice(indexPositionToShift, 1);
 					}
 				}
-				
-				//Set ship in gamefield
-				if(possibleDirection){
-					$("#place-" + row + "-" + col).css('backgroundColor', shipColor);
-
-					//Debug feature: Show Ship directions in ship core
-					$("#place-" + row + "-" + col).html(randDirection);
-
-					for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
-						let usedRow = row;
-						let usedCol = col;
-
-						switch(randDirection){
-							case 1: usedRow -= shipFields; break;
-							case 2: usedCol += shipFields; break;
-							case 3: usedRow += shipFields; break;
-							case 4: usedCol -= shipFields; break;
-							default: alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
-						}
-						$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
-					}
-					freeFields = getFreeFields();
-					actualShipNotSetInGameField = false;			
-				}
-				else{
-					var indexPositionToShift = findIndexOfValueInArray(row + "-" + col, tmpFreeFields);
-					tmpFreeFields.splice(indexPositionToShift, 1);
-				}
-			}
-		}	
+			}	
+		}
 	}
 }
 	

@@ -13,7 +13,7 @@ const ship = {
     name: 'Zerstörer',
     gameFields: 3,
     amount: 3
-  },  
+  }, 
   submarine: {
     name: 'U-Boot',
     gameFields: 2,
