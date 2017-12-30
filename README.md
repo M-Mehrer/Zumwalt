@@ -1,7 +1,7 @@
  # Zumwalt
 HS-Mannheim WS2017/18 WEB-Projekt: Schiffeversenken 
 
-#Server starten
+### Server starten
 - Konsole öffnen
 - In den Ordner der server.js Datei wechseln
 - 'node server.js' tippen um Server zu starten
@@ -13,3 +13,4 @@ HS-Mannheim WS2017/18 WEB-Projekt: Schiffeversenken
 
 * [Meilenstein 2](https://moodle.hs-mannheim.de/pluginfile.php/142871/mod_resource/content/0/Meilenstein%202.pdf "Meilenstein 2 im Moodle"): Abgabe noch unbekannt
 
+* [Meilenstein 3](https://moodle.hs-mannheim.de/pluginfile.php/143871/mod_resource/content/0/Meilenstein%203%20-%20Vorlesung%20WEB.pdf "Meilenstein 3 im Moodle"): Abgabe noch unbekannt
