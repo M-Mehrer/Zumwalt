@@ -18,6 +18,10 @@ body {
 	margin: 2%;
 }
 
+.playerInputArea {
+	margin-top: 20px;
+}
+
 .board {
 	margin: 0;
 	padding: 1%;
@@ -78,9 +82,4 @@ body {
 
 .playerLabel .playerName {
 	font-size: 16pt;
-}
-
-/*Debug Borders*/
-.frame {
-	border: 0.5px dashed green;
 }

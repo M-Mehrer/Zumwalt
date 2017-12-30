@@ -1,0 +1,33 @@
+.highscoreArea {
+	height: 150px;
+	overflow:auto;
+}
+
+.highscores {
+	font-size: 16pt;
+}
+
+.highscores .row {
+	margin: 0;
+}
+
+.highscores hr {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+} 

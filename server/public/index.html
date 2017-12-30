@@ -10,6 +10,7 @@
 	<!-- CSS -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/highscores.css">
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
@@ -28,12 +29,18 @@
 
     <div class="row area info-area">
         <!-- Highscore -->
-        <h1 class="highscoreArea col-xs-12 col-md-8">
-             Highscore: <span id="highscore">{{Highscore}}</span>
-        </h1>
+        <h1 class="highscoreArea col-xs-12 col-md-6">
+            Highscores:
+
+            <span id="highscores" class="highscores">
+                <hr />
+                <span>Daten konnten nicht vom Server geladen werden.</span>
+                <hr />
+            </span>
+        </h1> 
 
         <!-- Player name input -->
-        <div class="playerInputArea col-xs-12 col-md-4">
+        <div class="playerInputArea col-xs-12 col-md-4 col-md-offset-2">
             <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
             <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
 
@@ -70,12 +77,8 @@
 
     <!-- Game Boards -->
     <div class="row area">
-			<!-- Change
-      	<div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
-        <div id="otherShips" class="col-xs-12 col-md-6 board">Schiffe des Gegners:</div>
-		-->
-			<div id="myShips" class="col-xs-12 col-md-6 board frame">Eigene Schiffe</div>
-			<div id="showShips" class="col-xs-12 col-md-6 frame">Setz deine Schiffe</div>
+		<div id="myShips" class="col-xs-12 col-md-6 board frame">Eigene Schiffe</div>
+		<div id="showShips" class="col-xs-12 col-md-6 frame">Schiffe des Gegners</div>
     </div>
 
 </div> <!-- End main content area -->
