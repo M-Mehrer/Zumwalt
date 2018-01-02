@@ -27,9 +27,9 @@ const ship = {
   },/*
   bCarryer: {
     name: 'BTräger',
-    gameFields: 7,
+    gameFields: 1,
     amount: 1
-  },
+  },/*
   cCarryer: {
    name: 'CTräger',
   gameFields: 7,
