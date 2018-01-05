@@ -171,7 +171,6 @@ function getBestHighscores(highscores, nr) {
 function showHighscores(highscores) {
 	let container = $("#highscores");
 	container.html("");
-	container.append('<hr/>');
 
 	for(i = 0; i < highscores.length; i++) {
 		let row = $('<span/>', {class: 'row'});
@@ -181,6 +180,6 @@ function showHighscores(highscores) {
 		score.append(highscores[i].points + " Pt.");
 		container.append(name);
 		container.append(score);
-		container.append('<hr/>');
+		container.append('<br/><hr/>');
 	}
 }
