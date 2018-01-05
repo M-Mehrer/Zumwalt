@@ -1,6 +1,8 @@
+/* global $, fieldSize, freeBoardField, shipColor, ship */
+
 let debug = false;
 
-function countAmountOfShipsToSetUp(shipProperties){
+function countAmountOfShipsToSetUp(shipProperties){ // eslint-disable-line no-unused-vars 
 	var amountOfShips = 0;
 
 	if(shipProperties instanceof Array){
@@ -109,12 +111,12 @@ function getAllShips(shipProperties){
 	return ships;
 }
 
-function setUpShipsRandomly(){	
+function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 
 	var shipProperties = ship.shipProperties();
 	var shipsToSetUp = getAllShips(shipProperties);
 	
 	while(shipsToSetUp.length > 0){
-		clearField();
+		clearField(); // eslint-disable-line no-undef
 		var freeFields = getFreeFields();
 		shipsToSetUp = getAllShips(shipProperties);
 
@@ -124,7 +126,7 @@ function setUpShipsRandomly(){
 				var actualShipNotSetInGameField = true;
 
 				while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
-					var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]);
+					var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
 					var row = position[0];
 					var col = position[1];
 					var shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
@@ -132,7 +134,7 @@ function setUpShipsRandomly(){
 					
 					var possibleDirection = false;
 					while(!possibleDirection && shipGamefieldDirections.length > 0){
-						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)];
+						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)]; // eslint-disable-line no-undef
 
 						//First field is always free
 						for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
@@ -140,14 +142,14 @@ function setUpShipsRandomly(){
 							var usedCol = col;
 
 							switch(randDirection){
-								case 1: usedRow -= shipFields; break;
-								case 2: usedCol += shipFields; break;
-								case 3: usedRow += shipFields; break;
-								case 4: usedCol -= shipFields; break;
-								default: 
-									if(debug){
-										alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
-									}			
+							case 1: usedRow -= shipFields; break;
+							case 2: usedCol += shipFields; break;
+							case 3: usedRow += shipFields; break;
+							case 4: usedCol -= shipFields; break;
+							default: 
+								if(debug){
+									alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
+								}			
 							}
 
 							var isFree = false;
@@ -184,14 +186,14 @@ function setUpShipsRandomly(){
 							let usedCol = col;
 
 							switch(randDirection){
-								case 1: usedRow -= shipFields; break;
-								case 2: usedCol += shipFields; break;
-								case 3: usedRow += shipFields; break;
-								case 4: usedCol -= shipFields; break;
-								default: 
-									if(debug){
-										alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
-									}	 		
+							case 1: usedRow -= shipFields; break;
+							case 2: usedCol += shipFields; break;
+							case 3: usedRow += shipFields; break;
+							case 4: usedCol -= shipFields; break;
+							default: 
+								if(debug){
+									alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
+								}	 		
 							}
 							$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
 						}
@@ -201,9 +203,9 @@ function setUpShipsRandomly(){
 						shipsToSetUp.shift(indexPositionToShift);
 						
 						$("#buttonNumberOfShips").text(shipsToSetUp.length);	
-                        if(shipsToSetUp.length == 0){
-                            $("#sendShipsToServer").removeClass("disabled").addClass("active");
-                            $("#sendShipsToServer").text("Bereit");
+						if(shipsToSetUp.length == 0){
+							$("#sendShipsToServer").removeClass("disabled").addClass("active");
+							$("#sendShipsToServer").text("Bereit");
 						}	
 					}
 					else{

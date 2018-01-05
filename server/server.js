@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -7,7 +9,7 @@ const io = require('socket.io')(http);
 const highscores = require('./api/highscores');
 
 
-io.on('connection', function(socket){
+io.on('connection', function(socket){ // eslint-disable-line no-unused-vars 
 	console.log('A user connected.');
 });
 

@@ -1,10 +1,10 @@
+/* global $, ship */
+
 const fieldSize = 10;
-const shipColor = 'rgb(64, 64, 64)';
+const shipColor = 'rgb(64, 64, 64)'; // eslint-disable-line no-unused-vars 
 const freeBoardField = 'rgb(20, 159, 214)';
 
 const apiURL = "http://localhost:3000/api/v1";
-
-var myField;
 
 // Initializations
 $(document).ready(function() {
@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 });
 
-function clearField(){
+function clearField(){ // eslint-disable-line no-unused-vars 
 	for(let i = 1; i <= fieldSize; i++){
 		for(let j = 1; j <= fieldSize; j++){
 			$("#place-" + i + "-" + j).css("background-color", freeBoardField);
@@ -32,9 +32,9 @@ function clearField(){
 
 //Uses ships.js which is embedded in index.html
 function initializeShips(areaId){
-	var shipProperties = ship.shipProperties();
-	var amountOfShips = countAmountOfShipsToSetUp(shipProperties);
-	var settedShipsCoordinates = [];
+	let shipProperties = ship.shipProperties();
+	let amountOfShips = countAmountOfShipsToSetUp(shipProperties); // eslint-disable-line no-undef 
+	//let settedShipsCoordinates = [];
 
 	let node = $("<div id='myShipsToSetUp' class='rFrame'></div>");
 
@@ -54,22 +54,22 @@ function initializeShips(areaId){
 	}
 
 	let setUpShipsFooterNode = "<div id='myShipsFooter' class='setUpShipsFooter pFrame'>";
-			setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
-				setUpShipsFooterNode += "<div class='btn-group height'>";
-					setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsFooterButtons'>Zufällig anordnen</button>";
-				setUpShipsFooterNode += "</div>";
-				setUpShipsFooterNode += "<div class='btn-group height'>";
-					setUpShipsFooterNode += "<button id='sendShipsToServer' type='button' class='btn btn-primary disabled setUpShipsFooterButtons'><span id='buttonNumberOfShips' class='badge'>" + amountOfShips + "</span> Noch zu setzen</button>";
-					setUpShipsFooterNode += "</div>";
-			setUpShipsFooterNode += "</div>";
-		setUpShipsFooterNode += "</div>";
+	setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
+	setUpShipsFooterNode += "<div class='btn-group height'>";
+	setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsFooterButtons'>Zufällig anordnen</button>";
+	setUpShipsFooterNode += "</div>";
+	setUpShipsFooterNode += "<div class='btn-group height'>";
+	setUpShipsFooterNode += "<button id='sendShipsToServer' type='button' class='btn btn-primary disabled setUpShipsFooterButtons'><span id='buttonNumberOfShips' class='badge'>" + amountOfShips + "</span> Noch zu setzen</button>";
+	setUpShipsFooterNode += "</div>";
+	setUpShipsFooterNode += "</div>";
+	setUpShipsFooterNode += "</div>";
 	
 	$(areaId).append($(setUpShipsFooterNode));
 	$(areaId).append(node);
 
 	//Buttons click events
 	$("#setUpShipsRandomly").click(function(){
-		setUpShipsRandomly();
+		setUpShipsRandomly(); // eslint-disable-line no-undef
 	});
 
 	//Dynamic css
@@ -101,7 +101,7 @@ function initializeGameField(areaId, fieldClass = "") {
 	$(".boardField").css("background-color", freeBoardField);
 }
 
-function savePlayer() {
+function savePlayer() { // eslint-disable-line no-unused-vars 
 
 	if(playerNamesValid('#player1', '#player2')) {
 		$('#player1Name').html( $('#player1').val());
@@ -176,8 +176,8 @@ function showHighscores(highscores) {
 		container.append($("<span>Noch keine Einträge.</span><hr/>"));
 	}
 
-	for(i = 0; i < highscores.length; i++) {
-		let row = $('<span/>', {class: 'row'});
+	for(let i = 0; i < highscores.length; i++) {
+		//let row = $('<span/>', {class: 'row'});
 		let name = $('<span/>', {class: "col-xs-8"});
 		name.append(highscores[i].name);
 		let score = $('<span/>', {class: "col-xs-4"});
