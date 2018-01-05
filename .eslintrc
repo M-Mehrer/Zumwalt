@@ -1,0 +1,15 @@
+{
+	"root": true,
+	"env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+	"parserOptions": {
+		"ecmaVersion": 6
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"indent": ["warn", "tab"]
+	}
+}
