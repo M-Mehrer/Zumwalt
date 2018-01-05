@@ -19,25 +19,10 @@ const ship = {
     gameFields: 2,
     amount: 4
   },
-/*
+  /*
   aCarryer: {
     name: 'ATräger',
-    gameFields: 7,
-    amount: 1
-  },/*
-  bCarryer: {
-    name: 'BTräger',
-    gameFields: 1,
-    amount: 1
-  },/*
-  cCarryer: {
-   name: 'CTräger',
-  gameFields: 7,
-   amount: 1
-  },
-  dCarryer: {
-    name: 'DTräger',
-   gameFields: 7,
+    gameFields: 8,
     amount: 1
   },*/
 

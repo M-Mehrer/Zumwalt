@@ -1,3 +1,5 @@
+let debug = false;
+
 function countAmountOfShipsToSetUp(shipProperties){
 	var amountOfShips = 0;
 
@@ -142,7 +144,10 @@ function setUpShipsRandomly(){
 								case 2: usedCol += shipFields; break;
 								case 3: usedRow += shipFields; break;
 								case 4: usedCol -= shipFields; break;
-								default: alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
+								default: 
+									if(debug){
+										alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
+									}			
 							}
 
 							var isFree = false;
@@ -155,7 +160,7 @@ function setUpShipsRandomly(){
 							if(!isFree){
 								fieldPossible = false;
 								possibleDirection = false;
-								var indexPositionToShift = findIndexOfValueInArray(randDirection, shipGamefieldDirections);
+								var indexPositionToShift = shipGamefieldDirections.indexOf(randDirection);
 								shipGamefieldDirections.splice(indexPositionToShift, 1);
 							}
 							else{
@@ -169,7 +174,10 @@ function setUpShipsRandomly(){
 						$("#place-" + row + "-" + col).css('backgroundColor', shipColor);
 
 						//Debug feature: Show Ship directions in ship core
-						//$("#place-" + row + "-" + col).html(randDirection);
+						if(debug){
+							$("#place-" + row + "-" + col).html(randDirection);
+						}
+						
 
 						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
 							let usedRow = row;
@@ -180,23 +188,26 @@ function setUpShipsRandomly(){
 								case 2: usedCol += shipFields; break;
 								case 3: usedRow += shipFields; break;
 								case 4: usedCol -= shipFields; break;
-								default: alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
+								default: 
+									if(debug){
+										alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
+									}	 		
 							}
 							$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
 						}
 						freeFields = getFreeFields();
 						actualShipNotSetInGameField = false;
-						var indexPositionToShift = findIndexOfValueInArray(ship[shipProperties[actualShipProperty]].name, shipsToSetUp);
-                        shipsToSetUp.shift(indexPositionToShift);
-                        
-                        $("#buttonNumberOfShips").text(shipsToSetUp.length);	
+						let indexPositionToShift = shipsToSetUp.indexOf(ship[shipProperties[actualShipProperty]].name);
+						shipsToSetUp.shift(indexPositionToShift);
+						
+						$("#buttonNumberOfShips").text(shipsToSetUp.length);	
                         if(shipsToSetUp.length == 0){
                             $("#sendShipsToServer").removeClass("disabled").addClass("active");
-                            $("#sendShipsToServer").text("Zum Server senden");
-                        }	
+                            $("#sendShipsToServer").text("Bereit");
+						}	
 					}
 					else{
-						var indexPositionToShift = findIndexOfValueInArray(row + "-" + col, tmpFreeFields);
+						let indexPositionToShift = tmpFreeFields.indexOf(row + "-" + col);
 						tmpFreeFields.splice(indexPositionToShift, 1);
 					}
 				}

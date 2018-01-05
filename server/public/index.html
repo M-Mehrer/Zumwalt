@@ -10,7 +10,7 @@
 	<!-- CSS -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="css/debug.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
@@ -71,29 +71,22 @@
         </div>
     </div>
 
-    <!-- Game Boards -->
-    
-    <div class="row area height">
-        <div class="col-xs-12 col-md-6 battleArea gFrame">
-            <div class='boardHeader gFrame'>Eigene Schiffe</div>
-            <div id='myShips' class='gFrame'></div>
+    <!-- Game Boards --> 
+    <div id="gameBoard" class="row area height">
+        <div id="myGameField" class="col-xs-12 col-md-6 battleArea gFrame">
+            <div id="myGameFieldHeader" class='boardHeader gFrame'>Eigene Schiffe</div>
+            <div id='myGameFieldShips' class='gFrame'></div>
         </div>
-        <div class="col-xs-12 col-md-6 battleArea gFrame">
-            <div class='boardHeader gFrame'>Setz deine Schiffe</div>
-            <div id='otherShips' class='gFrame'></div>
+        <div id="otherGameField" class="col-xs-12 col-md-6 battleArea gFrame">
+            <div id="otherGameFieldHeader" class='boardHeader gFrame'>Setz deine Schiffe</div>
+            <div id='otherGameFieldShips' class='gFrame'></div>
         </div>
     </div>
-<!--
-    <div class="row area board">
-			
-      	<div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
-        <div id="otherShips" class="col-xs-12 col-md-6 board">Schiffe des Gegners:</div>
-		
-			<div id="myShips" class="col-xs-12 col-md-6 frame"></div>
-			<div id="showShips" class="col-xs-12 col-md-6 frame"></div>
-    </div>
--->
-</div> <!-- End main content area -->
+   
+    <div style=""><p>Lorem psum dolor et amet</p></div>
+     <!-- End main content area -->
+
+</div>
 
 </body>
 </html>

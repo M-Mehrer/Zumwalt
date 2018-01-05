@@ -1,13 +1,13 @@
 const fieldSize = 10;
-const shipColor = '#40413f';
+const shipColor = 'rgb(64, 64, 64)';
 const freeBoardField = 'rgb(20, 159, 214)';
 
 var myField;
 
 // Initializations
 $(document).ready(function() {
-	initializeGameField('#myShips', 'activeField');
-	initializeShips('#otherShips');
+	initializeGameField('#myGameFieldShips', 'activeField');
+	initializeShips('#otherGameFieldShips');
 	//Erst Shiffe setzen dann das Gegnerboard initialisieren
 	//initializeGameField('#otherShips');
 
@@ -19,6 +19,7 @@ function clearField(){
 	for(let i = 1; i <= fieldSize; i++){
 		for(let j = 1; j <= fieldSize; j++){
 			$("#place-" + i + "-" + j).css("background-color", freeBoardField);
+			//$("#place-" + i + "-" + j).addClass("freeBordfieldBgColor").removeClass("shipBgColor");
 			//Debug function
 			$("#place-" + i + "-" + j).html("");
 		}
@@ -31,7 +32,7 @@ function initializeShips(areaId){
 	var amountOfShips = countAmountOfShipsToSetUp(shipProperties);
 	var settedShipsCoordinates = [];
 
-	let node = $("<div class='setUpShips rFrame'></div>");
+	let node = $("<div id='myShipsToSetUp' class='rFrame'></div>");
 
 	for(let row = 0; row < shipProperties.length; row++){
 		let shipsRowNode = $("<div class='row area setUpShipsRowArea bFrame'></div>");
@@ -48,7 +49,7 @@ function initializeShips(areaId){
 		shipsRowNode.append($(shipGameFields));
 	}
 
-	let setUpShipsFooterNode = "<div class='setUpShipsFooter pFrame'>";
+	let setUpShipsFooterNode = "<div id='myShipsFooter' class='setUpShipsFooter pFrame'>";
 			setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
 				setUpShipsFooterNode += "<div class='btn-group height'>";
 					setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsFooterButtons'>Zufällig anordnen</button>";
@@ -59,7 +60,7 @@ function initializeShips(areaId){
 			setUpShipsFooterNode += "</div>";
 		setUpShipsFooterNode += "</div>";
 	
-	node.append($(setUpShipsFooterNode));
+	$(areaId).append($(setUpShipsFooterNode));
 	$(areaId).append(node);
 
 	//Buttons click events
@@ -68,8 +69,11 @@ function initializeShips(areaId){
 	});
 
 	//Dynamic css
-	$(".setUpShipsRowAreaRowUsedGameFields").css("background-color", shipColor);
-	$(".setUpShipsRowArea").css("height", (76 / (shipProperties.length + (shipProperties.length * 0.1) - 0.4)) + "%");
+	$(".setUpShipsRowAreaRowUsedGameFields").addClass("shipBgColor");
+	//$(".setUpShipsRowArea").css("height", (76 / (shipProperties.length + (shipProperties.length * 0.1) - 0.4)) + "%");
+	//$(".setUpShipsRowArea").css("position", "relative");
+	$(".setUpShipsRowArea").css("margin-top", "5%");
+
 	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
 
@@ -85,10 +89,12 @@ function initializeGameField(areaId, fieldClass = "") {
 		}
 	}
 
-	$(".boardRow").css("height", (100 / fieldSize) + "%");
+	//$(".boardRow").css("height", (100 / fieldSize) + "%");
+	$(".boardField").css("position", "relative");
+	$(".boardField").css("padding-top", (100 / fieldSize) + "%");
+
 	$(".boardField").css("width", (100 / fieldSize) + "%");
 	$(".boardField").css("background-color", freeBoardField);
-	//$(".boardField").css("padding-top", (100 / fieldSize) + "%");
 }
 
 function savePlayer() {
