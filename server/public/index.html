@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html lang="de">
 
 <head>
@@ -9,13 +9,16 @@
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-		<script src="js/ships.js"></script>
-    <script src = "js/main.js"></script>
+	<script src="js/ships.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/putShipsOnGamefield.js"></script>
+    <script src="js/algorithms.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       var socket = io();
@@ -26,14 +29,14 @@
 
 <div class="container"> <!-- Main content area -->
 
-    <div class="row area info-area">
+    <div class="row area info-area gFrame">
         <!-- Highscore -->
-        <h1 class="highscoreArea col-xs-12 col-md-8">
+        <h1 class="highscoreArea col-xs-12 col-md-8 gFrame">
              Highscore: <span id="highscore">{{Highscore}}</span>
         </h1>
 
         <!-- Player name input -->
-        <div class="playerInputArea col-xs-12 col-md-4">
+        <div class="playerInputArea col-xs-12 col-md-4 gFrame">
             <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
             <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
 
@@ -68,17 +71,22 @@
         </div>
     </div>
 
-    <!-- Game Boards -->
-    <div class="row area">
-			<!-- Change
-      	<div id="myShips" class="col-xs-12 col-md-6 board">Eigene Schiffe:</div>
-        <div id="otherShips" class="col-xs-12 col-md-6 board">Schiffe des Gegners:</div>
-		-->
-			<div id="myShips" class="col-xs-12 col-md-6 board frame">Eigene Schiffe</div>
-			<div id="showShips" class="col-xs-12 col-md-6 frame">Setz deine Schiffe</div>
+    <!-- Game Boards --> 
+    <div id="gameBoard" class="row area height">
+        <div id="myGameField" class="col-xs-12 col-md-6 battleArea gFrame">
+            <div id="myGameFieldHeader" class='boardHeader gFrame'>Eigene Schiffe</div>
+            <div id='myGameFieldShips' class='gFrame'></div>
+        </div>
+        <div id="otherGameField" class="col-xs-12 col-md-6 battleArea gFrame">
+            <div id="otherGameFieldHeader" class='boardHeader gFrame'>Setz deine Schiffe</div>
+            <div id='otherGameFieldShips' class='gFrame'></div>
+        </div>
     </div>
+   
+    <div style=""><p>Lorem psum dolor et amet</p></div>
+     <!-- End main content area -->
 
-</div> <!-- End main content area -->
+</div>
 
 </body>
 </html>
