@@ -2,7 +2,7 @@ const fieldSize = 10;
 const shipColor = 'rgb(64, 64, 64)';
 const freeBoardField = 'rgb(20, 159, 214)';
 
-const apiURL = "http://52.166.12.116:3000/api";
+const apiURL = "http://localhost:3000/api/v1";
 
 var myField;
 
@@ -171,6 +171,10 @@ function getBestHighscores(highscores, nr) {
 function showHighscores(highscores) {
 	let container = $("#highscores");
 	container.html("");
+
+	if(highscores.length == 0) {
+		container.append($("<span>Noch keine Einträge.</span><hr/>"));
+	}
 
 	for(i = 0; i < highscores.length; i++) {
 		let row = $('<span/>', {class: 'row'});
