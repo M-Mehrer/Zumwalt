@@ -28,6 +28,10 @@ body {
 	margin: 2%;
 }
 
+.playerInputArea {
+	margin-top: 20px;
+}
+
 /*Modal*/
 #playerInputModal {
 	color: black;

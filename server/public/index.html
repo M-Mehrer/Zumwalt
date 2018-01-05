@@ -9,8 +9,10 @@
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
+  
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/highscores.css">
+  <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
@@ -31,12 +33,20 @@
 
     <div class="row area info-area gFrame">
         <!-- Highscore -->
-        <h1 class="highscoreArea col-xs-12 col-md-8 gFrame">
-             Highscore: <span id="highscore">{{Highscore}}</span>
-        </h1>
+        <div class="col-xs-12, col-md-6">
+            Highscores:
+            <hr />
+            <h1 class="highscoreArea">
+                <span id="highscores" class="highscores">
+                    <span>Daten konnten nicht vom Server geladen werden.</span>
+                    <hr />
+                </span>
+            </h1> 
+        </div>
 
         <!-- Player name input -->
-        <div class="playerInputArea col-xs-12 col-md-4 gFrame">
+        <div class="playerInputArea col-xs-12 col-md-4 col-md-offset-2">
+
             <p class="playerLabel">Spieler 1: <span class="playerName" id="player1Name">-</span></p>
             <p class="playerLabel">Spieler 2: <span class="playerName" id="player2Name">-</span></p>
 
@@ -70,6 +80,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Game Boards --> 
     <div id="gameBoard" class="row area height">

@@ -2,6 +2,8 @@ const fieldSize = 10;
 const shipColor = 'rgb(64, 64, 64)';
 const freeBoardField = 'rgb(20, 159, 214)';
 
+const apiURL = "http://52.166.12.116:3000/api";
+
 var myField;
 
 // Initializations
@@ -12,6 +14,8 @@ $(document).ready(function() {
 	//initializeGameField('#otherShips');
 
 	//$("#playerInputModal").modal("show");
+
+	updateHighscores();
 
 });
 
@@ -132,4 +136,50 @@ function playerNamesValid(id, otherId) {
 	return ($(id).val() !== $(otherId).val()
 			&& $(id).val() !== ""
 			&& $(otherId).val() !== "") ;
+}
+
+function updateHighscores() {
+	$.ajax({
+		method: "GET",
+		dataType: "JSON",
+		url: apiURL + "/highscore"
+	}).done((msg) => {
+		showHighscores(getBestHighscores(msg.highscore, 5));
+	});
+}
+
+function getBestHighscores(highscores, nr) {
+	highscores.sort(function(a, b){return a.points - b.points});
+
+	let best = [];
+	let last;
+
+	for(let i = 0; i < highscores.length && i < nr; i++) {
+		best.push(highscores[i]);
+		last = highscores[i];
+	}
+
+	for(let i = nr; i < highscores.length; i++) {
+		if(highscores[i].points == last.points) {
+			best.push(highscores[i]);
+		}
+	}
+
+	return best;
+}
+
+function showHighscores(highscores) {
+	let container = $("#highscores");
+	container.html("");
+
+	for(i = 0; i < highscores.length; i++) {
+		let row = $('<span/>', {class: 'row'});
+		let name = $('<span/>', {class: "col-xs-8"});
+		name.append(highscores[i].name);
+		let score = $('<span/>', {class: "col-xs-4"});
+		score.append(highscores[i].points + " Pt.");
+		container.append(name);
+		container.append(score);
+		container.append('<br/><hr/>');
+	}
 }
