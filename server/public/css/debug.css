@@ -1,0 +1,15 @@
+.gFrame {
+	border: 0.5px dashed green;
+}
+
+.rFrame {
+	border: 0.5px dashed red;
+}
+
+.pFrame {
+	border: 0.5px dashed pink;
+}
+
+.bFrame{
+	border: 0.5px dashed Blue;
+}
