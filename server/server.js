@@ -8,15 +8,20 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const highscores = require('./api/highscores');
 
+const debug = true;
+const PORT = 3000;
+
+const FREE = 0, SHIP = 1, HITTED = 2;
+const MISS = 0, HIT = 1, SANK = 2;
+
 let ships = [];
 let players = [];
 let names = [];
 
 
-io.on('connection', function(socket){ // eslint-disable-line no-unused-vars
+// Initialize socket connections
+io.on('connection', function(socket){
 	players.push(socket);
-	//ships.push([]);
-	//names.push([]);
 
 	let i = players.length - 1;
 	let enemy = (i % 2) === 0 ? i + 1 : i - 1;
@@ -28,17 +33,44 @@ io.on('connection', function(socket){ // eslint-disable-line no-unused-vars
 
 		if(ships[enemy] != undefined) {
 			// Starten
-			let rand = (Math.floor(Math.random() * 2))?true:false;
+			let rand = (Math.floor(Math.random() * 2)) ? true : false; // Choose random start player
 			players[i].emit('beginner', rand);
 			players[enemy].emit('beginner', !rand);
 		}
 	});
 
 	socket.on('turn', (turnData) => {
-		// TODO
+		// TODO: check turn
 
+		let result = MISS;
+		for(let j = 0; j < ships[enemy].length; j++) {
+			let ship = ships[enemy][j];
+
+			for(let k = 0; k < ship.length; k++) {
+				let coord = ship[k];
+				if(coord[0] == turnData[0] && coord[1] == turnData[1]) {
+					// Remve coordinate
+					ships[enemy][j] = removeIndex(ship, k);
+					result = HIT;
+				}
+			}
+
+			if(ships[enemy][j].length == 0) {
+				// Remove sunken ship
+				ships[enemy] = removeIndex(ships[enemy], j);
+				result = SANK;
+			}
+		}
+
+		socket.emit('turnResult', result);
+		players[enemy].emit('turn', turnData);
+
+		if(ships[enemy].length == 0) {
+			socket.emit('winner', true);
+			player[enemy].emit('winner', false);
+		}
 	});
-	
+
 	socket.on('disconnect', (reason) => {
 		players[enemy].emit('error', 'Enemy disconnected.');
 	})
@@ -47,14 +79,22 @@ io.on('connection', function(socket){ // eslint-disable-line no-unused-vars
 	console.log('A user connected.');
 });
 
+function removeIndex(array, index) {
+	let result = [];
+	for(let i = 0; i < array.length; i++) {
+		if(i != index)
+			result.push(array[i]);
+	}
+	return result;
+}
 
 
-
-
+// Middlewares
 app.use(function(req, res, next) {
-	// TODO: Enable
-	//res.header("Access-Control-Allow-Origin", "*");
-	//res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	if(!debug) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	}
 	next();
 });
 app.use(bodyParser.json());
@@ -62,9 +102,14 @@ app.use(serveStatic('public'));
 
 // API
 app.use("/api/v1/highscore/", highscores);
-   
-http.listen(3000, function() {
-	console.log('Server started: http://localhost:3000');
+
+// Start Server
+http.listen(PORT, function() {
+	if(debug)
+		console.log('Server started: http://localhost:' + PORT);
+	else {
+		require('dns').lookup(require('os').hostname(), function (err, ip, fam) {
+			console.log('Server started: ' + ip + ":" + PORT);
+		});
+	}
 })
-
-
