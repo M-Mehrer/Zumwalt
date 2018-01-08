@@ -27,7 +27,7 @@ io.on('connection', function(socket){
 	let enemy = (i % 2) === 0 ? i + 1 : i - 1;
 
 	socket.on('ships', (shipData) => {
-		console.log(i + ": Ships sent.");
+		console.log("A player is ready.")
 		// TODO: Check ships
 		ships[i] = shipData.ships;
 
@@ -36,6 +36,8 @@ io.on('connection', function(socket){
 			let rand = (Math.floor(Math.random() * 2)) ? true : false; // Choose random start player
 			players[i].emit('beginner', rand);
 			players[enemy].emit('beginner', !rand);
+
+			console.log("A game started.");
 		}
 	});
 
@@ -68,15 +70,17 @@ io.on('connection', function(socket){
 		if(ships[enemy].length == 0) {
 			socket.emit('winner', true);
 			players[enemy].emit('winner', false);
+
+			console.log("A game ended.");
 		}
 	});
 
 	socket.on('disconnect', (reason) => {
-		players[enemy].emit('error', 'Enemy disconnected.');
+		players[enemy].emit('end', 'Enemy disconnected.');
+		console.log("A player disconnected");
 	})
 
-
-	console.log('A user connected.');
+	console.log('A player connected.');
 });
 
 function removeIndex(array, index) {
