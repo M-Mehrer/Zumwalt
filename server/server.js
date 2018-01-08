@@ -67,7 +67,7 @@ io.on('connection', function(socket){
 
 		if(ships[enemy].length == 0) {
 			socket.emit('winner', true);
-			player[enemy].emit('winner', false);
+			players[enemy].emit('winner', false);
 		}
 	});
 
