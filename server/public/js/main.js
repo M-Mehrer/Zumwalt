@@ -6,6 +6,11 @@ const freeBoardField = 'rgb(20, 159, 214)';
 
 const apiURL = "http://localhost:3000/api/v1";
 
+let myShips;
+let otherShips;
+
+let socket;
+
 // Initializations
 $(document).ready(function() {
 	initializeGameField('#myGameFieldShips', 'activeField');
@@ -15,9 +20,18 @@ $(document).ready(function() {
 
 	//$("#playerInputModal").modal("show");
 
+	socket = io();
+
+	socket.on('beginner', (beginner) => {
+		$("#otherGameField").hide();
+		//alert("Beginner: " + beginner);
+	});
+
 	updateHighscores();
 
 });
+
+
 
 function clearField(){ // eslint-disable-line no-unused-vars 
 	for(let i = 1; i <= fieldSize; i++){
@@ -66,6 +80,13 @@ function initializeShips(areaId){
 	
 	$(areaId).append($(setUpShipsFooterNode));
 	$(areaId).append(node);
+
+	$("#sendShipsToServer").click((event) => {
+		socket.emit('ships', {ships:[
+			[[1,1], [1,2], [1,3]],
+			[[2,2], [3,4]]
+		]});
+	})
 
 	//Buttons click events
 	$("#setUpShipsRandomly").click(function(){
