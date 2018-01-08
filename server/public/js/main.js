@@ -31,6 +31,10 @@ $(document).ready(function() {
 
 });
 
+function sendTurn(row, col) {
+	socket.emit('turn', {turn: [row, col]});
+}
+
 
 
 function clearField(){ // eslint-disable-line no-unused-vars 
@@ -86,6 +90,9 @@ function initializeShips(areaId){
 			[[1,1], [1,2], [1,3]],
 			[[2,2], [3,4]]
 		]});
+		
+		$("#otherGameFieldShips").hide();
+		$("#otherGameFieldHeader").text("Auf Mitspieler warten.");
 	})
 
 	//Buttons click events

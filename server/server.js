@@ -42,8 +42,9 @@ io.on('connection', function(socket){
 		}
 	});
 
-	socket.on('turn', (turnData) => {
+	socket.on('turn', (turn) => {
 		// TODO: check turn
+		turnData = turn.turn;
 
 		let result = MISS;
 		for(let j = 0; j < ships[enemy].length; j++) {
@@ -66,7 +67,7 @@ io.on('connection', function(socket){
 		}
 
 		socket.emit('turnResult', result);
-		players[enemy].emit('turn', turnData);
+		players[enemy].emit('turn', turn);
 
 		if(ships[enemy].length == 0) {
 			socket.emit('winner', true);
