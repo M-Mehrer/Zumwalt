@@ -16,6 +16,7 @@ const MISS = 0, HIT = 1, SANK = 2;
 
 let ships = [];
 let players = [];
+let enemies = [];
 let names = [];
 
 
@@ -76,7 +77,10 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', (reason) => {
-		players[enemy].emit('end', 'Enemy disconnected.');
+		if(players[enemy]) {
+			ships[i] = undefined;
+			players[enemy].emit('end', 'Enemy disconnected.');
+		}
 		console.log("A player disconnected");
 	})
 
