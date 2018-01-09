@@ -1,4 +1,4 @@
-const debug = false;
+const debug = true;
 const fieldSize = 10;
 let board = [];
 

@@ -55,54 +55,59 @@ function initializeBoard(){
 
 function getAvailableFields(board){
 	var availableFields = [];
+	
 	for(let row = 1; row <= fieldSize; row++){
 		for(let col = 1; col <= fieldSize; col++){
-			var isAvailable = true;
+			let isAvailable = true;
+
 			if(board[row][col] === 0){
 				//Check north
 				if(row - 1 > 0){
-					if(!board[row - 1][col] === 0){
+					if(!(board[row - 1][col] === 0)){
 						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!board[row - 1][col - 1] === 0){
+						if(!(board[row - 1][col - 1] === 0)){
 							isAvailable = false;
 						}
 					}
 					if(col + 1 <= fieldSize){
-						if(!board[row - 1][col + 1] === 0){
+						if(!(board[row - 1][col + 1] === 0)){
 							isAvailable = false;
 						}
 					}
 				}
 				//Check east
 				if(col + 1 <= fieldSize){
-					if(!board[row][col + 1] === 0){
+					if(!(board[row][col + 1] === 0)){
 						isAvailable = false;
 					}
 					if(row + 1 <= fieldSize){
-						if(!board[row + 1][col + 1] === 0){
+						if(!(board[row + 1][col + 1] === 0)){
 							isAvailable = false;
 						}
 					}
 				}
 				//Check south
 				if(row + 1 <= fieldSize){
-					if(!board[row + 1][col] === 0){
+					if(!(board[row + 1][col] === 0)){
 						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!board[row + 1][col - 1] === 0){
+						if(!(board[row + 1][col - 1] === 0)){
 							isAvailable = false;
 						}
 					}
 				}
 				//Check west
 				if(col - 1 > 0){
-					if(!board[row][col - 1] === 0){
+					if(!(board[row][col - 1] === 0)){
 						isAvailable = false;
 					}
 				}
+			}
+			else{
+				isAvailable = false;
 			}
 
 			if(isAvailable){
@@ -126,6 +131,14 @@ function getAllShips(shipProperties){
 	return ships;
 }
 
+/**
+ * Uses a two dimensional array of int to create the gamefield.
+ * 0 -> No ship
+ * 1 -> Ship
+ * @param {2dim int Array} board 
+ * @param {html id to bind the gamefield} idHtmlContainer 
+ * @param {true/false if the gamefield be active to shoot on it} isActiveField 
+ */
 function renderGameField(board, idHtmlContainer, isActiveField){
 	let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 	let id;
@@ -148,11 +161,13 @@ function renderGameField(board, idHtmlContainer, isActiveField){
 				rowNode.append($('<div class="boardField boardFieldCoordinate">' + row + '</div>'));
 			}
 			else{
+				let id = "#place-" + row + "-" + col;
+
 				if(board[row][col] === 1){
-					rowNode.append($('<div class="boardField ' + activeFieldClass + ' shipBgColor"></div>'));
+					rowNode.append($('<div id="' + id + '" class="boardField ' + activeFieldClass + ' shipBgColor"></div>'));
 				}
 				else{
-					rowNode.append($('<div class="boardField ' + activeFieldClass + ' freeBordfieldBgColor"></div>'));
+					rowNode.append($('<div id="' + id + '" class="boardField ' + activeFieldClass + ' freeBordfieldBgColor"></div>'));
 				}
 			}
 		}
@@ -169,8 +184,8 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 	var shipsToSetUp = getAllShips(shipProperties);
 	
 	while(shipsToSetUp.length > 0){
-		clearField(); // eslint-disable-line no-undef
-		var freeFields = getFreeFields();
+		board = initializeBoard();
+		var freeFields = getAvailableFields(board);
 		shipsToSetUp = getAllShips(shipProperties);
 
 		for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
@@ -226,13 +241,8 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 					
 					//Set ship in gamefield
 					if(possibleDirection){
-						$("#place-" + row + "-" + col).css('backgroundColor', shipColor);
-
-						//Debug feature: Show Ship directions in ship core
-						if(debug){
-							$("#place-" + row + "-" + col).html(randDirection);
-						}
-						
+						//Set ship core
+						board[row][col] = 1;
 
 						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
 							let usedRow = row;
@@ -248,9 +258,9 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 									alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
 								}	 		
 							}
-							$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
+							board[usedRow][usedCol] = 1;
 						}
-						freeFields = getFreeFields();
+						freeFields = getAvailableFields(board);
 						actualShipNotSetInGameField = false;
 						let indexPositionToShift = shipsToSetUp.indexOf(ship[shipProperties[actualShipProperty]].name);
 						shipsToSetUp.shift(indexPositionToShift);
@@ -269,4 +279,6 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 			}	
 		}
 	}
+	$('#myGameField').html("");
+	renderGameField(board, '#myGameField', true);
 }
