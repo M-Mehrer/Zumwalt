@@ -180,34 +180,36 @@ function renderGameField(board, idHtmlContainer, isActiveField){
 }
 
 function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 
-	var shipProperties = ship.shipProperties();
-	var shipsToSetUp = getAllShips(shipProperties);
+	let shipProperties = ship.shipProperties();
+	let shipsToSetUp = getAllShips(shipProperties);
+	let shipCoordinatesForServerIndex = 0;
 	
 	while(shipsToSetUp.length > 0){
 		board = initializeBoard();
-		var freeFields = getAvailableFields(board);
+		let freeFields = getAvailableFields(board);
 		shipsToSetUp = getAllShips(shipProperties);
 
 		for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
 			for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){	
-				var tmpFreeFields = freeFields.slice();		
-				var actualShipNotSetInGameField = true;
+				let tmpFreeFields = freeFields.slice();		
+				let actualShipNotSetInGameField = true;
+				shipCoordinatesForServer.ships[shipCoordinatesForServerIndex] = [];
 
 				while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
-					var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
-					var row = position[0];
-					var col = position[1];
-					var shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
-					var randDirection;
+					let position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
+					let row = position[0];
+					let col = position[1];
+					let shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
+					let randDirection;
 					
-					var possibleDirection = false;
+					let possibleDirection = false;
 					while(!possibleDirection && shipGamefieldDirections.length > 0){
 						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)]; // eslint-disable-line no-undef
 
 						//First field is always free
 						for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
-							var usedRow = row;
-							var usedCol = col;
+							let usedRow = row;
+							let usedCol = col;
 
 							switch(randDirection){
 							case 1: usedRow -= shipFields; break;
@@ -220,7 +222,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 								}			
 							}
 
-							var isFree = false;
+							let isFree = false;
 							for(let freeFieldIndex = 0; freeFieldIndex < tmpFreeFields.length; freeFieldIndex++){
 								if((usedRow + "-" + usedCol) === tmpFreeFields[freeFieldIndex]){
 									isFree = true;
@@ -230,7 +232,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 							if(!isFree){
 								fieldPossible = false;
 								possibleDirection = false;
-								var indexPositionToShift = shipGamefieldDirections.indexOf(randDirection);
+								let indexPositionToShift = shipGamefieldDirections.indexOf(randDirection);
 								shipGamefieldDirections.splice(indexPositionToShift, 1);
 							}
 							else{
@@ -241,10 +243,17 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 					
 					//Set ship in gamefield
 					if(possibleDirection){
+						//Wenn die Information über den Schiffsnamen gebraucht wird. row und col liegen dann auf Index 1 und 2
+						//shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][0] = ship[shipProperties[actualShipProperty]].name;
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0] = [];
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][0] = row;
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][1] = col;
+						
 						//Set ship core
 						board[row][col] = 1;
 
 						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields] = [];
 							let usedRow = row;
 							let usedCol = col;
 
@@ -257,9 +266,12 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 								if(debug){
 									alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
 								}	 		
-							}
+							}				
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields][0] = usedRow;
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields][1] = usedCol;
 							board[usedRow][usedCol] = 1;
 						}
+						shipCoordinatesForServerIndex++;
 						freeFields = getAvailableFields(board);
 						actualShipNotSetInGameField = false;
 						let indexPositionToShift = shipsToSetUp.indexOf(ship[shipProperties[actualShipProperty]].name);

@@ -82,10 +82,7 @@ function initializeShips(areaId){
 	$(areaId).append(node);
 
 	$("#sendShipsToServer").click((event) => {
-		socket.emit('ships', {ships:[
-			[[1,1], [1,2], [1,3]],
-			[[2,2], [3,4]]
-		]});
+		socket.emit('ships', shipCoordinatesForServer.ships);
 	})
 
 	//Buttons click events
@@ -94,30 +91,8 @@ function initializeShips(areaId){
 	});
 
 	//Dynamic css
-	//$(".setUpShipsRowArea").css("margin-top", "5%");
-
 	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
-
-//Cell ids: place-x-y where x = (row + 1) and y = (col + 1); fieldSize + 1 > x,y >= 1
-/*function initializeGameField(areaId, fieldClass = "") {
-	for(let row = 0; row < fieldSize; row++) {
-		let rowNode = $("<div class='boardRow'></div>");
-		$(areaId).append(rowNode);
-
-		for(let col = 0; col < fieldSize; col++) {
-			let id = "place-" + (row + 1) + "-" + (col + 1);
-			rowNode.append($("<div class='boardField " + fieldClass + "' id='" + id + "'></div>"));
-		}
-	}
-
-	//$(".boardRow").css("height", (100 / fieldSize) + "%");
-	$(".boardField").css("position", "relative");
-	$(".boardField").css("padding-top", (100 / fieldSize) + "%");
-
-	$(".boardField").css("width", (100 / fieldSize) + "%");
-	$(".boardField").css("background-color", freeBoardField);
-}*/
 
 function savePlayer() { // eslint-disable-line no-unused-vars 
 
