@@ -183,6 +183,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 	let shipProperties = ship.shipProperties();
 	let shipsToSetUp = getAllShips(shipProperties);
 	let shipCoordinatesForServerIndex = 0;
+	shipCoordinatesForServer = {"ships":[]};
 	
 	while(shipsToSetUp.length > 0){
 		board = initializeBoard();
