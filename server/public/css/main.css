@@ -21,14 +21,11 @@ body {
 	height: 100%;
 	width: 100%;
 }
-/*
-.battleArea {
-	height: 50%;
-}*/
 
 /*Highscore*/
-.infoArea {
-	margin: 2%;
+.info-area {
+	height: 15%;
+	width: 100%;
 }
 
 .playerInputArea {
@@ -46,8 +43,6 @@ body {
 
 /*IDs*/
 #myGameField {
-	margin: 0;
-	padding: 1%;
 	height: 100%;
 	width: 100%;
 }
@@ -57,17 +52,10 @@ body {
 	width: 50%;
 }
 
-#myHeader {
-	height: 4%;
-	width: 100%;
-	display: flex;
-	align-items: center;
-}
-
 #myGameField {
 	/*Quadratic Gamefield size*/
-	height: 71.5%;
-	width: 80%;
+	height: 96%;
+	width: 96%;
 }
 
 #otherArea {
@@ -83,38 +71,32 @@ body {
 }
 
 #myShipsToSetUp {
-	height: 75%;
+	height: 80%;
 	width: 100%;
 }
 
-#myShipsFooter {
-	height: 25%;
+#myShipsButtons {
+	height: 15%;
 	width: 100%;
 }
 
 /*Gameboard*/
 #gameBoard {
-	height: 77.5%;
+	height: 75%;
 	width: 100%;
-}
-
-.board {
 	margin: 0;
-	padding: 1%;
-	height: 100%;
-	width: 100%;
-}
-
-.boardRow {
-	width: 100%;
 	padding: 0;
-	margin: 0;
+}
+
+.gameFieldHeader {
+	height: 4%;
+	width: 100%;
+	display: flex;
+	align-items: center;
 }
 
 .boardField {
-	/*position: relative;*/
 	border: 1px solid lightgray;
-	padding: 0;
 	float: left;
 	height: 100%;
 }
@@ -134,8 +116,10 @@ body {
 }
 
 .setUpShipsRowArea {
-	/*height is set up dynamic in main.js*/
-	width: 100%;
+	height: 10%;
+	margin-top: 2%;	
+	display: flex;
+	align-items: center;
 }
 
 .setUpShipsRowAreaRow {
@@ -148,11 +132,9 @@ body {
 
 .setUpShipsRowAreaRowUsedGameFields {
 	border: 1px solid lightgray;
-	/*background-color sets in main.js -> shipColor*/
 	position: relative;
-	padding: 0;
 	float: left;
-	padding-top: 20%;
+	height: 100%;
 }
 
 .setUpShipsFooter {
@@ -174,22 +156,11 @@ body {
 	height: 38px; 
 }
 
-/*Colors*/
+/*fieldColors*/
 .shipBgColor {
 	background-color: rgb(64, 64, 64);
 }
 
 .freeBordfieldBgColor {
 	background-color: rgb(20, 159, 214);
-}
-
-/*others*/
-/*
-.height {
-	height: 100%;
-}*/
-
-.area {
-	padding: 0;
-	margin: 1%;
 }

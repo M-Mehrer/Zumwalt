@@ -135,7 +135,7 @@ function renderGameField(board, idHtmlContainer, isActiveField){
 	}
 
 	for(let row = 0; row <= fieldSize; row++){
-		let rowNode = $('<div class="boardRow bFrame"></div>');
+		let rowNode = $('<div class="boardRow"></div>');
 
 		for(let col = 0; col <= fieldSize; col++){
 			if(row === 0 && col === 0){
@@ -161,12 +161,7 @@ function renderGameField(board, idHtmlContainer, isActiveField){
 
 	//Dynamic size of cells
 	$(".boardRow").css("height", (100 / (fieldSize + 1)) + "%");
-	//$(".boardField").css("padding-top", (100 / fieldSize + 1) + "%");
-	//$(".boardField").css("height", (100 / (fieldSize + 1)) + "%");
 	$(".boardField").css("width", (100 / (fieldSize + 1)) + "%");
-	//alert(100 / fieldSize - 8.15);
-	//$(".boardFieldCoordinate").css("padding-top", (100 / fieldSize - 8.15) + "%");
-	//alert($(".boardFieldCoordinate").css("padding-top"));
 }
 
 function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 

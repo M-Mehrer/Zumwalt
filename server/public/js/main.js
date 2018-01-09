@@ -53,7 +53,7 @@ function initializeShips(areaId){
 	let node = $("<div id='myShipsToSetUp' class='rFrame'></div>");
 
 	for(let row = 0; row < shipProperties.length; row++){
-		let shipsRowNode = $("<div class='row area setUpShipsRowArea bFrame'></div>");
+		let shipsRowNode = $("<div class='setUpShipsRowArea bFrame'></div>");
 		$(node).append(shipsRowNode);
 
 		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsRowAreaRow gFrame'>" + ship[shipProperties[row]].amount + "</div>"));
@@ -61,13 +61,13 @@ function initializeShips(areaId){
 
 		let shipGameFields = "<div class='col-xs-4 col-md-4 setUpShipsRowAreaRow gFrame'>";
 		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
-			shipGameFields += "<div class='setUpShipsRowAreaRowUsedGameFields'></div>";
+			shipGameFields += "<div class='setUpShipsRowAreaRowUsedGameFields shipBgColor'></div>";
 		}
 		shipGameFields += "</div>";
 		shipsRowNode.append($(shipGameFields));
 	}
 
-	let setUpShipsFooterNode = "<div id='myShipsFooter' class='setUpShipsFooter pFrame'>";
+	let setUpShipsFooterNode = "<div id='myShipsButtons' class='setUpShipsFooter pFrame'>";
 	setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
 	setUpShipsFooterNode += "<div class='btn-group height'>";
 	setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsFooterButtons'>Zufällig anordnen</button>";
@@ -94,10 +94,7 @@ function initializeShips(areaId){
 	});
 
 	//Dynamic css
-	$(".setUpShipsRowAreaRowUsedGameFields").addClass("shipBgColor");
-	//$(".setUpShipsRowArea").css("height", (76 / (shipProperties.length + (shipProperties.length * 0.1) - 0.4)) + "%");
-	//$(".setUpShipsRowArea").css("position", "relative");
-	$(".setUpShipsRowArea").css("margin-top", "5%");
+	//$(".setUpShipsRowArea").css("margin-top", "5%");
 
 	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
