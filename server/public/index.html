@@ -15,15 +15,16 @@
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/highscores.css">
-  <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/highscores.css">
+    <link rel="stylesheet" type="text/css" href="css/debug.css">
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="js/ships.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/putShipsOnGamefield.js"></script>
+	<script src="js/ships.js"></script>
     <script src="js/algorithms.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -33,7 +34,7 @@
 
 <body>
 
-<div class="container"> <!-- Main content area -->
+<div class="container geFrame"> <!-- Main content area -->
 
     <div class="row area info-area gFrame">
         <!-- Highscore -->
@@ -87,19 +88,16 @@
 
 
     <!-- Game Boards --> 
-    <div id="gameBoard" class="row area height">
-        <div id="myGameField" class="col-xs-12 col-md-6 battleArea gFrame">
-            <div id="myGameFieldHeader" class='boardHeader gFrame'>Eigene Schiffe</div>
-            <div id='myGameFieldShips' class='gFrame'></div>
+    <div id="gameBoard" class="rFrame">
+        <div id="myArea" class="col-xs-12 col-md-6 gFrame">
+            <div id="myHeader" class='gFrame'>Eigene Schiffe</div>
+            <div id='myGameField' class='gFrame'></div>
         </div>
-        <div id="otherGameField" class="col-xs-12 col-md-6 battleArea gFrame">
-            <div id="otherGameFieldHeader" class='boardHeader gFrame'>Setz deine Schiffe</div>
-            <div id='otherGameFieldShips' class='gFrame'></div>
+        <div id="otherArea" class="col-xs-12 col-md-6 gFrame">
+            <div id="otherHeader" class='gFrame'>Setz deine Schiffe</div>
+            <div id='otherGameField' class='gFrame'></div>
         </div>
     </div>
-   
-    <div style=""><p>Lorem psum dolor et amet</p></div>
-     <!-- End main content area -->
 
 </div>
 

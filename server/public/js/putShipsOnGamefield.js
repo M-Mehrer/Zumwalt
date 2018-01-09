@@ -1,7 +1,5 @@
 /* global $, fieldSize, freeBoardField, shipColor, ship */
 
-let debug = false;
-
 function countAmountOfShipsToSetUp(shipProperties){ // eslint-disable-line no-unused-vars 
 	var amountOfShips = 0;
 
@@ -37,66 +35,83 @@ function shipLiesInGamefield(row, col, shipUsedGamefields){
 	return possibleDirection;
 }
 
-function getFreeFields(){
-	var freeFields = [];
+/**
+ * Initializes the gamefield cells with 0 (empty).
+ * The Zero Positions are reservated for Koordinates (1 - 10)(A - J)
+ */
+function initializeBoard(){
+	let emptyBoard = [];
 
+	for(let row = 0; row <= fieldSize; row++){
+		emptyBoard[row] = [];
+
+		for(let col = 0; col <= fieldSize; col++){
+			emptyBoard[row][col] = 0;
+		}
+	}
+
+	return emptyBoard;
+}
+
+function getAvailableFields(board){
+	var availableFields = [];
 	for(let row = 1; row <= fieldSize; row++){
 		for(let col = 1; col <= fieldSize; col++){
-			var isFree = true;
-			if($("#place-" + row + "-" + col).css('backgroundColor') == freeBoardField){
+			var isAvailable = true;
+			if(board[row][col] === 0){
 				//Check north
 				if(row - 1 > 0){
-					if(!($("#place-" + (row - 1) + "-" + col).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!board[row - 1][col] === 0){
+						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!($("#place-" + (row - 1) + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!board[row - 1][col - 1] === 0){
+							isAvailable = false;
 						}
 					}
 					if(col + 1 <= fieldSize){
-						if(!($("#place-" + (row - 1) + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!board[row - 1][col + 1] === 0){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check east
 				if(col + 1 <= fieldSize){
-					if(!($("#place-" + row + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!board[row][col + 1] === 0){
+						isAvailable = false;
 					}
 					if(row + 1 <= fieldSize){
-						if(!($("#place-" + (row + 1) + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!board[row + 1][col + 1] === 0){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check south
 				if(row + 1 <= fieldSize){
-					if(!($("#place-" + (row + 1) + "-" + col).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!board[row + 1][col] === 0){
+						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!($("#place-" + (row + 1) + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!board[row + 1][col - 1] === 0){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check west
 				if(col - 1 > 0){
-					if(!($("#place-" + row + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!board[row][col - 1] === 0){
+						isAvailable = false;
 					}
 				}
+			}
 
-				if(isFree){
-					freeFields.push(row + "-" + col);
-				}
-			}	
+			if(isAvailable){
+				availableFields.push(row + "-" + col);
+			}
 		}
 	}
 
-	return freeFields;
+	return availableFields;
 }
 
 function getAllShips(shipProperties){
@@ -109,6 +124,49 @@ function getAllShips(shipProperties){
 	}
 
 	return ships;
+}
+
+function renderGameField(board, idHtmlContainer, isActiveField){
+	let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
+	let id;
+	let activeFieldClass = "";
+	if(isActiveField){
+		activeFieldClass = "activeField";
+	}
+
+	for(let row = 0; row <= fieldSize; row++){
+		let rowNode = $('<div class="boardRow bFrame"></div>');
+
+		for(let col = 0; col <= fieldSize; col++){
+			if(row === 0 && col === 0){
+				rowNode.append($('<div class="boardField"></div>'));
+			}
+			else if(row === 0){
+				rowNode.append($('<div class="boardField boardFieldCoordinate">' + alphabet[col - 1] + '</div>'));
+			}
+			else if(col === 0){
+				rowNode.append($('<div class="boardField boardFieldCoordinate">' + row + '</div>'));
+			}
+			else{
+				if(board[row][col] === 1){
+					rowNode.append($('<div class="boardField ' + activeFieldClass + ' shipBgColor"></div>'));
+				}
+				else{
+					rowNode.append($('<div class="boardField ' + activeFieldClass + ' freeBordfieldBgColor"></div>'));
+				}
+			}
+		}
+		$(idHtmlContainer).append(rowNode);
+	}
+
+	//Dynamic size of cells
+	$(".boardRow").css("height", (100 / (fieldSize + 1)) + "%");
+	//$(".boardField").css("padding-top", (100 / fieldSize + 1) + "%");
+	//$(".boardField").css("height", (100 / (fieldSize + 1)) + "%");
+	$(".boardField").css("width", (100 / (fieldSize + 1)) + "%");
+	//alert(100 / fieldSize - 8.15);
+	//$(".boardFieldCoordinate").css("padding-top", (100 / fieldSize - 8.15) + "%");
+	//alert($(".boardFieldCoordinate").css("padding-top"));
 }
 
 function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 

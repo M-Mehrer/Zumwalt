@@ -2,6 +2,10 @@
 	border: 0.5px dashed green;
 }
 
+.geFrame {
+	border: 0.5px dashed yellow;  
+}
+
 .rFrame {
 	border: 0.5px dashed red;
 }

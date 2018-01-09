@@ -40,7 +40,7 @@ io.on('connection', function(socket){ // eslint-disable-line no-unused-vars
 	});
 	
 	socket.on('disconnect', (reason) => {
-		players[enemy].emit('error', 'Enemy disconnected.');
+		//players[enemy].emit('error', 'Enemy disconnected.');
 	})
 
 

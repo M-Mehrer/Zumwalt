@@ -6,6 +6,7 @@
 /*Page division*/
 html {
 	height: 100%;
+	width: 100%;
 }
 
 body {
@@ -13,10 +14,12 @@ body {
 	font-size: 20pt;
 	background-color: rgb(41, 41, 41); color: white; /*dark theme*/
 	height: 100%;
+	width: 100%;
 }
 
 .container {
 	height: 100%;
+	width: 100%;
 }
 /*
 .battleArea {
@@ -42,16 +45,41 @@ body {
 }
 
 /*IDs*/
-#myGameFieldShips {
+#myGameField {
 	margin: 0;
 	padding: 1%;
-	height: 93%;
+	height: 100%;
+	width: 100%;
 }
 
-#otherGameFieldShips {
+#myArea {
+	height: 100%;
+	width: 50%;
+}
+
+#myHeader {
+	height: 4%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+}
+
+#myGameField {
+	/*Quadratic Gamefield size*/
+	height: 71.5%;
+	width: 80%;
+}
+
+#otherArea {
+	height: 100%;
+	width: 50%;
+}
+
+#otherGameField {
 	margin: 0;
 	padding: 1%;
-	height: 93%;
+	height: 100%;
+	width: 100%;
 }
 
 #myShipsToSetUp {
@@ -65,26 +93,36 @@ body {
 }
 
 /*Gameboard*/
+#gameBoard {
+	height: 77.5%;
+	width: 100%;
+}
+
 .board {
 	margin: 0;
 	padding: 1%;
 	height: 100%;
+	width: 100%;
 }
 
-.boardHeader {
-	height: 7%;
-	display: flex;
-	align-items: center;
+.boardRow {
+	width: 100%;
+	padding: 0;
+	margin: 0;
 }
 
 .boardField {
-	position: relative;
+	/*position: relative;*/
 	border: 1px solid lightgray;
 	padding: 0;
 	float: left;
-	/*height: 100%;*/
+	height: 100%;
 }
 
+.boardFieldCoordinate {	
+	display: flex;
+	justify-content: center;	
+}
 .activeField:hover {
 	background-color: rgb(0, 102, 255);
 }

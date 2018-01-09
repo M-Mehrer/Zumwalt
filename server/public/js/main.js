@@ -1,8 +1,6 @@
 /* global $, ship */
 
-const fieldSize = 10;
-const shipColor = 'rgb(64, 64, 64)'; // eslint-disable-line no-unused-vars 
-const freeBoardField = 'rgb(20, 159, 214)';
+ // eslint-disable-line no-unused-vars 
 
 const apiURL = "http://localhost:3000/api/v1";
 
@@ -13,8 +11,10 @@ let socket;
 
 // Initializations
 $(document).ready(function() {
-	initializeGameField('#myGameFieldShips', 'activeField');
-	initializeShips('#otherGameFieldShips');
+	board = initializeBoard();
+	renderGameField(board, '#myGameField', true);
+	//initializeGameField('#myGameFieldShips', 'activeField');
+	initializeShips('#otherGameField');
 	//Erst Shiffe setzen dann das Gegnerboard initialisieren
 	//initializeGameField('#otherShips');
 
@@ -23,7 +23,7 @@ $(document).ready(function() {
 	socket = io();
 
 	socket.on('beginner', (beginner) => {
-		$("#otherGameField").hide();
+		$("#otherArea").hide();
 		//alert("Beginner: " + beginner);
 	});
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
 });
 
 
-
+/*
 function clearField(){ // eslint-disable-line no-unused-vars 
 	for(let i = 1; i <= fieldSize; i++){
 		for(let j = 1; j <= fieldSize; j++){
@@ -42,7 +42,7 @@ function clearField(){ // eslint-disable-line no-unused-vars
 			$("#place-" + i + "-" + j).html("");
 		}
 	}
-}
+}*/
 
 //Uses ships.js which is embedded in index.html
 function initializeShips(areaId){
@@ -103,7 +103,7 @@ function initializeShips(areaId){
 }
 
 //Cell ids: place-x-y where x = (row + 1) and y = (col + 1); fieldSize + 1 > x,y >= 1
-function initializeGameField(areaId, fieldClass = "") {
+/*function initializeGameField(areaId, fieldClass = "") {
 	for(let row = 0; row < fieldSize; row++) {
 		let rowNode = $("<div class='boardRow'></div>");
 		$(areaId).append(rowNode);
@@ -120,7 +120,7 @@ function initializeGameField(areaId, fieldClass = "") {
 
 	$(".boardField").css("width", (100 / fieldSize) + "%");
 	$(".boardField").css("background-color", freeBoardField);
-}
+}*/
 
 function savePlayer() { // eslint-disable-line no-unused-vars 
 
