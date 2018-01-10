@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('https://fonts.googleapis.com/css?family=Nosifer');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+html {
+	height: 100%;
+}
+
+body {
+	font-family: 'Permanent Marker';
+	font-size: 20pt;
+	background-color: rgb(41, 41, 41); color: white; /*dark theme*/
+	height: 100%;
+}
+
+/*Modal*/
+#playerInputModal {
+	color: black;
+}
+
+.playerLabel .playerName {
+	font-size: 16pt;
+}
+
+/*On sm*/
+@media(max-width:1000px){
+	#myGameField {
+		/*Quadratic Gamefield size on max-width: 1000px -> BS:sm*/
+		height: 96%;
+		width: 50%;
+	}
+}
+
+.gameFieldHeader {
+	height: 4%;
+	display: flex;
+	align-items: center;
+}
+
+.height {
+	height: 100%;
+}
+
+#board-area {
+	height: 85%;
+}
+
+.board {
+	height: 96%;
+}
+
+#playerInputButton {
+	width: 50%;
+}
+
+.row {
+	display: flex;
+	flex-wrap: wrap;
+}
+  

@@ -13,10 +13,7 @@ let socket;
 $(document).ready(function() {
 	board = initializeBoard();
 	renderGameField(board, '#myGameField', true);
-	//initializeGameField('#myGameFieldShips', 'activeField');
 	initializeShips('#otherGameField');
-	//Erst Shiffe setzen dann das Gegnerboard initialisieren
-	//initializeGameField('#otherShips');
 
 	//$("#playerInputModal").modal("show");
 
@@ -31,19 +28,6 @@ $(document).ready(function() {
 
 });
 
-
-/*
-function clearField(){ // eslint-disable-line no-unused-vars 
-	for(let i = 1; i <= fieldSize; i++){
-		for(let j = 1; j <= fieldSize; j++){
-			$("#place-" + i + "-" + j).css("background-color", freeBoardField);
-			//$("#place-" + i + "-" + j).addClass("freeBordfieldBgColor").removeClass("shipBgColor");
-			//Debug function
-			$("#place-" + i + "-" + j).html("");
-		}
-	}
-}*/
-
 //Uses ships.js which is embedded in index.html
 function initializeShips(areaId){
 	let shipProperties = ship.shipProperties();
@@ -53,27 +37,27 @@ function initializeShips(areaId){
 	let node = $("<div id='myShipsToSetUp' class='rFrame'></div>");
 
 	for(let row = 0; row < shipProperties.length; row++){
-		let shipsRowNode = $("<div class='setUpShipsRowArea bFrame'></div>");
+		let shipsRowNode = $("<div class='setUpShipsArea bFrame'></div>");
 		$(node).append(shipsRowNode);
 
-		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsRowAreaRow gFrame'>" + ship[shipProperties[row]].amount + "</div>"));
-		shipsRowNode.append($("<div class='col-xs-7 col-md-7 setUpShipsRowAreaRow gFrame'>" + ship[shipProperties[row]].name + "</div>"));
+		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsAreaRow gFrame'>" + ship[shipProperties[row]].amount + "</div>"));
+		shipsRowNode.append($("<div class='col-xs-7 col-md-7 setUpShipsAreaRow gFrame'>" + ship[shipProperties[row]].name + "</div>"));
 
-		let shipGameFields = "<div class='col-xs-4 col-md-4 setUpShipsRowAreaRow gFrame'>";
+		let shipGameFields = "<div class='col-xs-4 col-md-4 setUpShipsAreaRow gFrame'>";
 		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
-			shipGameFields += "<div class='setUpShipsRowAreaRowUsedGameFields shipBgColor'></div>";
+			shipGameFields += "<div class='setUpShipsAreaRowUsedGameFields shipBgColor'></div>";
 		}
 		shipGameFields += "</div>";
 		shipsRowNode.append($(shipGameFields));
 	}
 
-	let setUpShipsFooterNode = "<div id='myShipsButtons' class='setUpShipsFooter pFrame'>";
+	let setUpShipsFooterNode = "<div id='myShipsButtons' pFrame'>";
 	setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
 	setUpShipsFooterNode += "<div class='btn-group height'>";
-	setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsFooterButtons'>Zufällig anordnen</button>";
+	setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsButtons'>Zufällig anordnen</button>";
 	setUpShipsFooterNode += "</div>";
 	setUpShipsFooterNode += "<div class='btn-group height'>";
-	setUpShipsFooterNode += "<button id='sendShipsToServer' type='button' class='btn btn-primary disabled setUpShipsFooterButtons'><span id='buttonNumberOfShips' class='badge'>" + amountOfShips + "</span> Noch zu setzen</button>";
+	setUpShipsFooterNode += "<button id='sendShipsToServer' type='button' class='btn btn-primary disabled setUpShipsButtons'><span id='buttonNumberOfShips' class='badge'>" + amountOfShips + "</span> Noch zu setzen</button>";
 	setUpShipsFooterNode += "</div>";
 	setUpShipsFooterNode += "</div>";
 	setUpShipsFooterNode += "</div>";
@@ -91,7 +75,7 @@ function initializeShips(areaId){
 	});
 
 	//Dynamic css
-	$(".setUpShipsRowAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
+	$(".setUpShipsAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
 }
 
 function savePlayer() { // eslint-disable-line no-unused-vars 
