@@ -83,7 +83,16 @@
     <!-- Game Boards --> 
     <div id="board-area" class="row">
         <div id="myArea" class="col-xs-12 col-md-6 height">
-            <div id="myHeader" class="gameFieldHeader gFrame">Deine Schiffe</div>
+            <div id="myHeader" class="gameFieldHeader gFrame">
+                <script>
+                    var width = window.innerWidth;
+                    $("#myHeader").text(width + "__");
+                </script>
+                <h1 class="visible-xs">XS</h1>
+                <h1 class="visible-sm">SM</h1>
+                <h1 class="visible-md">MD</h1>
+                <h1 class="visible-lg">LG</h1>
+            </div>
             <div id="myGameField" class="board gFrame"></div>
         </div>
         <div id="otherArea" class="col-xs-12 col-md-6 height">

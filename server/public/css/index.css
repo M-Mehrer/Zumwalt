@@ -23,9 +23,77 @@ body {
 }
 
 /*On sm*/
+@media (max-width: 1600px) {
+	#myArea {
+		height: 70%;
+		padding-top: 2%;
+	}
+	#myHeader {
+		padding-bottom: 4%;
+	}
+}
+
+@media (max-width: 1200px) {
+	#myArea {
+		height: 55%;
+		padding-top: 2%;
+	}
+	#myHeader {
+		padding-bottom: 4%;
+	}
+}
+
+@media (max-width: 991px) {
+	#myArea {
+		height: 90%;
+		padding-top: 2%;
+	}
+	#myHeader {
+		padding-bottom: 4%;
+	}
+}
+
+@media (max-width: 745px) {
+	#myArea {
+		height: 65%;
+		padding-top: 2%;
+	}
+	#myHeader {
+		padding-bottom: 4%;
+	}
+}
+
+@media (max-width: 510px) {
+	#myArea {
+		height: 45%;
+		padding-top: 4%;
+	}
+	#myHeader {
+		padding-bottom: 6%;
+	}
+}
+
+@media (max-width: 430px) {
+	#myArea {
+		height: 50%;
+		padding-top: 4%;
+	}
+	#myHeader {
+		padding-bottom: 6%;
+	}
+}
+
+
+
+/*
+@media (max-width: 991px) { ... }
+
+@media (max-width: 1199px) { ... }
+*/
+/*
 @media(max-width:1000px){
 	#myGameField {
-		/*Quadratic Gamefield size on max-width: 1000px -> BS:sm*/
+		
 		width: 85%;
 		height: 130%;
 	}
@@ -39,7 +107,7 @@ body {
 	#otherHeader {
 		padding-bottom: 2%;
 	}
-}
+}*/
 
 .gameFieldHeader {
 	height: 4%;
