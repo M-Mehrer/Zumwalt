@@ -26,8 +26,18 @@ body {
 @media(max-width:1000px){
 	#myGameField {
 		/*Quadratic Gamefield size on max-width: 1000px -> BS:sm*/
-		height: 96%;
-		width: 50%;
+		width: 85%;
+		height: 130%;
+	}
+	#myHeader{
+		padding-top: 2%;
+		padding-bottom: 2%;
+	}
+	#otherArea {
+		padding-top: 20%;
+	}
+	#otherHeader {
+		padding-bottom: 2%;
 	}
 }
 
