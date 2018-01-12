@@ -54,6 +54,7 @@ $(document).ready(function() {
 			socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 			$("#shipSetup").hide();
 			$("#otherGameField").show();
+			printGameLog("Gegner wird gesucht...");
 		});
 	});
 
@@ -102,8 +103,8 @@ $(document).ready(function() {
 			$("#turn-otherGameFieldBody").removeClass("enemyTurnBg");
 			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
-		
-		printGameLog("Player missed: [" + position[0] + ", " + position[1] + "]");
+
+		printGameLog("Player missed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -119,7 +120,7 @@ $(document).ready(function() {
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog("Player hit: [" + position[0] + ", " + position[1] + "]");
+		printGameLog("Player hit: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -137,7 +138,7 @@ $(document).ready(function() {
 			UIManager.sinkShip(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog("Player destroyed: [" + position[0] + ", " + position[1] + "]");
+		printGameLog("Player destroyed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 

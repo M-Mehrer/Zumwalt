@@ -28,13 +28,20 @@ let names = [];
 
 // Initialize socket connections
 io.on('connection', function(socket){
-	players.push(socket);
+	/*players.push(socket);
 
 	let i = players.length - 1;
-	let enemy = (i % 2) === 0 ? i + 1 : i - 1;
+	let enemy = (i % 2) === 0 ? i + 1 : i - 1;*/
+
+	let i;
+	let enemy;
 
 	socket.on('ships', (shipData) => {
-		console.log("A player is ready.")
+		players.push(socket);
+		i = players.length - 1;
+		enemy = (i % 2) === 0 ? i + 1 : i - 1;
+
+		console.log("A player is ready.");
 		// TODO: Check ships
 		ships[i] = shipData.ships;
 
