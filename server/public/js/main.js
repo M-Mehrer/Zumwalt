@@ -54,9 +54,18 @@ $(document).ready(function() {
 		//alert("Beginner: " + beginner);
 	});
 
+	socket.on('message', (msg) => {
+		// TODO: Print message
+	})
+
 	updateHighscores();
 
 });
+
+
+function printGameLog() {
+	// TODO
+}
 
 //Uses ships.js which is embedded in index.html
 function initializeShips(areaId){
