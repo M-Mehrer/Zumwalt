@@ -7,11 +7,11 @@ const serveStatic = require('serve-static');
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 const highscores = require('./api/highscores');
+const env = require('./config.json');
 
-const debug = true;
-const PORT = 3000;
 
 const MISS = 0, HIT = 1, SANK = 2;
+const resultNames = ["miss", "hit", "destroyed"];
 
 /*const catPictures = [
 	"https://cdn.pixabay.com/photo/2016/09/11/09/49/cat-1660964_1280.jpg",
@@ -27,13 +27,9 @@ let players = [];
 
 // Initialize socket connections
 io.on('connection', function(socket){
-	/*players.push(socket);
+	console.log('A player connected.');
 
-	let i = players.length - 1;
-	let enemy = (i % 2) === 0 ? i + 1 : i - 1;*/
-
-	let i;
-	let enemy;
+	let i, enemy;
 
 	socket.on('ships', (shipData) => {
 		players.push(socket);
@@ -78,17 +74,8 @@ io.on('connection', function(socket){
 			}
 		}
 
-		//console.log(turnData);
-		//console.log(result);
-
-		let resName = "";
-		switch(result) {
-		case 0: resName = 'miss'; break;
-		case 1: resName = 'hit'; break;
-		case 2: resName = 'destroyed'; break;
-		}
-		socket.emit(resName, turn);
-		players[enemy].emit(resName, turn);
+		socket.emit(resultNames[result], turn);
+		players[enemy].emit(resultNames[result], turn);
 
 		if(ships[enemy].length == 0) {
 			socket.emit('gameFinished', true);
@@ -103,10 +90,8 @@ io.on('connection', function(socket){
 			ships[i] = undefined;
 			players[enemy].emit('end', 'Enemy disconnected.');
 		}
-		console.log("A player disconnected");
+		console.log("A player disconnected.");
 	})
-
-	console.log('A player connected.');
 });
 
 function removeIndex(array, index) {
@@ -121,7 +106,7 @@ function removeIndex(array, index) {
 
 // Middlewares
 app.use(function(req, res, next) {
-	if(!debug) {
+	if(!env.DEBUG) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	}
@@ -133,17 +118,18 @@ app.use(serveStatic('public'));
 // API
 app.use("/api/v1/highscore/", highscores);
 
-app.get("*", (req, res) => {
-	res.status(404).send("<center><h1>404: Seite nicht gefunden.</h1><img src='https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_March_2010-1.jpg' style='width: 80%;'></center>");
+// Error handling (404)
+app.get("/*", (req, res) => {
+	res.status(404).sendFile(__dirname + '/public/error.html');
 })
 
 // Start Server
-http.listen(PORT, function() {
-	if(debug)
-		console.log('Server started: http://localhost:' + PORT);
+http.listen(env.PORT, env.HOST, function() {
+	if(env.DEBUG)
+		console.log('Server started: http://localhost:' + env.PORT);
 	else {
 		require('dns').lookup(require('os').hostname(), function (err, ip) {
-			console.log('Server started: ' + ip + ":" + PORT);
+			console.log('Server started: ' + ip + ":" + env.PORT);
 		});
 	}
 })
