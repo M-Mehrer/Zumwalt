@@ -33,14 +33,12 @@ $(document).ready(function() {
 			$("#otherGameField").addClass("activeBoard");
 			printGameLog("Sie sind am Zug.");
 
-			$("#turn-myGameFieldBody").addClass("myTurnBg");
-			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 		else {
 			printGameLog("Auf den Gegner warten.");
 
-			$("#turn-myGameFieldBody").addClass("enemyTurnBg");
-			$("#turn-otherGameFieldBody").addClass("myTurnBg");
+			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
 		}
 	});
 
@@ -95,10 +93,8 @@ $(document).ready(function() {
 			isPlayerTurn = false;
 			$("#otherGameField").removeClass("activeBoard");
 
-			$("#turn-myGameFieldBody").removeClass("myTurnBg");
-			$("#turn-myGameFieldBody").addClass("enemyTurnBg");
-			$("#turn-otherGameFieldBody").removeClass("enemyTurnBg");
-			$("#turn-otherGameFieldBody").addClass("myTurnBg");
+			$("#turn-otherGameFieldBody").removeClass("myTurnBg");
+			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
 		}
 		else{
 			//mark position with white dot on own board
@@ -106,10 +102,8 @@ $(document).ready(function() {
 			isPlayerTurn = true;
 			$("#otherGameField").addClass("activeBoard");
 
-			$("#turn-myGameFieldBody").removeClass("enemyTurnBg");
-			$("#turn-myGameFieldBody").addClass("myTurnBg");
-			$("#turn-otherGameFieldBody").removeClass("myTurnBg");
-			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").removeClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 		
 		printGameLog("Player missed: [" + position[0] + ", " + position[1] + "]");
