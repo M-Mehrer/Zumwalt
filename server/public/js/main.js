@@ -4,8 +4,8 @@
 
 const apiURL = "http://localhost:3000/api/v1";
 
-let myShips;
-let otherShips;
+let myShips = new Gamefield("myGameFieldBody");
+let otherShips = new Gamefield("otherGameFieldBody");
 
 let socket;
 
@@ -15,12 +15,15 @@ let gameIsRunning;
 // Initializations
 $(document).ready(function() {
 
-	UIManager.inititializeShips("myGameFieldBody");
-	UIManager.inititializeShips("otherGameFieldBody");
-
+	UIManager.inititializeShips(myShips.id);
+	UIManager.inititializeShips(otherShips.id);
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
 	socket = io();
+
+	$("#setUpShipsRandomly").on("click", (event) =>{
+		myShips.setUpShipsRandomly();
+	});
 
 	//$("#playerInputModal").modal("show");
 
@@ -32,20 +35,27 @@ $(document).ready(function() {
 			});
 
 	$("#setUpShipsRandomly").on("click", (event) =>{
-		setUpShipsRandomly();
+		myShips.setUpShipsRandomly();
+		UIManager.showShips(myShips.board, myShips.id);
+
 		$("#sendShips").removeClass("disabled");
 		$("#sendShips").text("Bereit");
 	});
 
+
 	$("#sendShips").click((event) => {
-		socket.emit('ships', shipCoordinatesForServer);
+		socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 		$("#shipSetup").hide();
 		$("#otherGameField").show();
 	});
 
+	socket.on('message', (msg) => {
+		// TODO: Print message
+		printGameLog(msg);
+	})
+
 
 	$("#otherGameField .boardField").click((event)=> {
-
 		if (isPlayerTurn && gameIsRunning){
 			//gets id from specific clicked field and extracts coordinates in an array
 			let position = event.currentTarget.id.split("-").reverse();
@@ -103,17 +113,13 @@ $(document).ready(function() {
 		}
 	});
 
-	//board = initializeBoard();
-	//renderGameField(board, '#myGameField', true);
-	//initializeShips('#otherGameField');
-
-
-		//alert("Beginner: " + beginner);
-
-
 	updateHighscores();
 
 });
+
+function printGameLog(msg) {
+	// TODO
+}
 
 function savePlayer() {
 
