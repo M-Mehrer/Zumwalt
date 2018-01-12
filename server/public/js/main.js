@@ -27,12 +27,16 @@ $(document).ready(function() {
 		//alert("Beginner: " + beginner);
 	});
 
+	socket.on('message', (msg) => {
+		// TODO: Print message
+	})
+
 	updateHighscores();
 
 });
 
-function sendTurn(row, col) {
-	socket.emit('turn', {turn: [row, col]});
+function printField() {
+	// TODO
 }
 
 
