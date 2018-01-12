@@ -83,6 +83,46 @@
         </div>
     </div>
 
+    <!-- winner modal -->
+    <div id="winnerModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sie haben gewonnen.</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Input name player 1 -->
+                    <p>Herzlichen Glückwunsch! Sie haben gewonnen!</p>
+                    <p>Ihr Score beträgt <span id="scoreLabel"></span>!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-primary"><a href="index.html" style="color:white;">Nochmal spielen</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="looserModal" class="modal fade" role="dialog" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Sie haben verloren.</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- Input name player 1 -->
+                    <p>Sie haben leider verloren. Versuchen Sie es doch erneut.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
+                    <button type="button" class="btn btn-primary"><a href="index.html" style="color:white;">Nochmal spielen</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Game Boards --> 
     <div id="gameBoard" class="row">

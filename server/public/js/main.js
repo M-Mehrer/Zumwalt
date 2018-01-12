@@ -156,10 +156,15 @@ $(document).ready(function() {
 			$("#otherGameField").removeClass("activeBoard");
 			setHighscore();
 			updateHighscores();
+
+			$("#scoreLabel").text(myHighscore);
+			$("#winnerModal").modal("show");
 		}
 		else{
 			//alert("Schade, du hast leider verloren!");
 			printGameLog("Schade, du hast leider verloren!");
+
+			$("#looserModal").modal("show");
 		}
 	});
 

@@ -93,7 +93,7 @@ io.on('connection', function(socket){
 
 		if(ships[enemy].length == 0) {
 			socket.emit('gameFinished', true);
-			players[enemy].emit('winner', false);
+			players[enemy].emit('gameFinished', false);
 
 			console.log("A game ended.");
 		}
