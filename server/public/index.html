@@ -1,12 +1,8 @@
-﻿ <!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="de">
 
 <head>
-    <title>Schiffe versenken</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" href="favicons/katze.png">
-
+	<title>Schiffe versenken</title>
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,20 +11,20 @@
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   
 	<link rel="stylesheet" type="text/css" href="css/main.css">
-  <link rel="stylesheet" type="text/css" href="css/highscores.css">
-  <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/highscores.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/debug.css"> -->
 
 	<!-- JavaScript -->
 	<script src="bootstrap/js/jquery-3.2.1.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="js/uiManager.js"></script>
 	<script src="js/ships.js"></script>
     <script src="js/main.js"></script>
     <script src="js/putShipsOnGamefield.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/algorithms.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-      //var socket = io();
-    </script>
 </head>
 
 <body>
@@ -39,12 +35,10 @@
         <!-- Highscore -->
         <div class="col-xs-12, col-md-6">
             Highscores:
-            <hr />
+            <hr>
             <h1 class="highscoreArea">
-                <span id="highscores" class="highscores">
-                    <span>Daten konnten nicht vom Server geladen werden.</span>
-                    <hr />
-                </span>
+                <span id="highscores" class="highscores"><span class="col-xs-8">Neuer User3</span><span class="col-xs-4">40 Pt.</span><br><hr></span>
+                <span id="highscores" class="highscores"><span class="col-xs-8">Neuer User4</span><span class="col-xs-4">80 Pt.</span><br><hr></span>
             </h1> 
         </div>
 
@@ -87,19 +81,60 @@
 
 
     <!-- Game Boards --> 
-    <div id="gameBoard" class="row area height">
-        <div id="myGameField" class="col-xs-12 col-md-6 battleArea gFrame">
-            <div id="myGameFieldHeader" class='boardHeader gFrame'>Eigene Schiffe</div>
-            <div id='myGameFieldShips' class='gFrame'></div>
+    <div id="gameBoard" class="row">
+
+        <!-- GameField -->
+        <div id="myGameField" class="col-xs-12 col-md-6 gameField">
+            <div id="myGameFieldHeader">Eigene Schiffe</div>
+            <div id="myGameFieldBody">
+                <!-- My game field here -->
+            </div>
         </div>
-        <div id="otherGameField" class="col-xs-12 col-md-6 battleArea gFrame">
-            <div id="otherGameFieldHeader" class='boardHeader gFrame'>Setz deine Schiffe</div>
-            <div id='otherGameFieldShips' class='gFrame'></div>
+
+        <!-- Ship setup -->
+        <div id="shipSetup" class="col-xs-12 col-md-6 gameField">
+            <div id="shipSetupHeader">Setze deine Schiffe</div>
+            <div id="shipSetupBody">
+                <div id="shipSetupControl">
+                    <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                            <button id="setUpShipsRandomly" type="button" class="btn btn-primary active shipSetupControlButtons">Zufällig anordnen</button>
+                        </div>
+                        <div class="btn-group">
+                            <button id="sendShips" type="button" class="btn btn-primary disabled shipSetupControlButtons"><span id="shipCount" class="badge">10</span> Noch zu setzen</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="myShipsToSetUp">
+					<!-- ship setup here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Enemy game field -->
+        <div id="otherGameField" class="col-xs-12 col-md-6 gameField activeBoard" hidden>
+            <div id="otherGameFieldHeader">Schiffe des Gegners</div>
+            <div id="otherGameFieldBody">
+				<!-- other game field here -->
+            </div>
         </div>
     </div>
    
-    <div style=""><p>Lorem psum dolor et amet</p></div>
+    <div style="margin-top: 2%;">
+        <h2>Spielverlauf: </h2>
+        <div class="messageBox">
+			<!-- messages here -->
+            <p>Spieler 1 hat [1,3] beschossen</p>
+            
+        </div>
+    </div>
+    
      <!-- End main content area -->
+     <footer>
+         <div class="container">
+             <p>&copy; 2018: MG, MM, JJ</p>
+         </div>
+     </footer>
 
 </div>
 
