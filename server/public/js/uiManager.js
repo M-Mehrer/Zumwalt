@@ -33,9 +33,9 @@
 
 const UIManager = {
 	fieldSize: 10,
+	alphabet: ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"],
 
 	inititializeShips(id) {
-		let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 		let root = $("#" + id);
 		root.html("");
 
@@ -55,19 +55,19 @@ const UIManager = {
 						elem.attr("id", "turn-" + id);
 					}
 					else if(row === 0 && col > 0){
-						elem.text(alphabet[col - 1]);
+						elem.text(this.alphabet[col - 1]);
 					}
 					else if(col === 0 && row > 0){
 						elem.text(row);
 					}
-				}	
+				}
 				else{
 					elem.addClass("waterBg waterHover");
 					elem.attr("id", id + "-" + (row - 1) + "-" + (col - 1));
 				}
 			}
 
-			
+
 			root.append(rowNode);
 		}
 		let paddingPercentages = 100 / (this.fieldSize + 1);
@@ -80,7 +80,7 @@ const UIManager = {
 		$(".boardField").css("padding-right", paddingTop + "%");
 		$(".boardField").css("padding-top", paddingTop + "%");
 		$(".boardField").css("padding-bottom", paddingBottom + "%");
-		
+
 	},
 
 	reset(id) {
@@ -114,7 +114,7 @@ const UIManager = {
 			}
 		}
 	},
-	
+
 	setShipField(row, col, id) {
 		$("#" + id + "-" + row + "-" + col)
 			.removeClass("waterBg")
@@ -151,7 +151,7 @@ const UIManager = {
 		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
 			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
 		}
-		
+
 		$("#" + id + "-" + row + "-" + col).removeClass("waterBg shipBg").addClass("sunkBg");
 	},
 
