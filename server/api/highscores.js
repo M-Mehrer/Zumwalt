@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 	// Read Highscores
 	fs.readFile("api/scores.json", "utf8", function(err, data){
 		if(err) {
-			res.status(500);
+			res.status(500).json();
 			return;
 		}
 
@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
 	// Read Highscores
 	fs.readFile("api/scores.json", "utf8", (err, data) => {
 		if(err) {
-			res.status(500);
+			res.status(500).json();
 			return;
 		}
 		let json = JSON.parse(data);
@@ -35,10 +35,10 @@ router.post('/', (req, res) => {
 		// Write new Highscores
 		fs.writeFile('api/scores.json', JSON.stringify(json), 'utf8', (err) => {
 			if(err) {
-				res.status(500);
+				res.status(500).json();
 				return;
 			}
-			res.status(201);
+			res.status(201).json();
 		});
 	});
 

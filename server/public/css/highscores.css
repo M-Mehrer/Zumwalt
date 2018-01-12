@@ -2,9 +2,10 @@
 	overflow:auto;
 }*/
 
-.highscores {
+#highscores {
 	font-size: 16pt;
-	overflow:auto;
+	max-height: 150px;
+	overflow: auto;
 }
 
 .highscores .row {

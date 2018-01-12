@@ -11,6 +11,7 @@ let socket;
 
 let isPlayerTurn;
 let gameIsRunning;
+let myHighscore = 0;
 
 // Initializations
 $(document).ready(function() {
@@ -20,7 +21,7 @@ $(document).ready(function() {
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
 	socket = io();
-
+	
 	//$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
@@ -56,9 +57,6 @@ $(document).ready(function() {
 		});
 	});
 
-
-	
-
 	socket.on('message', (msg) => {
 		// Print message
 		printGameLog(msg);
@@ -68,7 +66,6 @@ $(document).ready(function() {
 		// Print message
 		printGameLog(msg);
 	});
-
 
 	$("#otherGameField .boardField").on('click', (event)=> {
 		//gets id from specific clicked field and extracts coordinates in an array
@@ -81,7 +78,7 @@ $(document).ready(function() {
 			gameIsRunning = false;
 
 			socket.emit('shot', {coordinates:position});
-			//alert("klick at: " + position);
+			myHighscore++;
 		}
 	});
 
@@ -151,6 +148,8 @@ $(document).ready(function() {
 			//alert("Glückwunsch, du hast gesiegt!");
 			printGameLog("Glückwunsch, du hast gesiegt!");
 			$("#otherGameField").removeClass("activeBoard");
+			setHighscore();
+			updateHighscores();
 		}
 		else{
 			//alert("Schade, du hast leider verloren!");
@@ -159,7 +158,6 @@ $(document).ready(function() {
 	});
 
 	updateHighscores();
-
 });
 
 function printGameLog(msg) {
@@ -207,6 +205,20 @@ function playerNamesValid(id, otherId) {
 			&& $(otherId).val() !== "") ;
 }
 
+function setHighscore(){
+	$.ajax({
+		type: "POST",
+		data: JSON.stringify({
+			"name": "EinName",
+			"points": myHighscore
+		}),
+		contentType: "application/json",
+		dataType: "JSON",
+		url: apiURL + "/highscore",
+		success: printGameLog("Dein Highscore mit " + myHighscore + " wurde erfolgreich gespeichert!")
+	});
+}
+
 function updateHighscores() {
 	$.ajax({
 		method: "GET",
@@ -246,13 +258,15 @@ function showHighscores(highscores) {
 	}
 
 	for(let i = 0; i < highscores.length; i++) {
-		//let row = $('<span/>', {class: 'row'});
+		let row = $('<span/>', {class: 'highscores'});
 		let name = $('<span/>', {class: "col-xs-8"});
 		name.append(highscores[i].name);
 		let score = $('<span/>', {class: "col-xs-4"});
 		score.append(highscores[i].points + " Pt.");
-		container.append(name);
-		container.append(score);
-		container.append('<br/><hr/>');
+		let brhr = $('<br/><hr/>');
+		row.append(name);
+		row.append(score);
+		row.append(brhr);
+		container.append(row);
 	}
 }
