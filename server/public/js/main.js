@@ -171,7 +171,7 @@ function printGameLog(msg) {
 
 	let node = $("<p></p>");
 	node.text("- " + msg);
-	log.append(node);
+	log.prepend(node);
 }
 
 function savePlayer() {
