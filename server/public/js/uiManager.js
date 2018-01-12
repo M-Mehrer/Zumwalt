@@ -35,23 +35,49 @@ const UIManager = {
 	fieldSize: 10,
 
 	inititializeShips(id) {
+		let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 		let root = $("#" + id);
 		root.html("");
 
-		for(let row = 0; row < this.fieldSize; row++) {
+		for(let row = 0; row <= this.fieldSize; row++) {
 			let rowNode = $("<div></div>");
 			rowNode.addClass("boardRow");
 
-			for(let col = 0; col < this.fieldSize; col++) {
+			for(let col = 0; col <= this.fieldSize; col++) {
 				let elem = $("<div></div>");
 				rowNode.append(elem);
 
-				elem.addClass("boardField waterBg");
-				elem.attr("id", id + "-" + row + "-" + col);
+				elem.addClass("boardField");
+				if(row === 0 || col === 0){
+					elem.addClass("coordinatesBG coordinates");
+
+					if(row === 0 && col > 0){
+						elem.text(alphabet[col - 1]);
+					}
+					else if(col === 0 && row > 0){
+						elem.text(row);
+					}
+				}	
+				else{
+					elem.addClass("waterBg");
+					elem.attr("id", id + "-" + (row - 1) + "-" + (col - 1));
+				}
 			}
 
+			
 			root.append(rowNode);
 		}
+		let paddingPercentages = 100 / (this.fieldSize + 1);
+		let dynamicWidth = paddingPercentages;
+		let paddingTop = paddingPercentages * 0.3;
+		let paddingBottom = paddingPercentages * 0.7;
+
+		$(".boardField").css("width", dynamicWidth + "%");
+		$(".boardField").css("padding-left", paddingTop + "%");
+		$(".boardField").css("padding-right", paddingTop + "%");
+		$(".boardField").css("padding-top", paddingTop + "%");
+		$(".boardField").css("padding-bottom", paddingBottom + "%");
+		
 	},
 
 	reset(id) {

@@ -50,9 +50,13 @@ body {
 	height: 0;
 	font-size: 38;
 	border: 1px solid lightgray;
-	padding: 3% 3% 7% 3%;
 	float: left;
-	width: 10%;
+}
+
+.coordinates {
+	display: flex;
+	align-items: center;
+	
 }
 
 .activeBoard div div.boardField:hover {
@@ -95,6 +99,10 @@ body {
 
 .waterBg {
 	background-color: #149fd6;
+}
+
+.coordinatesBG {
+	background-color: black;
 }
 
 .waterDotBg {
