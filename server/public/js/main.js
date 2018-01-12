@@ -1,6 +1,6 @@
 /* global $, ship */
 
- // eslint-disable-line no-unused-vars 
+ // eslint-disable-line no-unused-vars
 
 const apiURL = "http://localhost:3000/api/v1";
 
@@ -9,85 +9,113 @@ let otherShips;
 
 let socket;
 
+let isPlayerTurn;
+let gameIsRunning;
+
 // Initializations
 $(document).ready(function() {
+
 	UIManager.inititializeShips("myGameFieldBody");
 	UIManager.inititializeShips("otherGameFieldBody");
 
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
+	socket = io();
+
+	//$("#playerInputModal").modal("show");
+
+	socket.on('beginner', (beginner) => {
+		$("#otherArea").hide();
+		isPlayerTurn = beginner;
+		alert("Beginner: " + beginner);
+		gameIsRunning = true;
+			});
+
 	$("#setUpShipsRandomly").on("click", (event) =>{
 		setUpShipsRandomly();
+		$("#sendShips").removeClass("disabled");
+		$("#sendShips").text("Bereit");
 	});
-	
+
+	$("#sendShips").click((event) => {
+		socket.emit('ships', shipCoordinatesForServer);
+		$("#shipSetup").hide();
+		$("#otherGameField").show();
+	});
+
+
+	$("#otherGameField .boardField").click((event)=> {
+
+		if (isPlayerTurn && gameIsRunning){
+			//gets id from specific clicked field and extracts coordinates in an array
+			let position = event.currentTarget.id.split("-").reverse();
+			position.pop();
+			position = position.reverse();
+			socket.emit('shot', {coordinates:position});
+			alert("klick at: " + position);
+		}
+
+	});
+
+	socket.on('miss', (position)=> {
+		if (isPlayerTurn){
+			//mark position with white dot on enemy board
+			UIManager.markField(position[0], position[1], "otherGameFieldBody");
+			isPlayerTurn = false;
+		}
+		else{
+			//mark position with white dot on own board
+			UIManager.markField(position[0], position[1], "myGameFieldBody");
+			isPlayerTurn = true;
+		}
+	});
+
+	socket.on('hit', (position)=> {
+		if (isPlayerTurn){
+			//mark position with red dot on enemy board
+			UIManager.markField(position[0], position[1], "otherGameFieldBody");
+		}
+		else{
+			//mark position with red dot on own board
+			UIManager.markField(position[0], position[1], "myGameFieldBody");
+		}
+	});
+
+	socket.on('destroyed', (position)=> {
+		if (isPlayerTurn){
+			//mark ship with dark red dots on enemy board
+			UIManager.markField(position[0], position[1], "otherGameFieldBody");
+		}
+		else{
+			//mark ship with dark red dots on own board
+			UIManager.markField(position[0], position[1], "myGameFieldBody");
+		}
+	});
+
+	socket.on('gameFinished', (winner)=>{
+		gameIsRunning = false;
+		if (winner){
+			//Highscore senden
+			alert("Glückwunsch, du hast gesiegt!");
+		}
+		else{
+			alert("Schade, du hast leider verloren!");
+		}
+	});
+
 	//board = initializeBoard();
 	//renderGameField(board, '#myGameField', true);
 	//initializeShips('#otherGameField');
 
-	//$("#playerInputModal").modal("show");
 
-	socket = io();
-
-	socket.on('beginner', (beginner) => {
-		$("#otherArea").hide();
 		//alert("Beginner: " + beginner);
-	});
+
 
 	updateHighscores();
 
 });
 
-//Uses ships.js which is embedded in index.html
-function initializeShips(areaId){
-	let shipProperties = ship.shipProperties();
-	let amountOfShips = countAmountOfShipsToSetUp(shipProperties); // eslint-disable-line no-undef 
-	//let settedShipsCoordinates = [];
-
-	let node = $("<div id='myShipsToSetUp' class='rFrame'></div>");
-
-	for(let row = 0; row < shipProperties.length; row++){
-		let shipsRowNode = $("<div class='setUpShipsArea bFrame'></div>");
-		$(node).append(shipsRowNode);
-
-		shipsRowNode.append($("<div class='col-xs-1 col-md-1 setUpShipsAreaRow gFrame'>" + ship[shipProperties[row]].amount + "</div>"));
-		shipsRowNode.append($("<div class='col-xs-7 col-md-7 setUpShipsAreaRow gFrame'>" + ship[shipProperties[row]].name + "</div>"));
-
-		let shipGameFields = "<div class='col-xs-4 col-md-4 setUpShipsAreaRow gFrame'>";
-		for(let fields = 0; fields < ship[shipProperties[row]].gameFields; fields++){
-			shipGameFields += "<div class='setUpShipsAreaRowUsedGameFields shipBgColor'></div>";
-		}
-		shipGameFields += "</div>";
-		shipsRowNode.append($(shipGameFields));
-	}
-
-	let setUpShipsFooterNode = "<div id='myShipsButtons' pFrame'>";
-	setUpShipsFooterNode += "<div class='btn-group btn-group-justified height'>";
-	setUpShipsFooterNode += "<div class='btn-group height'>";
-	setUpShipsFooterNode += "<button id='setUpShipsRandomly' type='button' class='btn btn-primary active setUpShipsButtons'>Zufällig anordnen</button>";
-	setUpShipsFooterNode += "</div>";
-	setUpShipsFooterNode += "<div class='btn-group height'>";
-	setUpShipsFooterNode += "<button id='sendShipsToServer' type='button' class='btn btn-primary disabled setUpShipsButtons'><span id='buttonNumberOfShips' class='badge'>" + amountOfShips + "</span> Noch zu setzen</button>";
-	setUpShipsFooterNode += "</div>";
-	setUpShipsFooterNode += "</div>";
-	setUpShipsFooterNode += "</div>";
-	
-	$(areaId).append($(setUpShipsFooterNode));
-	$(areaId).append(node);
-
-	$("#sendShipsToServer").click((event) => {
-		socket.emit('ships', shipCoordinatesForServer.ships);
-	})
-
-	//Buttons click events
-	$("#setUpShipsRandomly").click(function(){
-		setUpShipsRandomly(); // eslint-disable-line no-undef
-	});
-
-	//Dynamic css
-	$(".setUpShipsAreaRowUsedGameFields").css("width", (100 / ship.biggestShip().gameFields) + "%");
-}
-
-function savePlayer() { // eslint-disable-line no-unused-vars 
+function savePlayer() {
 
 	if(playerNamesValid('#player1', '#player2')) {
 		$('#player1Name').html( $('#player1').val());
