@@ -21,10 +21,6 @@ $(document).ready(function() {
 
 	socket = io();
 
-	$("#setUpShipsRandomly").on("click", (event) =>{
-		myShips.setUpShipsRandomly();
-	});
-
 	//$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
@@ -36,9 +32,15 @@ $(document).ready(function() {
 		if(beginner) {
 			$("#otherGameField").addClass("activeBoard");
 			printGameLog("Sie sind am Zug.");
+
+			$("#turn-myGameFieldBody").addClass("myTurnBg");
+			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
 		}
 		else {
 			printGameLog("Auf den Gegner warten.");
+
+			$("#turn-myGameFieldBody").addClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 	});
 
@@ -81,7 +83,6 @@ $(document).ready(function() {
 			socket.emit('shot', {coordinates:position});
 			//alert("klick at: " + position);
 		}
-
 	});
 
 	socket.on('miss', (position)=> {
@@ -91,14 +92,24 @@ $(document).ready(function() {
 			UIManager.markField(position[0], position[1], "otherGameFieldBody");
 			isPlayerTurn = false;
 			$("#otherGameField").removeClass("activeBoard");
+
+			$("#turn-myGameFieldBody").removeClass("myTurnBg");
+			$("#turn-myGameFieldBody").addClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").removeClass("enemyTurnBg");
+			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 		else{
 			//mark position with white dot on own board
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 			isPlayerTurn = true;
 			$("#otherGameField").addClass("activeBoard");
-		}
 
+			$("#turn-myGameFieldBody").removeClass("enemyTurnBg");
+			$("#turn-myGameFieldBody").addClass("myTurnBg");
+			$("#turn-otherGameFieldBody").removeClass("myTurnBg");
+			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
+		}
+		
 		printGameLog("Player missed: [" + position[0] + ", " + position[1] + "]");
 		gameIsRunning = true;
 	});
