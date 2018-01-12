@@ -1,19 +1,5 @@
 /* global $, fieldSize, freeBoardField, shipColor, ship */
 
-let debug = false;
-
-function countAmountOfShipsToSetUp(shipProperties){ // eslint-disable-line no-unused-vars 
-	var amountOfShips = 0;
-
-	if(shipProperties instanceof Array){
-		for(let i = 0; i < shipProperties.length; i++){
-			amountOfShips += ship[shipProperties[i]].amount;
-		}
-	}
-
-	return amountOfShips;
-}
-
 function shipLiesInGamefield(row, col, shipUsedGamefields){
 	var possibleDirection = [];
 
@@ -37,109 +23,135 @@ function shipLiesInGamefield(row, col, shipUsedGamefields){
 	return possibleDirection;
 }
 
-function getFreeFields(){
-	var freeFields = [];
+/**
+ * Initializes the gamefield cells with 0 (empty).
+ * The Zero Positions are reservated for Koordinates (1 - 10)(A - J)
+ */
+function initializeBoard(){
+	let emptyBoard = [];
 
+	for(let row = 0; row <= fieldSize; row++){
+		emptyBoard[row] = [];
+
+		for(let col = 0; col <= fieldSize; col++){
+			emptyBoard[row][col] = 0;
+		}
+	}
+
+	return emptyBoard;
+}
+
+function getAvailableFields(board){
+	var availableFields = [];
+	
 	for(let row = 1; row <= fieldSize; row++){
 		for(let col = 1; col <= fieldSize; col++){
-			var isFree = true;
-			if($("#place-" + row + "-" + col).css('backgroundColor') == freeBoardField){
+			let isAvailable = true;
+
+			if(board[row][col] === 0){
 				//Check north
 				if(row - 1 > 0){
-					if(!($("#place-" + (row - 1) + "-" + col).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!(board[row - 1][col] === 0)){
+						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!($("#place-" + (row - 1) + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!(board[row - 1][col - 1] === 0)){
+							isAvailable = false;
 						}
 					}
 					if(col + 1 <= fieldSize){
-						if(!($("#place-" + (row - 1) + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!(board[row - 1][col + 1] === 0)){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check east
 				if(col + 1 <= fieldSize){
-					if(!($("#place-" + row + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!(board[row][col + 1] === 0)){
+						isAvailable = false;
 					}
 					if(row + 1 <= fieldSize){
-						if(!($("#place-" + (row + 1) + "-" + (col + 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!(board[row + 1][col + 1] === 0)){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check south
 				if(row + 1 <= fieldSize){
-					if(!($("#place-" + (row + 1) + "-" + col).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!(board[row + 1][col] === 0)){
+						isAvailable = false;
 					}
 					if(col - 1 > 0){
-						if(!($("#place-" + (row + 1) + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-							isFree = false;
+						if(!(board[row + 1][col - 1] === 0)){
+							isAvailable = false;
 						}
 					}
 				}
 				//Check west
 				if(col - 1 > 0){
-					if(!($("#place-" + row + "-" + (col - 1)).css('backgroundColor') == freeBoardField)){
-						isFree = false;
+					if(!(board[row][col - 1] === 0)){
+						isAvailable = false;
 					}
 				}
+			}
+			else{
+				isAvailable = false;
+			}
 
-				if(isFree){
-					freeFields.push(row + "-" + col);
-				}
-			}	
+			if(isAvailable){
+				availableFields.push(row + "-" + col);
+			}
 		}
 	}
 
-	return freeFields;
+	return availableFields;
 }
 
 function getAllShips(shipProperties){
-	var ships = [];
+	let allShips = [];
 
-	for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
-		for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){
-			ships.push(ship[shipProperties[actualShipProperty]].name);
+	for(let i = 0; i < shipProperties.length; i++) {
+		for(let amount = 0; amount < shipProperties[i].amount; amount++) {
+			allShips.push(i);
 		}
 	}
 
-	return ships;
+	return allShips;
 }
 
+
 function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 
-	var shipProperties = ship.shipProperties();
-	var shipsToSetUp = getAllShips(shipProperties);
+	let shipProperties = ships.availableShips;
+	let shipsToSetUp = getAllShips(shipProperties);
+	let shipCoordinatesForServerIndex = 0;
+	shipCoordinatesForServer = {"ships":[]};
 	
 	while(shipsToSetUp.length > 0){
-		clearField(); // eslint-disable-line no-undef
-		var freeFields = getFreeFields();
+		board = initializeBoard();
+		let freeFields = getAvailableFields(board);
 		shipsToSetUp = getAllShips(shipProperties);
 
-		for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
-			for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){	
-				var tmpFreeFields = freeFields.slice();		
-				var actualShipNotSetInGameField = true;
+		for(let currentShipProperty = 0; currentShipProperty < shipProperties.length; currentShipProperty++){
+			for(let shipNumber = 0; shipNumber < ships.getShip(currentShipProperty).amount; shipNumber++){	
+				let tmpFreeFields = freeFields.slice();		
+				let actualShipNotSetInGameField = true;
+				shipCoordinatesForServer.ships[shipCoordinatesForServerIndex] = [];
 
 				while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
-					var position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
-					var row = position[0];
-					var col = position[1];
-					var shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
-					var randDirection;
+					let position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
+					let row = position[0];
+					let col = position[1];
+					let shipGamefieldDirections = shipLiesInGamefield(row, col, ships.getShip(currentShipProperty).gameFields);
+					let randDirection;
 					
-					var possibleDirection = false;
+					let possibleDirection = false;
 					while(!possibleDirection && shipGamefieldDirections.length > 0){
 						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)]; // eslint-disable-line no-undef
 
 						//First field is always free
-						for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
-							var usedRow = row;
-							var usedCol = col;
+						for(let shipFields = 1, fieldPossible = true; shipFields < ships.getShip(currentShipProperty).gameFields && fieldPossible; shipFields++){
+							let usedRow = row;
+							let usedCol = col;
 
 							switch(randDirection){
 							case 1: usedRow -= shipFields; break;
@@ -152,7 +164,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 								}			
 							}
 
-							var isFree = false;
+							let isFree = false;
 							for(let freeFieldIndex = 0; freeFieldIndex < tmpFreeFields.length; freeFieldIndex++){
 								if((usedRow + "-" + usedCol) === tmpFreeFields[freeFieldIndex]){
 									isFree = true;
@@ -162,7 +174,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 							if(!isFree){
 								fieldPossible = false;
 								possibleDirection = false;
-								var indexPositionToShift = shipGamefieldDirections.indexOf(randDirection);
+								let indexPositionToShift = shipGamefieldDirections.indexOf(randDirection);
 								shipGamefieldDirections.splice(indexPositionToShift, 1);
 							}
 							else{
@@ -173,15 +185,17 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 					
 					//Set ship in gamefield
 					if(possibleDirection){
-						$("#place-" + row + "-" + col).css('backgroundColor', shipColor);
-
-						//Debug feature: Show Ship directions in ship core
-						if(debug){
-							$("#place-" + row + "-" + col).html(randDirection);
-						}
+						//Wenn die Information über den Schiffsnamen gebraucht wird. row und col liegen dann auf Index 1 und 2
+						//shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][0] = ship[shipProperties[actualShipProperty]].name;
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0] = [];
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][0] = row;
+						shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][1] = col;
 						
+						//Set ship core
+						board[row][col] = 1;
 
-						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
+						for(let shipFields = 1; shipFields < ships.getShip(currentShipProperty).gameFields; shipFields++){
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields] = [];
 							let usedRow = row;
 							let usedCol = col;
 
@@ -194,12 +208,15 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 								if(debug){
 									alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
 								}	 		
-							}
-							$("#place-" + usedRow + "-" + usedCol).css('background-color', shipColor);
+							}				
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields][0] = usedRow;
+							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields][1] = usedCol;
+							board[usedRow][usedCol] = 1;
 						}
-						freeFields = getFreeFields();
+						shipCoordinatesForServerIndex++;
+						freeFields = getAvailableFields(board);
 						actualShipNotSetInGameField = false;
-						let indexPositionToShift = shipsToSetUp.indexOf(ship[shipProperties[actualShipProperty]].name);
+						let indexPositionToShift = shipsToSetUp.indexOf(ships.getShip(currentShipProperty).name);
 						shipsToSetUp.shift(indexPositionToShift);
 						
 						$("#buttonNumberOfShips").text(shipsToSetUp.length);	
@@ -215,5 +232,19 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 				}
 			}	
 		}
+	}
+
+	UIManager.showShips(transformBoard(board), "myGameFieldBody");
+
+	function transformBoard(board) {
+		let res = [[], [], [], [], [], [], [], [], [], []];
+
+		for(let row = 1; row <= 10; row++) {
+			for(let col = 1; col <= 10; col++) {
+				res[row - 1][col - 1] = board[row][col];
+			}
+		}
+
+		return res;
 	}
 }

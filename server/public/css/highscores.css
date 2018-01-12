@@ -1,10 +1,10 @@
-.highscoreArea {
-	height: 150px;
+/*.highscoreArea {
 	overflow:auto;
-}
+}*/
 
 .highscores {
 	font-size: 16pt;
+	overflow:auto;
 }
 
 .highscores .row {
