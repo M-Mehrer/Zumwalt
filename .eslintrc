@@ -10,6 +10,7 @@
 	},
 	"extends": "eslint:recommended",
 	"rules": {
-		"indent": ["warn", "tab"]
+		"indent": ["warn", "tab"],
+		"no-unused-vars": "warn"
 	}
 }

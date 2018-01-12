@@ -11,19 +11,18 @@ const highscores = require('./api/highscores');
 const debug = true;
 const PORT = 3000;
 
-const FREE = 0, SHIP = 1, HITTED = 2;
 const MISS = 0, HIT = 1, SANK = 2;
 
-const catPictures = [
+/*const catPictures = [
 	"https://cdn.pixabay.com/photo/2016/09/11/09/49/cat-1660964_1280.jpg",
 	"https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_March_2010-1.jpg",
 	"https://pixnio.com/free-images/2017/09/26/2017-09-26-09-44-30-1100x733.jpg"
-];
+];*/
 
 let ships = [];
 let players = [];
-let enemies = [];
-let names = [];
+//let enemies = [];
+//let names = [];
 
 
 // Initialize socket connections
@@ -57,7 +56,7 @@ io.on('connection', function(socket){
 
 	socket.on('shot', (turn) => {
 		// TODO: check turn
-		turnData = turn.coordinates;
+		let turnData = turn.coordinates;
 
 		let result = MISS;
 		for(let j = 0; j < ships[enemy].length; j++) {
@@ -84,9 +83,9 @@ io.on('connection', function(socket){
 
 		let resName = "";
 		switch(result) {
-			case 0: resName = 'miss'; break;
-			case 1: resName = 'hit'; break;
-			case 2: resName = 'destroyed'; break;
+		case 0: resName = 'miss'; break;
+		case 1: resName = 'hit'; break;
+		case 2: resName = 'destroyed'; break;
 		}
 		socket.emit(resName, turn);
 		players[enemy].emit(resName, turn);
@@ -99,7 +98,7 @@ io.on('connection', function(socket){
 		}
 	});
 
-	socket.on('disconnect', (reason) => {
+	socket.on('disconnect', () => {
 		if(players[enemy]) {
 			ships[i] = undefined;
 			players[enemy].emit('end', 'Enemy disconnected.');
@@ -143,7 +142,7 @@ http.listen(PORT, function() {
 	if(debug)
 		console.log('Server started: http://localhost:' + PORT);
 	else {
-		require('dns').lookup(require('os').hostname(), function (err, ip, fam) {
+		require('dns').lookup(require('os').hostname(), function (err, ip) {
 			console.log('Server started: ' + ip + ":" + PORT);
 		});
 	}

@@ -1,18 +1,15 @@
-/* global $, ship */
-
- // eslint-disable-line no-unused-vars
-
-const apiURL = "http://localhost:3000/api/v1";
+/* global $, Gamefield, Highscore, UIManager, ships, io */
 
 let myShips = new Gamefield("myGameFieldBody");
 let otherShips = new Gamefield("otherGameFieldBody");
-
-let socket;
+let highscoreManager = new Highscore();
 
 let shipsReady = false;
 let isPlayerTurn;
 let gameIsRunning;
 let myHighscore = 0;
+
+let player1 = "Player1", player2 = "Player2";
 
 // Initializations
 $(document).ready(function() {
@@ -21,24 +18,23 @@ $(document).ready(function() {
 	UIManager.inititializeShips(otherShips.id);
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
-	socket = io();
+	let socket = io();
 
 	$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
 		$("#otherArea").hide();
 		isPlayerTurn = beginner;
-		//alert("Beginner: " + beginner);
 		gameIsRunning = true;
 
 		if(beginner) {
 			$("#otherGameField").addClass("activeBoard");
-			printGameLog( $('#player1').val() + " ist am Zug.");
+			UIManager.printGameLog( $('#player1').val() + " ist am Zug.");
 
 			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 		else {
-			printGameLog("Auf " +  $('#player2').val() + " warten.");
+			UIManager.printGameLog("Auf " +  $('#player2').val() + " warten.");
 
 			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
 		}
@@ -59,18 +55,18 @@ $(document).ready(function() {
 			socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 			$("#shipSetup").hide();
 			$("#otherGameField").show();
-			printGameLog("Gegner wird gesucht...");
+			UIManager.printGameLog("Gegner wird gesucht...");
 		}
 	});
 
 	socket.on('message', (msg) => {
 		// Print message
-		printGameLog(msg);
+		UIManager.printGameLog(msg);
 	});
 
 	socket.on('end', (msg) => {
 		// Print message
-		printGameLog(msg);
+		UIManager.printGameLog(msg);
 	});
 
 	$("#otherGameField .boardField").on('click', (event)=> {
@@ -109,7 +105,7 @@ $(document).ready(function() {
 			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 
-		printGameLog((isPlayerTurn ?  $('#player2').val(): $('#player1').val()) + " missed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		UIManager.printGameLog((isPlayerTurn ?  $('#player2').val(): $('#player1').val()) + " missed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -125,7 +121,7 @@ $(document).ready(function() {
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " hitted: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		UIManager.printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " hitted: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -143,47 +139,40 @@ $(document).ready(function() {
 			UIManager.sinkShip(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " destroyed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		UIManager.printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " destroyed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
 	socket.on('gameFinished', (winner)=>{
 		gameIsRunning = false;
 		if (winner){
-			//TODO: Highscore senden
-			//alert("Glückwunsch, du hast gesiegt!");
-			printGameLog("Glückwunsch, du hast gesiegt!");
+			UIManager.printGameLog("Glückwunsch, du hast gesiegt!");
 			$("#otherGameField").removeClass("activeBoard");
-			setHighscore();
-			updateHighscores();
+			highscoreManager.setHighscore(myHighscore);
+			highscoreManager.updateHighscores();
 
 			$("#scoreLabel").text(myHighscore);
 			$("#winnerModal").modal("show");
 		}
 		else{
-			//alert("Schade, du hast leider verloren!");
-			printGameLog("Schade, du hast leider verloren!");
+			UIManager.printGameLog("Schade, du hast leider verloren!");
 
 			$("#looserModal").modal("show");
 		}
 	});
 
-	updateHighscores();
+	highscoreManager.updateHighscores();
 });
 
-function printGameLog(msg) {
-	let log = $("#messageBox");
 
-	let node = $("<p></p>");
-	node.text("- " + msg);
-	log.prepend(node);
-}
 
 function savePlayer() {
 
 	if(playerNamesValid('#player1', '#player2')) {
-		$('#player1Name').html( $('#player1').val());
-		$('#player2Name').html( $('#player2').val());
+		player1 = $('#player1').val();
+		player2 = $('#player2').val()
+		$('#player1Name').html( player1);
+		$('#player2Name').html( player2);
 
 		$('#playerInputModal').modal('hide');
 	}
@@ -214,70 +203,4 @@ function playerNamesValid(id, otherId) {
 	return ($(id).val() !== $(otherId).val()
 			&& $(id).val() !== ""
 			&& $(otherId).val() !== "") ;
-}
-
-function setHighscore(){
-	$.ajax({
-		type: "POST",
-		data: JSON.stringify({
-			"name": $('#player1').val(),
-			"points": myHighscore
-		}),
-		contentType: "application/json",
-		dataType: "JSON",
-		url: apiURL + "/highscore",
-		success: printGameLog("Dein Highscore mit " + myHighscore + " wurde erfolgreich gespeichert!")
-	});
-}
-
-function updateHighscores() {
-	$.ajax({
-		method: "GET",
-		dataType: "JSON",
-		url: apiURL + "/highscore"
-	}).done((msg) => {
-		showHighscores(getBestHighscores(msg.highscore, 5));
-	});
-}
-
-function getBestHighscores(highscores, nr) {
-	highscores.sort(function(a, b){return a.points - b.points});
-
-	let best = [];
-	let last;
-
-	for(let i = 0; i < highscores.length && i < nr; i++) {
-		best.push(highscores[i]);
-		last = highscores[i];
-	}
-
-	for(let i = nr; i < highscores.length; i++) {
-		if(highscores[i].points == last.points) {
-			best.push(highscores[i]);
-		}
-	}
-
-	return best;
-}
-
-function showHighscores(highscores) {
-	let container = $("#highscores");
-	container.html("");
-
-	if(highscores.length == 0) {
-		container.append($("<span>Noch keine Einträge.</span><hr/>"));
-	}
-
-	for(let i = 0; i < highscores.length; i++) {
-		let row = $('<span/>', {class: 'highscores'});
-		let name = $('<span/>', {class: "col-xs-8"});
-		name.append(highscores[i].name);
-		let score = $('<span/>', {class: "col-xs-4"});
-		score.append(highscores[i].points + " Pt.");
-		let brhr = $('<br/><hr/>');
-		row.append(name);
-		row.append(score);
-		row.append(brhr);
-		container.append(row);
-	}
 }

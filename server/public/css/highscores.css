@@ -1,15 +1,7 @@
-/*.highscoreArea {
-	overflow:auto;
-}*/
-
 #highscores {
 	font-size: 16pt;
 	max-height: 150px;
 	overflow: auto;
-}
-
-.highscores .row {
-	margin: 0;
 }
 
 .highscores hr {

@@ -1,4 +1,4 @@
-const ships = { // eslint-disable-line no-unused-vars
+const ships = {
 
 	availableShips: [
 		{

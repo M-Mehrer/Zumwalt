@@ -1,35 +1,4 @@
-/*$(document).ready(function() {
-	UIManager.inititializeShips("myGameFieldBody");
-	UIManager.inititializeShips("otherGameFieldBody");
-
-	UIManager.shipSetup([
-		{name: "Schlachtschiff", length: 5, number: 1},
-		{name: "Kreuzer", length: 4, number: 2},
-		{name: "Zerstörer", length: 3, number: 3},
-		{name: "U-Boot", length: 2, number: 4}
-	], "myShipsToSetUp")
-
-	UIManager.showShips([
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		[0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-	], "myGameFieldBody");
-
-	UIManager.markField(1, 1, "myGameFieldBody");
-	UIManager.markField(1, 2, "myGameFieldBody");
-	UIManager.markField(1, 3, "myGameFieldBody");
-	UIManager.unmarkField(1, 2, "myGameFieldBody");
-
-	UIManager.markField(8, 2, "myGameFieldBody");
-	UIManager.markField(8, 3, "myGameFieldBody");
-});*/
+/* global $ */
 
 const UIManager = {
 	fieldSize: 10,
@@ -89,7 +58,7 @@ const UIManager = {
 				let field = $("#" + id + "-" + row + "-" + col);
 				field.removeClass("shipBg");
 				field.addClass("waterBg");
-				unmarkField(row, col, id);
+				this.unmarkField(row, col, id);
 			}
 		}
 	},
@@ -122,32 +91,28 @@ const UIManager = {
 	},
 
 	sinkShip(row, col, id) {
-		let rowDir, colDir, nextField;
+		let rowDir, colDir;
 
 		// Check west
 		rowDir = -1, colDir = 0;
-
 		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
 			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
 		}
 
 		// Check north
 		rowDir = 0, colDir = -1;
-
 		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
 			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
 		}
 
 		// Check east
 		rowDir = 1, colDir = 0;
-
 		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
 			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
 		}
 
 		// Check south
 		rowDir = 0, colDir = 1;
-
 		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
 			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
 		}
@@ -221,5 +186,11 @@ const UIManager = {
 
 	clearShipSetup(id) {
 		$("#" + id).html("");
+	},
+
+	printGameLog(msg) {
+		let node = $("<p></p>");
+		node.text("- " + msg);
+		$("#messageBox").prepend(node);
 	}
 }
