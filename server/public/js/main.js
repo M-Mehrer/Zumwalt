@@ -21,10 +21,6 @@ $(document).ready(function() {
 
 	socket = io();
 
-	$("#setUpShipsRandomly").on("click", (event) =>{
-		myShips.setUpShipsRandomly();
-	});
-
 	//$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
@@ -48,14 +44,16 @@ $(document).ready(function() {
 
 		$("#sendShips").removeClass("disabled");
 		$("#sendShips").text("Bereit");
+
+		$("#sendShips").on('click', (event) => {
+			socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
+			$("#shipSetup").hide();
+			$("#otherGameField").show();
+		});
 	});
 
 
-	$("#sendShips").on('click', (event) => {
-		socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
-		$("#shipSetup").hide();
-		$("#otherGameField").show();
-	});
+	
 
 	socket.on('message', (msg) => {
 		// Print message
@@ -125,10 +123,12 @@ $(document).ready(function() {
 			//mark ship with dark red dots on enemy board
 			UIManager.setShipField(position[0], position[1], "otherGameFieldBody");
 			UIManager.markField(position[0], position[1], "otherGameFieldBody");
+			UIManager.sinkShip(position[0], position[1], "otherGameFieldBody");
 		}
 		else{
 			//mark ship with dark red dots on own board
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
+			UIManager.sinkShip(position[0], position[1], "myGameFieldBody");
 		}
 
 		printGameLog("Player destroyed: [" + position[0] + ", " + position[1] + "]");
@@ -141,6 +141,7 @@ $(document).ready(function() {
 			//TODO: Highscore senden
 			//alert("Glückwunsch, du hast gesiegt!");
 			printGameLog("Glückwunsch, du hast gesiegt!");
+			$("#otherGameField").removeClass("activeBoard");
 		}
 		else{
 			//alert("Schade, du hast leider verloren!");

@@ -59,7 +59,7 @@ const UIManager = {
 					}
 				}	
 				else{
-					elem.addClass("waterBg");
+					elem.addClass("waterBg waterHover");
 					elem.attr("id", id + "-" + (row - 1) + "-" + (col - 1));
 				}
 			}
@@ -118,11 +118,46 @@ const UIManager = {
 			.addClass("shipBg");
 	},
 
+	sinkShip(row, col, id) {
+		let rowDir, colDir, nextField;
+
+		// Check west
+		rowDir = -1, colDir = 0;
+
+		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
+			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
+		}
+
+		// Check north
+		rowDir = 0, colDir = -1;
+
+		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
+			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
+		}
+
+		// Check east
+		rowDir = 1, colDir = 0;
+
+		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
+			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
+		}
+
+		// Check south
+		rowDir = 0, colDir = 1;
+
+		for(let i = 1; $("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).hasClass("shipBg"); i++) {
+			$("#" + id + "-" + (row + rowDir * i) + "-" + (col + colDir * i)).removeClass("waterBg shipBg").addClass("sunkBg");
+		}
+		
+		$("#" + id + "-" + row + "-" + col).removeClass("waterBg shipBg").addClass("sunkBg");
+	},
+
 	markField(row, col, id) {
 		let dot = $("<div></div>");
 		dot.addClass("dot shipDotBg");
 
 		let field = $("#" + id + "-" + row + "-" + col);
+		field.removeClass("waterHover");
 
 		if(field.hasClass("waterBg")) {
 			dot.removeClass("shipDotBg")
@@ -134,6 +169,7 @@ const UIManager = {
 
 	unmarkField(row, col, id) {
 		let field = $("#" + id + "-" + row + "-" + col);
+		field.addClass("waterHover");
 		field.html("");
 	},
 

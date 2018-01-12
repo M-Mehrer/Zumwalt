@@ -59,7 +59,7 @@ body {
 	
 }
 
-.activeBoard div div.boardField:hover {
+.activeBoard div .waterHover:hover {
 	background-color: #0066ff;
 }
 
@@ -110,5 +110,9 @@ body {
 }
 
 .shipDotBg {
+	background-color: red;
+}
+
+.sunkBg {
 	background-color: red;
 }

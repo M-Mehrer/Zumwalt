@@ -14,6 +14,12 @@ const PORT = 3000;
 const FREE = 0, SHIP = 1, HITTED = 2;
 const MISS = 0, HIT = 1, SANK = 2;
 
+const catPictures = [
+	"https://cdn.pixabay.com/photo/2016/09/11/09/49/cat-1660964_1280.jpg",
+	"https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_March_2010-1.jpg",
+	"https://pixnio.com/free-images/2017/09/26/2017-09-26-09-44-30-1100x733.jpg"
+];
+
 let ships = [];
 let players = [];
 let enemies = [];
