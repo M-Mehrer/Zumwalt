@@ -215,7 +215,7 @@ function setHighscore(){
 	$.ajax({
 		type: "POST",
 		data: JSON.stringify({
-			"name": "EinName",
+			"name": $('#player1'),
 			"points": myHighscore
 		}),
 		contentType: "application/json",
