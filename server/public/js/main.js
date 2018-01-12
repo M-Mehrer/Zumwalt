@@ -23,7 +23,7 @@ $(document).ready(function() {
 
 	socket = io();
 
-	//$("#playerInputModal").modal("show");
+	$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
 		$("#otherArea").hide();
@@ -33,12 +33,12 @@ $(document).ready(function() {
 
 		if(beginner) {
 			$("#otherGameField").addClass("activeBoard");
-			printGameLog("Sie sind am Zug.");
+			printGameLog( $('#player1').val() + " ist am Zug.");
 
 			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 		else {
-			printGameLog("Auf den Gegner warten.");
+			printGameLog("Auf " +  $('#player2').val() + " warten.");
 
 			$("#turn-otherGameFieldBody").addClass("enemyTurnBg");
 		}
@@ -109,7 +109,7 @@ $(document).ready(function() {
 			$("#turn-otherGameFieldBody").addClass("myTurnBg");
 		}
 
-		printGameLog("Player missed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		printGameLog((isPlayerTurn ?  $('#player2').val(): $('#player1').val()) + " missed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -125,7 +125,7 @@ $(document).ready(function() {
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog("Player hit: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " hitted: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
@@ -143,7 +143,7 @@ $(document).ready(function() {
 			UIManager.sinkShip(position[0], position[1], "myGameFieldBody");
 		}
 
-		printGameLog("Player destroyed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
+		printGameLog((isPlayerTurn ?  $('#player1').val(): $('#player2').val()) + " destroyed: [" + UIManager.alphabet[position[1]] + ", " + (position[0] + 1) + "]");
 		gameIsRunning = true;
 	});
 
