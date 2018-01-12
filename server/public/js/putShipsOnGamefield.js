@@ -1,17 +1,5 @@
 /* global $, fieldSize, freeBoardField, shipColor, ship */
 
-function countAmountOfShipsToSetUp(shipProperties){ // eslint-disable-line no-unused-vars 
-	var amountOfShips = 0;
-
-	if(shipProperties instanceof Array){
-		for(let i = 0; i < shipProperties.length; i++){
-			amountOfShips += ship[shipProperties[i]].amount;
-		}
-	}
-
-	return amountOfShips;
-}
-
 function shipLiesInGamefield(row, col, shipUsedGamefields){
 	var possibleDirection = [];
 
@@ -120,67 +108,20 @@ function getAvailableFields(board){
 }
 
 function getAllShips(shipProperties){
-	var ships = [];
+	let allShips = [];
 
-	for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
-		for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){
-			ships.push(ship[shipProperties[actualShipProperty]].name);
+	for(let i = 0; i < shipProperties.length; i++) {
+		for(let amount = 0; amount < shipProperties[i].amount; amount++) {
+			allShips.push(i);
 		}
 	}
 
-	return ships;
+	return allShips;
 }
 
-/**
- * Uses a two dimensional array of int to create the gamefield.
- * 0 -> No ship
- * 1 -> Ship
- * @param {2dim int Array} board 
- * @param {html id to bind the gamefield} idHtmlContainer 
- * @param {true/false if the gamefield be active to shoot on it} isActiveField 
- */
-function renderGameField(board, idHtmlContainer, isActiveField){
-	let alphabet = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
-	let id;
-	let activeFieldClass = "";
-	if(isActiveField){
-		activeFieldClass = "activeField";
-	}
-
-	for(let row = 0; row <= fieldSize; row++){
-		let rowNode = $('<div class="boardRow"></div>');
-
-		for(let col = 0; col <= fieldSize; col++){
-			if(row === 0 && col === 0){
-				rowNode.append($('<div class="boardField"></div>'));
-			}
-			else if(row === 0){
-				rowNode.append($('<div class="boardField boardFieldCoordinate">' + alphabet[col - 1] + '</div>'));
-			}
-			else if(col === 0){
-				rowNode.append($('<div class="boardField boardFieldCoordinate">' + row + '</div>'));
-			}
-			else{
-				let id = "#place-" + row + "-" + col;
-
-				if(board[row][col] === 1){
-					rowNode.append($('<div id="' + id + '" class="boardField ' + activeFieldClass + ' shipBgColor"></div>'));
-				}
-				else{
-					rowNode.append($('<div id="' + id + '" class="boardField ' + activeFieldClass + ' freeBordfieldBgColor"></div>'));
-				}
-			}
-		}
-		$(idHtmlContainer).append(rowNode);
-	}
-
-	//Dynamic size of cells
-	$(".boardRow").css("height", (100 / (fieldSize + 1)) + "%");
-	$(".boardField").css("width", (100 / (fieldSize + 1)) + "%");
-}
 
 function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars 
-	let shipProperties = ship.shipProperties();
+	let shipProperties = ships.availableShips;
 	let shipsToSetUp = getAllShips(shipProperties);
 	let shipCoordinatesForServerIndex = 0;
 	shipCoordinatesForServer = {"ships":[]};
@@ -190,8 +131,8 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 		let freeFields = getAvailableFields(board);
 		shipsToSetUp = getAllShips(shipProperties);
 
-		for(let actualShipProperty = 0; actualShipProperty < shipProperties.length; actualShipProperty++){
-			for(let shipNumber = 0; shipNumber < ship[shipProperties[actualShipProperty]].amount; shipNumber++){	
+		for(let currentShipProperty = 0; currentShipProperty < shipProperties.length; currentShipProperty++){
+			for(let shipNumber = 0; shipNumber < ships.getShip(currentShipProperty).amount; shipNumber++){	
 				let tmpFreeFields = freeFields.slice();		
 				let actualShipNotSetInGameField = true;
 				shipCoordinatesForServer.ships[shipCoordinatesForServerIndex] = [];
@@ -200,7 +141,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 					let position = getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]); // eslint-disable-line no-undef
 					let row = position[0];
 					let col = position[1];
-					let shipGamefieldDirections = shipLiesInGamefield(row, col, (ship[shipProperties[actualShipProperty]].gameFields));
+					let shipGamefieldDirections = shipLiesInGamefield(row, col, ships.getShip(currentShipProperty).gameFields);
 					let randDirection;
 					
 					let possibleDirection = false;
@@ -208,7 +149,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 						randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)]; // eslint-disable-line no-undef
 
 						//First field is always free
-						for(let shipFields = 1, fieldPossible = true; shipFields < ship[shipProperties[actualShipProperty]].gameFields && fieldPossible; shipFields++){
+						for(let shipFields = 1, fieldPossible = true; shipFields < ships.getShip(currentShipProperty).gameFields && fieldPossible; shipFields++){
 							let usedRow = row;
 							let usedCol = col;
 
@@ -253,7 +194,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 						//Set ship core
 						board[row][col] = 1;
 
-						for(let shipFields = 1; shipFields < ship[shipProperties[actualShipProperty]].gameFields; shipFields++){
+						for(let shipFields = 1; shipFields < ships.getShip(currentShipProperty).gameFields; shipFields++){
 							shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][shipFields] = [];
 							let usedRow = row;
 							let usedCol = col;
@@ -275,7 +216,7 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 						shipCoordinatesForServerIndex++;
 						freeFields = getAvailableFields(board);
 						actualShipNotSetInGameField = false;
-						let indexPositionToShift = shipsToSetUp.indexOf(ship[shipProperties[actualShipProperty]].name);
+						let indexPositionToShift = shipsToSetUp.indexOf(ships.getShip(currentShipProperty).name);
 						shipsToSetUp.shift(indexPositionToShift);
 						
 						$("#buttonNumberOfShips").text(shipsToSetUp.length);	
@@ -292,6 +233,18 @@ function setUpShipsRandomly(){ // eslint-disable-line no-unused-vars
 			}	
 		}
 	}
-	$('#myGameField').html("");
-	renderGameField(board, '#myGameField', true);
+
+	UIManager.showShips(transformBoard(board), "myGameFieldBody");
+
+	function transformBoard(board) {
+		let res = [[], [], [], [], [], [], [], [], [], []];
+
+		for(let row = 1; row <= 10; row++) {
+			for(let col = 1; col <= 10; col++) {
+				res[row - 1][col - 1] = board[row][col];
+			}
+		}
+
+		return res;
+	}
 }

@@ -11,9 +11,18 @@ let socket;
 
 // Initializations
 $(document).ready(function() {
-	board = initializeBoard();
-	renderGameField(board, '#myGameField', true);
-	initializeShips('#otherGameField');
+	UIManager.inititializeShips("myGameFieldBody");
+	UIManager.inititializeShips("otherGameFieldBody");
+
+	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
+
+	$("#setUpShipsRandomly").on("click", (event) =>{
+		setUpShipsRandomly();
+	});
+	
+	//board = initializeBoard();
+	//renderGameField(board, '#myGameField', true);
+	//initializeShips('#otherGameField');
 
 	//$("#playerInputModal").modal("show");
 

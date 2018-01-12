@@ -1,36 +1,106 @@
-#myShipsToSetUp {
-	height: 80%;
-	width: 100%;
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('https://fonts.googleapis.com/css?family=Nosifer');
+@import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+
+
+body {
+	font-family: 'Permanent Marker';
+	font-size: 20pt;
+	background-color: #292929; color: white; /*dark theme*/
+	margin: 1%;
 }
 
-.setUpShipsArea {
-	height: 10%;
-	margin-top: 2%;	
-	display: flex;
-	align-items: center;
+
+/* header */
+.infoArea {
+	margin: 2%;
 }
 
-.setUpShipsAreaRow {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	align-items: flex-start;
+.playerInputArea {
+	margin-top: 20px;
 }
 
-.setUpShipsAreaRowUsedGameFields {
+/* modal */
+#playerInputModal {
+	color: black;
+}
+
+.playerLabel .playerName {
+	font-size: 16pt;
+}
+
+
+/* message box; */
+.messageBox {
+	border: 2px solid cyan;
+	height: 200px;
+	overflow: auto;
+	font-size: 15pt;
+	margin-bottom: 3%;
+	padding: 2%;
+}
+
+/* game board */
+.gameField {
+	margin-top: 3%;
+}
+
+.boardField {
+	/*position: relative;*/
+	height: 0;
+	font-size: 38;
 	border: 1px solid lightgray;
-	position: relative;
+	padding: 3% 3% 7% 3%;
 	float: left;
-	height: 100%;
+	width: 10%;
 }
 
-#myShipsButtons {
-	height: 15%;
+.activeBoard div div.boardField:hover {
+	background-color: #0066ff;
+}
+
+.dot {
 	width: 100%;
+	padding-bottom: 100%;
+	border-radius: 50%;
+	background-color: red;
 }
 
-.setUpShipsButtons {
-	font-size: 18pt;
-	height: 100%;
+
+/* ships setup */
+.setUpShipsRow {
+	margin-top: 5%;
+}
+
+.setUpShipsField {
+	position: relative;
+	border: 1px solid lightgray;
+	padding: 0;
+	float: left;
+	width: 20%;
+	padding-bottom: 20%;
+	background-color: #5c5c5c;
+}
+
+.shipSetupControlButtons {
+	padding-top: 10%;
+	padding-bottom: 10%;
+}
+
+
+/* Background colors */
+.shipBg {
+	background-color: #5c5c5c;
+}
+
+.waterBg {
+	background-color: #149fd6;
+}
+
+.waterDotBg {
+	background-color: white;
+}
+
+.shipDotBg {
+	background-color: red;
 }
