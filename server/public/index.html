@@ -2,7 +2,11 @@
 <html lang="de">
 
 <head>
-	<title>Schiffe versenken</title>
+    <title>Schiffe versenken</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicons/katze.png">
+
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -112,7 +116,7 @@
         </div>
 
         <!-- Enemy game field -->
-        <div id="otherGameField" class="col-xs-12 col-md-6 gameField activeBoard" hidden>
+        <div id="otherGameField" class="col-xs-12 col-md-6 gameField" hidden>
             <div id="otherGameFieldHeader">Schiffe des Gegners</div>
             <div id="otherGameFieldBody">
 				<!-- other game field here -->
@@ -122,9 +126,8 @@
    
     <div style="margin-top: 2%;">
         <h2>Spielverlauf: </h2>
-        <div class="messageBox">
+        <div id="messageBox" class="messageBox">
 			<!-- messages here -->
-            <p>Spieler 1 hat [1,3] beschossen</p>
             
         </div>
     </div>

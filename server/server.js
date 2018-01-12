@@ -44,7 +44,7 @@ io.on('connection', function(socket){
 
 	socket.on('shot', (turn) => {
 		// TODO: check turn
-		turnData = turn.coordinames;
+		turnData = turn.coordinates;
 
 		let result = MISS;
 		for(let j = 0; j < ships[enemy].length; j++) {
@@ -52,25 +52,34 @@ io.on('connection', function(socket){
 
 			for(let k = 0; k < ship.length; k++) {
 				let coord = ship[k];
-				if(coord[0] == turnData[0] && coord[1] == turnData[1]) {
+				if(coord[0] === turnData[0] && coord[1] === turnData[1]) {
 					// Remve coordinate
 					ships[enemy][j] = removeIndex(ship, k);
 					result = HIT;
 				}
 			}
 
-			if(ships[enemy][j].length == 0) {
+			if(ships[enemy][j].length === 0) {
 				// Remove sunken ship
 				ships[enemy] = removeIndex(ships[enemy], j);
 				result = SANK;
 			}
 		}
 
-		socket.emit('turnResult', result);
-		players[enemy].emit('turn', turn);
+		//console.log(turnData);
+		//console.log(result);
+
+		let resName = "";
+		switch(result) {
+			case 0: resName = 'miss'; break;
+			case 1: resName = 'hit'; break;
+			case 2: resName = 'destroyed'; break;
+		}
+		socket.emit(resName, turn);
+		players[enemy].emit(resName, turn);
 
 		if(ships[enemy].length == 0) {
-			socket.emit('winner', true);
+			socket.emit('gameFinished', true);
 			players[enemy].emit('winner', false);
 
 			console.log("A game ended.");
@@ -111,6 +120,10 @@ app.use(serveStatic('public'));
 
 // API
 app.use("/api/v1/highscore/", highscores);
+
+app.get("*", (req, res) => {
+	res.status(404).send("<center><h1>404: Seite nicht gefunden.</h1><img src='https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_March_2010-1.jpg' style='width: 80%;'></center>");
+})
 
 // Start Server
 http.listen(PORT, function() {

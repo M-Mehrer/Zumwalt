@@ -111,6 +111,11 @@ const UIManager = {
 		field.html("");
 	},
 
+	isMarked(row, col, id) {
+		let field = $("#" + id + "-" + row + "-" + col);
+		return field.html() !== "";
+	},
+
 	cleadMarks(id) {
 		for(let row = 0; row < this.fieldSize; row++) {
 			for(let col = 0; col < this.fieldSize; col++) {

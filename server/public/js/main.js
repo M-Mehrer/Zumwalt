@@ -30,9 +30,17 @@ $(document).ready(function() {
 	socket.on('beginner', (beginner) => {
 		$("#otherArea").hide();
 		isPlayerTurn = beginner;
-		alert("Beginner: " + beginner);
+		//alert("Beginner: " + beginner);
 		gameIsRunning = true;
-			});
+
+		if(beginner) {
+			$("#otherGameField").addClass("activeBoard");
+			printGameLog("Sie sind am Zug.");
+		}
+		else {
+			printGameLog("Auf den Gegner warten.");
+		}
+	});
 
 	$("#setUpShipsRandomly").on("click", (event) =>{
 		myShips.setUpShipsRandomly();
@@ -43,73 +51,100 @@ $(document).ready(function() {
 	});
 
 
-	$("#sendShips").click((event) => {
+	$("#sendShips").on('click', (event) => {
 		socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 		$("#shipSetup").hide();
 		$("#otherGameField").show();
 	});
 
 	socket.on('message', (msg) => {
-		// TODO: Print message
+		// Print message
 		printGameLog(msg);
-	})
+	});
+
+	socket.on('end', (msg) => {
+		// Print message
+		printGameLog(msg);
+	});
 
 
-	$("#otherGameField .boardField").click((event)=> {
-		if (isPlayerTurn && gameIsRunning){
-			//gets id from specific clicked field and extracts coordinates in an array
-			let position = event.currentTarget.id.split("-").reverse();
-			position.pop();
-			position = position.reverse();
+	$("#otherGameField .boardField").on('click', (event)=> {
+		//gets id from specific clicked field and extracts coordinates in an array
+		let position = event.currentTarget.id.split("-").reverse();
+		position.pop();
+		position = position.reverse();
+		position = position.map((val) => {return parseInt(val);});
+
+		if (isPlayerTurn && gameIsRunning && !UIManager.isMarked(position[0], position[1], "otherGameFieldBody")){
+			gameIsRunning = false;
+
 			socket.emit('shot', {coordinates:position});
-			alert("klick at: " + position);
+			//alert("klick at: " + position);
 		}
 
 	});
 
 	socket.on('miss', (position)=> {
+		position = position.coordinates;
 		if (isPlayerTurn){
 			//mark position with white dot on enemy board
 			UIManager.markField(position[0], position[1], "otherGameFieldBody");
 			isPlayerTurn = false;
+			$("#otherGameField").removeClass("activeBoard");
 		}
 		else{
 			//mark position with white dot on own board
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 			isPlayerTurn = true;
+			$("#otherGameField").addClass("activeBoard");
 		}
+
+		printGameLog("Player missed: [" + position[0] + ", " + position[1] + "]");
+		gameIsRunning = true;
 	});
 
 	socket.on('hit', (position)=> {
+		position = position.coordinates;
 		if (isPlayerTurn){
 			//mark position with red dot on enemy board
+			UIManager.setShipField(position[0], position[1], "otherGameFieldBody");
 			UIManager.markField(position[0], position[1], "otherGameFieldBody");
 		}
 		else{
 			//mark position with red dot on own board
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 		}
+
+		printGameLog("Player hit: [" + position[0] + ", " + position[1] + "]");
+		gameIsRunning = true;
 	});
 
 	socket.on('destroyed', (position)=> {
+		position = position.coordinates;
 		if (isPlayerTurn){
 			//mark ship with dark red dots on enemy board
+			UIManager.setShipField(position[0], position[1], "otherGameFieldBody");
 			UIManager.markField(position[0], position[1], "otherGameFieldBody");
 		}
 		else{
 			//mark ship with dark red dots on own board
 			UIManager.markField(position[0], position[1], "myGameFieldBody");
 		}
+
+		printGameLog("Player destroyed: [" + position[0] + ", " + position[1] + "]");
+		gameIsRunning = true;
 	});
 
 	socket.on('gameFinished', (winner)=>{
 		gameIsRunning = false;
 		if (winner){
-			//Highscore senden
-			alert("Glückwunsch, du hast gesiegt!");
+			//TODO: Highscore senden
+			//alert("Glückwunsch, du hast gesiegt!");
+			printGameLog("Glückwunsch, du hast gesiegt!");
 		}
 		else{
-			alert("Schade, du hast leider verloren!");
+			//alert("Schade, du hast leider verloren!");
+			printGameLog("Schade, du hast leider verloren!");
 		}
 	});
 
@@ -118,7 +153,11 @@ $(document).ready(function() {
 });
 
 function printGameLog(msg) {
-	// TODO
+	let log = $("#messageBox");
+
+	let node = $("<p></p>");
+	node.text("- " + msg);
+	log.append(node);
 }
 
 function savePlayer() {
