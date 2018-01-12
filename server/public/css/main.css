@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
-@import url('https://fonts.googleapis.com/css?family=Nosifer');
+
+@import url('https://fonts.googleapis.com/css?family=Macondo');
 @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
 
 body {
-	font-family: 'Permanent Marker';
+	font-family: 'Macondo';
 	font-size: 20pt;
 	background-color: #292929; color: white; /*dark theme*/
 	margin: 1%;
@@ -56,7 +56,7 @@ body {
 .coordinates {
 	display: flex;
 	align-items: center;
-	
+
 }
 
 .activeBoard div .waterHover:hover {
