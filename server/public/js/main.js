@@ -9,6 +9,7 @@ let otherShips = new Gamefield("otherGameFieldBody");
 
 let socket;
 
+let shipsReady = false;
 let isPlayerTurn;
 let gameIsRunning;
 let myHighscore = 0;
@@ -21,7 +22,7 @@ $(document).ready(function() {
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
 	socket = io();
-	
+
 	//$("#playerInputModal").modal("show");
 
 	socket.on('beginner', (beginner) => {
@@ -49,13 +50,17 @@ $(document).ready(function() {
 
 		$("#sendShips").removeClass("disabled");
 		$("#sendShips").text("Bereit");
+		shipsReady = true;
 
-		$("#sendShips").on('click', (event) => {
+	});
+
+	$("#sendShips").on('click', (event) => {
+		if(shipsReady){
 			socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 			$("#shipSetup").hide();
 			$("#otherGameField").show();
 			printGameLog("Gegner wird gesucht...");
-		});
+		}
 	});
 
 	socket.on('message', (msg) => {
