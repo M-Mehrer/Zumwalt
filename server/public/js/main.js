@@ -4,20 +4,41 @@
 
 const apiURL = "http://localhost:3000/api/v1";
 
-let myShips;
-let otherShips;
+let myShips = new Gamefield("myGameFieldBody");
+let otherShips = new Gamefield("otherGameFieldBody");
 
 let socket;
 
 // Initializations
 $(document).ready(function() {
-	UIManager.inititializeShips("myGameFieldBody");
-	UIManager.inititializeShips("otherGameFieldBody");
-
+	UIManager.inititializeShips(myShips.id);
+	UIManager.inititializeShips(otherShips.id);
 	UIManager.shipSetup(ships.availableShips, "myShipsToSetUp")
 
 	$("#setUpShipsRandomly").on("click", (event) =>{
-		setUpShipsRandomly();
+		myShips.setUpShipsRandomly();
+		/*
+		console.log(myShips.shipCoordinatesForServer[0]);
+		console.log(myShips.shipCoordinatesForServer[1]);
+		console.log(myShips.shipCoordinatesForServer[2]);
+		console.log(myShips.shipCoordinatesForServer[3]);
+		console.log(myShips.shipCoordinatesForServer[4]);
+		console.log(myShips.shipCoordinatesForServer[5]);
+		console.log(myShips.shipCoordinatesForServer[6]);
+		console.log(myShips.shipCoordinatesForServer[7]);
+		console.log(myShips.shipCoordinatesForServer[8]);
+		console.log(myShips.shipCoordinatesForServer[9]);*/
+		
+		console.log(myShips.board[0]);
+		console.log(myShips.board[1]);
+		console.log(myShips.board[2]);
+		console.log(myShips.board[3]);
+		console.log(myShips.board[4]);
+		console.log(myShips.board[5]);
+		console.log(myShips.board[6]);
+		console.log(myShips.board[7]);
+		console.log(myShips.board[8]);
+		console.log(myShips.board[9]);
 	});
 	
 	//board = initializeBoard();
