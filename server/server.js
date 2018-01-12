@@ -42,9 +42,9 @@ io.on('connection', function(socket){
 		}
 	});
 
-	socket.on('turn', (turn) => {
+	socket.on('shot', (turn) => {
 		// TODO: check turn
-		turnData = turn.turn;
+		turnData = turn.coordinames;
 
 		let result = MISS;
 		for(let j = 0; j < ships[enemy].length; j++) {
