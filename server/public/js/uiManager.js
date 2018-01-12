@@ -51,7 +51,10 @@ const UIManager = {
 				if(row === 0 || col === 0){
 					elem.addClass("coordinatesBG coordinates");
 
-					if(row === 0 && col > 0){
+					if(row === 0 && col === 0){
+						elem.attr("id", "turn-" + id);
+					}
+					else if(row === 0 && col > 0){
 						elem.text(alphabet[col - 1]);
 					}
 					else if(col === 0 && row > 0){

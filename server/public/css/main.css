@@ -116,3 +116,11 @@ body {
 .sunkBg {
 	background-color: red;
 }
+
+.myTurnBg {
+	background-color: green;
+}
+
+.enemyTurnBg {
+	background-color: red;
+}
