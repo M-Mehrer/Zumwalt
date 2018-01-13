@@ -86,6 +86,9 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', () => {
+		if(!players[enemy]){
+			players[enemy]=players[i];
+		}
 		if(players[enemy]) {
 			ships[i] = undefined;
 			players[enemy].emit('end', 'Enemy disconnected.');
