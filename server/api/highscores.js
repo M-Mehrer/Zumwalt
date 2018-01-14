@@ -3,7 +3,7 @@ const router = express.Router();
 const fs = require('fs');
 
 router.get('/', (req, res) => {
-	// Read Highscores
+	// Read Highscores from file
 	fs.readFile("api/scores.json", "utf8", function(err, data){
 		if(err) {
 			res.status(500).json();

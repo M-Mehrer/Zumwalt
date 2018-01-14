@@ -17,7 +17,7 @@ io.on('connection', (socket) => {
 });
 
 // Middlewares
-app.use(function(req, res, next) {
+app.use(function(req, res, next) { // Set cors header
 	if(!env.DEBUG) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
