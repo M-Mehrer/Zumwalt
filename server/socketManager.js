@@ -1,3 +1,5 @@
+/* eslint no-console: "off" */
+
 const MISS = 0, HIT = 1, SANK = 2;
 const resultNames = ["miss", "hit", "destroyed"];
 
@@ -17,7 +19,7 @@ function newConnection(socket) {
 		// Check shipData's format
 		if( (shipData === undefined)
 		|| (!shipData.hasOwnProperty("ships"))
-		|| (!shipData.ships instanceof Array)
+		|| (!(shipData.ships instanceof Array))
 		|| (!shipData.ships.length === 10)) {
 			validBoard = false;
 		}
@@ -62,7 +64,7 @@ function newConnection(socket) {
 		|| activePlayer[Math.trunc(i / 2)] !== (i % 2)
 		|| (turn === undefined)
 		|| (!turn.hasOwnProperty('coordinates'))
-		|| (!turn.coordinates instanceof Array)
+		|| (!(turn.coordinates instanceof Array))
 		|| (!turn.coordinates.length === 2)
 		|| (turn.coordinates[0] < 0) || (turn.coordinates[0] >= 10)
 		|| (turn.coordinates[1] < 0) || (turn.coordinates[1] >= 10)
@@ -128,21 +130,21 @@ function newConnection(socket) {
 
 
 function isBoardValid(ships) {
-	if(!ships instanceof Array) {
+	if(!(ships instanceof Array)) {
 		return false;
 	}
 
 	// Check if ship array format matches target
 	for(let shipNr = 0; shipNr < ships.length; shipNr++) {
 		let ship = ships[shipNr];
-		if(!ship instanceof Array) {
+		if(!(ship instanceof Array)) {
 			return false;
 		}
 
 		for(let shipFieldNr = 0; shipFieldNr < ship.length; shipFieldNr++) {
 			let shipField = ship[shipFieldNr];
 
-			if((!shipField instanceof Array)
+			if((!(shipField instanceof Array))
 			|| (!shipField.length === 2)
 			|| (shipField[0] < 0) || (shipField[0] >= 10)
 			|| (shipField[1] < 0) || (shipField[1] >= 10)) {

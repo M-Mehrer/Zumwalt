@@ -1,4 +1,4 @@
-/* global ships */
+/* global ships, debug */
 
 class Gamefield{
 	constructor(id){
@@ -82,7 +82,7 @@ class Gamefield{
 					this._shipCoordinatesForServer[shipCoordinatesForServerIndex] = [];
     
 					while(tmpFreeFields.length > 0 && actualShipNotSetInGameField){
-						let position = this.getRowAndColFromString(tmpFreeFields[getRandomInt(0, tmpFreeFields.length - 1)]);
+						let position = this.getRowAndColFromString(tmpFreeFields[this.getRandomInt(0, tmpFreeFields.length - 1)]);
 						let row = position[0];
 						let col = position[1];
 						let shipGamefieldDirections = this.shipLiesInGamefield(row, col, ships.getShip(currentShipProperty).gameFields);
@@ -90,7 +90,7 @@ class Gamefield{
                         
 						let possibleDirection = false;
 						while(!possibleDirection && shipGamefieldDirections.length > 0){
-							randDirection = shipGamefieldDirections[getRandomInt(0, shipGamefieldDirections.length - 1)];
+							randDirection = shipGamefieldDirections[this.getRandomInt(0, shipGamefieldDirections.length - 1)];
     
 							//First field is always free
 							for(let shipFields = 1, fieldPossible = true; shipFields < ships.getShip(currentShipProperty).gameFields && fieldPossible; shipFields++){
@@ -293,6 +293,15 @@ class Gamefield{
 		let parts = string.split("-");
 
 		return [parseInt(parts[0]), parseInt(parts[1])];
+	}
+
+	/**
+	 * Returns a random integer between min (inclusive) and max (inclusive)
+	 * @param {number} min Minimun value (inclusive) 
+	 * @param {number} max Maximum value (inclusive)
+	 */
+	getRandomInt(min, max){
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 }

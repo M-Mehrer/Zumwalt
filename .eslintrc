@@ -11,6 +11,6 @@
 	"extends": "eslint:recommended",
 	"rules": {
 		"indent": ["warn", "tab"],
-		"no-unused-vars": "warn"
+		"no-unused-vars": "off"
 	}
 }
