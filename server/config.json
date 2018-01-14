@@ -1,5 +1,5 @@
 {
 	"HOST": "localhost",
 	"PORT": 3000,
-	"DEBUG": true
+	"DEBUG": false
 }

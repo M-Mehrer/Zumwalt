@@ -129,7 +129,7 @@ app.get("/*", (req, res) => {
 // Start Server
 http.listen(env.PORT, env.HOST, function() {
 	if(env.DEBUG)
-		console.log('Server started: http://localhost:' + env.PORT);
+		console.log('Server started: http://' + env.HOST + ":" + env.PORT);
 	else {
 		require('dns').lookup(require('os').hostname(), function (err, ip) {
 			console.log('Server started: ' + ip + ":" + env.PORT);
