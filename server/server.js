@@ -61,7 +61,7 @@ io.on('connection', function(socket){
 			for(let k = 0; k < ship.length; k++) {
 				let coord = ship[k];
 				if(coord[0] === turnData[0] && coord[1] === turnData[1]) {
-					// Remve coordinate
+					// Remove coordinate
 					ships[enemy][j] = removeIndex(ship, k);
 					result = HIT;
 				}

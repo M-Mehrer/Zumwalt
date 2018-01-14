@@ -17,8 +17,20 @@ class Gamefield{
 	SHIPFIELD(){
 		return 1;
 	}
+	NORTH(){
+		return 1;
+	}
+	EAST(){
+		return 2;
+	}
+	SOUTH(){
+		return 3;
+	}
+	WEST(){
+		return 4;
+	}
 
-	//Getter
+	//getter
 	get board(){
 		return this._board;
 	}
@@ -29,11 +41,14 @@ class Gamefield{
 		return this._id;
 	}
 
+	/**
+	 * initialize 2dim Array and sets all positions to this.EMPTYFIELD().
+	 */
 	initializeBoard(){
 		let emptyBoard = [];
 
 		for(let row = 0; row < this.FIELDSIZE(); row++){
-			//Initial board as 2dim Array    
+			//initialize board as 2dim Array    
 			emptyBoard[row] = [];
 
 			for(let col = 0; col < this.FIELDSIZE(); col++){
@@ -44,6 +59,9 @@ class Gamefield{
 		return emptyBoard;
 	}
 
+	/**
+	 * Sets up all available ships randomly on this._board
+	 */
 	setUpShipsRandomly(){
 		let shipProperties = ships.availableShips;
 		let shipsToSetUp = this.getAllShips(shipProperties);
@@ -74,14 +92,14 @@ class Gamefield{
     
 							//First field is always free
 							for(let shipFields = 1, fieldPossible = true; shipFields < ships.getShip(currentShipProperty).gameFields && fieldPossible; shipFields++){
-								let usedRow = row;
-								let usedCol = col;
+								let rowDir = row;
+								let colDir = col;
     
 								switch(randDirection){
-								case 1: usedRow -= shipFields; break;
-								case 2: usedCol += shipFields; break;
-								case 3: usedRow += shipFields; break;
-								case 4: usedCol -= shipFields; break;
+								case this.NORTH(): rowDir -= shipFields; break;
+								case this.EAST(): colDir += shipFields; break;
+								case this.SOUTH(): rowDir += shipFields; break;
+								case this.WEST(): colDir -= shipFields; break;
 								default: 
 									if(debug){
 										alert("main.js -> setUpShipsRandomly() -> fehlerhafte Himmelsrichtung: " + randDirection);
@@ -90,7 +108,7 @@ class Gamefield{
     
 								let isFree = false;
 								for(let freeFieldIndex = 0; freeFieldIndex < tmpFreeFields.length; freeFieldIndex++){
-									if((usedRow + "-" + usedCol) === tmpFreeFields[freeFieldIndex]){
+									if((rowDir + "-" + colDir) === tmpFreeFields[freeFieldIndex]){
 										isFree = true;
 									}
 								}
@@ -109,8 +127,6 @@ class Gamefield{
                         
 						//Set ship in gamefield
 						if(possibleDirection){
-							//Wenn die Information über den Schiffsnamen gebraucht wird. row und col liegen dann auf Index 1 und 2
-							//shipCoordinatesForServer.ships[shipCoordinatesForServerIndex][0][0] = ship[shipProperties[actualShipProperty]].name;
 							this._shipCoordinatesForServer[shipCoordinatesForServerIndex][0] = [];
 							this._shipCoordinatesForServer[shipCoordinatesForServerIndex][0][0] = row;
 							this._shipCoordinatesForServer[shipCoordinatesForServerIndex][0][1] = col;
@@ -120,22 +136,22 @@ class Gamefield{
     
 							for(let shipFields = 1; shipFields < ships.getShip(currentShipProperty).gameFields; shipFields++){
 								this._shipCoordinatesForServer[shipCoordinatesForServerIndex][shipFields] = [];
-								let usedRow = row;
-								let usedCol = col;
+								let rowDir = row;
+								let colDir = col;
     
 								switch(randDirection){
-								case 1: usedRow -= shipFields; break;
-								case 2: usedCol += shipFields; break;
-								case 3: usedRow += shipFields; break;
-								case 4: usedCol -= shipFields; break;
+								case this.NORTH(): rowDir -= shipFields; break;
+								case this.EAST(): colDir += shipFields; break;
+								case this.SOUTH(): rowDir += shipFields; break;
+								case this.WEST(): colDir -= shipFields; break;
 								default: 
 									if(debug){
 										alert("main.js -> setUpShipsRandomly -> fehlerhafte Himmelsrichtung: " + randDirection);
 									}	 		
 								}				
-								this._shipCoordinatesForServer[shipCoordinatesForServerIndex][shipFields][0] = usedRow;
-								this._shipCoordinatesForServer[shipCoordinatesForServerIndex][shipFields][1] = usedCol;
-								this._board[usedRow][usedCol] = this.SHIPFIELD();
+								this._shipCoordinatesForServer[shipCoordinatesForServerIndex][shipFields][0] = rowDir;
+								this._shipCoordinatesForServer[shipCoordinatesForServerIndex][shipFields][1] = colDir;
+								this._board[rowDir][colDir] = this.SHIPFIELD();
 							}
 							shipCoordinatesForServerIndex++;
 							freeFields = this.getAvailableFields();
@@ -153,6 +169,10 @@ class Gamefield{
 		}
 	}
 
+	/**
+	 * returns array of int containing all index positions (ships.availableShips) of ships to set up
+	 * @param {*} shipProperties ships.availableShips
+	 */
 	getAllShips(shipProperties){
 		let allShips = [];
     
@@ -165,6 +185,9 @@ class Gamefield{
 		return allShips;
 	}
 
+	/**
+	 * Checks each field on the board and returns an array of strings containing all fields on which ships could be setted up.   
+	 */
 	getAvailableFields(){
 		var availableFields = [];
         
@@ -231,32 +254,38 @@ class Gamefield{
 		return availableFields;
 	}
 
+	/**
+	 * returns direction (int) between 1 - 4, 1 = north, clockwise
+	 * @param {number} row 
+	 * @param {number} col 
+	 * @param {number} shipUsedGamefields 
+	 */
 	shipLiesInGamefield(row, col, shipUsedGamefields){
-		var possibleDirection = [];
+		let possibleDirection = [];
     
 		//Check north
 		if(row - shipUsedGamefields >= 0){
-			possibleDirection.push(1);
+			possibleDirection.push(this.NORTH());
 		}
 		//Check east
 		if(col + shipUsedGamefields <= this.FIELDSIZE()){
-			possibleDirection.push(2);
+			possibleDirection.push(this.EAST());
 		}
 		//Check south
 		if(row + shipUsedGamefields <= this.FIELDSIZE()){
-			possibleDirection.push(3);
+			possibleDirection.push(this.SOUTH());
 		}
 		//Check west
 		if(col - shipUsedGamefields >= 0){
-			possibleDirection.push(4);
+			possibleDirection.push(this.WEST());
 		}
     
 		return possibleDirection;
 	}
 
 	/**
-    * returns array with: array[0] = [int] row and array[1] = [int] col; from string with: var string = 'row-col';
-    * @param {*} string with format: 'row-col';
+    * returns array with: array[0] = [int] row and array[1] = [int] col; from string with string = 'row-col';
+    * @param {string} string with format: 'row-col';
     */
 	getRowAndColFromString(string){
 		let parts = string.split("-");
