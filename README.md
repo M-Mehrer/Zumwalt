@@ -3,8 +3,7 @@ HS-Mannheim WS2017/18 WEB-Projekt: Schiffeversenken
 
 ### Server starten
 - Konsole öffnen
-- In den Ordner der server.js Datei wechseln
-- 'node server.js' tippen um Server zu starten
+- 'npm start' tippen um Server zu starten
 - Server läuft auf localhost:3000
 
 ---
