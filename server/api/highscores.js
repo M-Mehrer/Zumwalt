@@ -6,12 +6,15 @@ router.get('/', (req, res) => {
 	// Read Highscores from file
 	fs.readFile("api/scores.json", "utf8", function(err, data){
 		if(err) {
-			res.status(500).json();
+			res.status(500).json({
+				error: "Internal server error."
+			});
 			return;
 		}
 
 		// Return Highscores
-		res.status(200).json(JSON.parse(data));
+		let jsonString = data;
+		res.status(200).json(JSON.parse(jsonString));
 	});
 });
 
@@ -19,7 +22,9 @@ router.post('/', (req, res) => {
 	// Read Highscores
 	fs.readFile("api/scores.json", "utf8", (err, data) => {
 		if(err) {
-			res.status(500).json();
+			res.status(500).json({
+				error: "Internal server error."
+			});
 			return;
 		}
 		let json = JSON.parse(data);
@@ -35,10 +40,14 @@ router.post('/', (req, res) => {
 		// Write new Highscores
 		fs.writeFile('api/scores.json', JSON.stringify(json), 'utf8', (err) => {
 			if(err) {
-				res.status(500).json();
+				res.status(500).json({
+					error: "Internal server error."
+				});
 				return;
 			}
-			res.status(201).json();
+			res.status(201).json({
+				success: "Highscore successfully saved."
+			});
 		});
 	});
 
