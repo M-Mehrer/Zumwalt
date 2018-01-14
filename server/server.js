@@ -27,7 +27,7 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 app.use(serveStatic('public'));
 
-// API
+// Highscore API
 app.use("/api/v1/highscore/", highscores);
 
 // Error handling (404)
