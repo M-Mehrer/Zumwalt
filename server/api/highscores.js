@@ -13,8 +13,8 @@ router.get('/', (req, res) => {
 		}
 
 		// Return Highscores
-		let jsonString = data;
-		res.status(200).json(JSON.parse(jsonString));
+		let json = JSON.parse(data);
+		res.status(200).json(json);
 	});
 });
 

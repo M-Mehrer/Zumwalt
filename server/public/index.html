@@ -46,8 +46,6 @@
             Highscores:
             <hr>
             <h1 id="highscores" class="highscoreArea">
-                <!-- <span id="highscores" class="highscores"><span class="col-xs-8">Neuer User3</span><span class="col-xs-4">40 Pt.</span><br><hr></span>
-                <span id="highscores" class="highscores"><span class="col-xs-8">Neuer User4</span><span class="col-xs-4">80 Pt.</span><br><hr></span> -->
             </h1> 
         </div>
 
@@ -64,7 +62,6 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
                             <h4 class="modal-title">Spieler Namen wählen</h4>
                         </div>
                         <div class="modal-body">
@@ -97,18 +94,18 @@
                     <h4 class="modal-title">Sie haben gewonnen.</h4>
                 </div>
                 <div class="modal-body">
-                    <!-- Input name player 1 -->
                     <p>Herzlichen Glückwunsch! Sie haben gewonnen!</p>
                     <p>Ihr Score beträgt <span id="scoreLabel"></span>!</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
-                    <button type="button" class="btn btn-primary"><a href="index.html" style="color:white;">Nochmal spielen</a></button>
+                    <button type="button" class="btn btn-primary"><a href="/" class="restartBtn">Nochmal spielen</a></button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- looser modal -->
     <div id="looserModal" class="modal fade" role="dialog" data-backdrop="static">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -117,12 +114,11 @@
                     <h4 class="modal-title">Sie haben verloren.</h4>
                 </div>
                 <div class="modal-body">
-                    <!-- Input name player 1 -->
                     <p>Sie haben leider verloren. Versuchen Sie es doch erneut.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Schließen</button>
-                    <button type="button" class="btn btn-primary"><a href="index.html" style="color:white;">Nochmal spielen</a></button>
+                    <button type="button" class="btn btn-primary"><a href="/" class="restartBtn">Nochmal spielen</a></button>
                 </div>
             </div>
         </div>
