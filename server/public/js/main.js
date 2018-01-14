@@ -4,9 +4,8 @@ let myShips = new Gamefield("myGameFieldBody");
 let otherShips = new Gamefield("otherGameFieldBody");
 let highscoreManager = new Highscore();
 
-let shipsReady = false;
-let isPlayerTurn;
-let gameIsRunning;
+let shipsReady = false, gameInterrupted = false;
+let isPlayerTurn, gameIsRunning;
 let myHighscore = 0;
 
 let player1 = "Player1", player2 = "Player2";
@@ -40,6 +39,25 @@ $(document).ready(function() {
 		}
 	});
 
+	socket.on('disconnect', () => {
+		UIManager.printGameLog("Server nicht gefunden.");
+		gameIsRunning = false;
+	});
+
+	socket.on('connection_failed', () => {
+		UIManager.printGameLog("Server nicht gefunden.");
+	});
+
+	socket.on('reconnect', () => {
+		if(gameInterrupted) {
+			UIManager.printGameLog("Server wieder verfügbar. Neu laden zum Neustart.");
+			gameIsRunning = false;
+		}
+		else {
+			UIManager.printGameLog("Server wieder verfügbar.");
+		}
+	});
+
 	$("#setUpShipsRandomly").on("click", (event) =>{
 		myShips.setUpShipsRandomly();
 		UIManager.showShips(myShips.board, myShips.id);
@@ -52,6 +70,7 @@ $(document).ready(function() {
 
 	$("#sendShips").on('click', (event) => {
 		if(shipsReady){
+			gameInterrupted = true;
 			socket.emit('ships', {ships:myShips.shipCoordinatesForServer});
 			$("#shipSetup").hide();
 			$("#otherGameField").show();

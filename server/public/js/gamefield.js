@@ -48,12 +48,13 @@ class Gamefield{
 		let shipProperties = ships.availableShips;
 		let shipsToSetUp = this.getAllShips(shipProperties);
 		let shipCoordinatesForServerIndex = 0;
-		this._shipCoordinatesForServer = [];
+		//this._shipCoordinatesForServer = [];
         
 		while(shipsToSetUp.length > 0){
 			this._board = this.initializeBoard();
 			let freeFields = this.getAvailableFields();
 			shipsToSetUp = this.getAllShips(shipProperties);
+			this._shipCoordinatesForServer = [];
     
 			for(let currentShipProperty = 0; currentShipProperty < shipProperties.length; currentShipProperty++){
 				for(let shipNumber = 0; shipNumber < ships.getShip(currentShipProperty).amount; shipNumber++){	
