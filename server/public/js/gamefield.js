@@ -191,7 +191,7 @@ class Gamefield{
 	 * Checks each field on the board and returns an array of strings containing all fields on which ships could be setted up.   
 	 */
 	getAvailableFields(){
-		var availableFields = [];
+		let availableFields = [];
         
 		for(let row = 0; row < this.FIELDSIZE(); row++){
 			for(let col = 0; col < this.FIELDSIZE(); col++){
